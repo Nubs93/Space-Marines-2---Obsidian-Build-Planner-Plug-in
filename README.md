@@ -1,0 +1,58 @@
+# Space Marine 2 Build Planner v0.2.7
+
+## What's new
+- Fixed follow-up regression from v0.2.6: `createDiv` was destructured from
+  `require("obsidian")`, but Obsidian does not export a standalone `createDiv`
+  factory function from the module — it only patches `HTMLElement.prototype`
+  at runtime with `createDiv`/`createEl`/etc. So the imported `createDiv` was
+  `undefined`, and calling it in `perkCard()` still threw, still aborting
+  `renderClass()` before any class or prestige perks rendered. `perkCard()`
+  now creates its detached root node with the native `document.createElement("div")`
+  (always available) and sets `className` directly; its children still use
+  the patched `el.createDiv(...)` instance method, which works correctly on
+  any element once Obsidian has initialized. No `createDiv` import remains.
+
+- Fixed class perk tree failing to render at all. `perkCard()` was calling
+  `document.createDiv(...)`, but Obsidian's `createDiv`/`createEl` DOM helpers
+  are only added to `HTMLElement`/`DocumentFragment` (and exposed as globals
+  importable from `"obsidian"`) — never to `document` itself. Calling it threw
+  an exception partway through `renderClass()`, which aborted rendering and
+  left the class page empty. Now imports `createDiv` from `"obsidian"` and
+  uses that instead.
+- Fixed selected perks showing a plain/black border instead of green.
+  `.sm2-perk.active` and `.sm2-weapon-perk.active` relied on `color-mix()`
+  combined with `var(--interactive-success)`; if either wasn't supported or
+  defined by the active theme/Obsidian version, the background rule was
+  dropped entirely and the border fell back to an unstyled color. Replaced
+  with a plain `rgba()` green tint plus an explicit border/inset box-shadow
+  using `var(--interactive-success, #4caf50)` (with a hardcoded fallback), so
+  the selected state is unmistakably green regardless of theme or Obsidian's
+  Chromium version.
+
+- Fixed weapon perk clicks staying on the Weapons tab.
+- Added real build switching through the Build selector.
+- New Build creates a separate unsaved working build.
+- Save prompts for a build name and saves/updates that build.
+- Current changes auto-save locally.
+- Saved builds can be loaded and deleted.
+- Primary/Secondary/Melee weapon selections are stored per build.
+- Weapon perk selections are stored per weapon slot.
+- Restored and hardened the Techmarine class perk tree rendering.
+- Added migration safeguards for builds created by earlier versions.
+- Dropdown stacking was improved so an open selector appears above the other selectors.
+
+## Current storage
+v0.2.5 still uses Obsidian's plugin data storage (`loadData`/`saveData`). It is intentionally not yet the final vault-file storage design. A later milestone can migrate builds into visible JSON/Markdown files in the vault.
+
+## Install
+Copy the `sm2-build-planner` folder into:
+`.obsidian/plugins/`
+
+Then enable it under Settings → Community plugins and run:
+`Space Marine 2 Build Planner: Open Space Marine 2 Build Planner`
+
+
+## v0.2.5
+- Fixed migration of builds created by older prototypes that could leave `classActive` undefined and stop the class perk renderer.
+- Normalizes every stored build on startup and when switching builds.
+- Added a guard around Techmarine class data rendering.

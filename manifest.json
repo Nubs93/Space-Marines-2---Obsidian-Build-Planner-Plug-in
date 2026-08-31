@@ -1,0 +1,9 @@
+{
+  "id": "sm2-build-planner",
+  "name": "Space Marine 2 Build Planner",
+  "version": "0.2.7",
+  "minAppVersion": "1.5.0",
+  "description": "Interactive local build planner prototype for Space Marine 2.",
+  "author": "OpenAI",
+  "isDesktopOnly": false
+}
