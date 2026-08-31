@@ -56,3 +56,12 @@ Then enable it under Settings → Community plugins and run:
 - Fixed migration of builds created by older prototypes that could leave `classActive` undefined and stop the class perk renderer.
 - Normalizes every stored build on startup and when switching builds.
 - Added a guard around Techmarine class data rendering.
+
+
+## v0.2.8
+- Added class perk mutual-exclusion behavior: only one perk can be selected from a tree row; the other choices become locked until it is deselected.
+- Added weapon perk prerequisites: a perk in a later tier requires a selected perk from the previous tier.
+- Only one perk can be selected per weapon tier.
+- Removing a weapon prerequisite automatically clears dependent later-tier selections.
+- Existing saved builds are normalized on load to prevent invalid prerequisite/exclusivity combinations.
+- Added locked/unavailable visual states and explanatory hover/notice feedback.

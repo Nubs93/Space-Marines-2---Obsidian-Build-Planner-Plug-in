@@ -18,3 +18,5 @@
 .sm2-modal-buttons{display:flex;gap:8px;justify-content:flex-end}
 @media(max-width:1000px){.sm2-body{grid-template-columns:1fr}.sm2-side{border-left:0;border-top:1px solid var(--background-modifier-border);padding:14px 0}.sm2-weapon-grid{grid-template-columns:repeat(2,minmax(130px,1fr))}}
 @media(max-width:650px){.sm2-row{grid-template-columns:1fr}.sm2-weapon-grid{grid-template-columns:1fr}.sm2-select-wrap{min-width:0;width:100%}.sm2-weapon-heading{display:block}.sm2-weapon-heading h2{margin-bottom:8px}}
+
+.sm2-perk.disabled,.sm2-weapon-perk.disabled{opacity:.45;cursor:not-allowed;border-style:dashed}.sm2-perk.disabled:hover,.sm2-weapon-perk.disabled:hover{border-color:var(--background-modifier-border)}.sm2-perk.disabled .sm2-perk-meta{color:var(--text-faint)}

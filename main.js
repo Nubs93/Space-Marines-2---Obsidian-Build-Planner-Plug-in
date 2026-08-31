@@ -237,12 +237,18 @@ class SM2View extends require("obsidian").ItemView {
       const tree=sec.createDiv({cls:"sm2-tree"});
       (cat.rows || []).forEach(row=>{
         const r=tree.createDiv({cls:"sm2-row"});
-        (row || []).forEach(p=>{
+        const rowPerks = Array.isArray(row) ? row : [];
+        (rowPerks || []).forEach(p=>{
           if(Array.isArray(p) && p.length >= 3){
-            r.appendChild(this.perkCard(p,this.plugin.currentBuild.classActive.includes(p[0]),()=>{
-              this.plugin.toggleClassPerk(p[0]);
+            const active=this.plugin.currentBuild.classActive.includes(p[0]);
+            const lockedBy=rowPerks.some(other=>Array.isArray(other) && other[0]!==p[0] && this.plugin.currentBuild.classActive.includes(other[0]));
+            const disabled=!active && lockedBy;
+            const reason=disabled ? "Unavailable: another perk in this row is selected." : "";
+            r.appendChild(this.perkCard(p,active,()=>{
+              if(disabled){new Notice(reason);return;}
+              this.plugin.toggleClassPerk(p[0],rowPerks);
               this.render();
-            }));
+            },disabled,reason));
           }
         });
       });
@@ -277,22 +283,34 @@ class SM2View extends require("obsidian").ItemView {
           const col=tree.createDiv({cls:"sm2-tier"});
           col.createEl("h3",{text:t.name});
           t.perks.forEach(p=>{
-            const el=col.createDiv({cls:"sm2-weapon-perk"+(active.includes(p[0])?" active":"")});
+            const isActive=active.includes(p[0]);
+            const tierIndex=tiers.indexOf(t);
+            const prerequisiteTier=tierIndex>0 ? tiers[tierIndex-1] : null;
+            const hasPrerequisite=!prerequisiteTier || prerequisiteTier.perks.some(prev=>active.includes(prev[0]));
+            const disabled=!isActive && !hasPrerequisite;
+            const reason=disabled ? `Unavailable: select a perk from ${prerequisiteTier.name} first.` : "";
+            const el=col.createDiv({cls:"sm2-weapon-perk"+(isActive?" active":"")+(disabled?" disabled":"")});
             el.createEl("strong",{text:p[1]});
             el.createDiv({cls:"sm2-small",text:p[2]});
-            el.onclick=()=>{this.plugin.toggleWeaponPerk(slot,p[0]);this.render();};
+            if(disabled) el.setAttr("title",reason);
+            el.onclick=()=>{
+              if(disabled){new Notice(reason);return;}
+              this.plugin.toggleWeaponPerk(slot,p[0],tiers);
+              this.render();
+            };
           });
         });
       }
     });
   }
 
-  perkCard(p,active,fn){
+  perkCard(p,active,fn,disabled=false,reason=""){
     const el=document.createElement("div");
-    el.className="sm2-perk"+(active?" active":"");
-    el.createDiv({cls:"sm2-perk-meta",text:"PERK"});
+    el.className="sm2-perk"+(active?" active":"")+(disabled?" disabled":"");
+    el.createDiv({cls:"sm2-perk-meta",text:disabled?"LOCKED":"PERK"});
     el.createDiv({cls:"sm2-perk-name",text:p[1]});
     el.createDiv({cls:"sm2-perk-desc",text:p[2]});
+    if(disabled) el.setAttr("title",reason);
     el.onclick=fn;
     return el;
   }
@@ -333,6 +351,44 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     this.app.workspace.revealLeaf(leaf);
   }
   getBuilds(){return Object.values(this.builds);}
+
+  repairClassSelections(classActive){
+    const selected=new Set(Array.isArray(classActive)?classActive:[]);
+    const data=CLASS_DATA.Techmarine;
+    for(const cat of (data?.categories || [])){
+      for(const row of (cat.rows || [])){
+        const chosen=(row || []).filter(p=>Array.isArray(p) && selected.has(p[0]));
+        // A class tree row is a mutually-exclusive choice: keep the first
+        // selected perk if an older build contains more than one.
+        chosen.slice(1).forEach(p=>selected.delete(p[0]));
+      }
+    }
+    return Array.from(selected);
+  }
+
+  repairWeaponSelections(slot){
+    const state=this.currentBuild.weapons[slot];
+    const tiers=WEAPONS[slot]?.weapons?.[state.weapon]?.tiers || [];
+    const selected=new Set(Array.isArray(state.active)?state.active:[]);
+    for(let i=0;i<tiers.length;i++){
+      const tier=tiers[i];
+      const chosen=(tier.perks || []).filter(p=>selected.has(p[0]));
+      // One perk may be selected from each tier.
+      chosen.slice(1).forEach(p=>selected.delete(p[0]));
+      if(i>0){
+        const previous=tiers[i-1];
+        const hasPrevious=(previous.perks || []).some(p=>selected.has(p[0]));
+        if(!hasPrevious) (tier.perks || []).forEach(p=>selected.delete(p[0]));
+      }
+    }
+    state.active=Array.from(selected);
+  }
+
+  normalizeSelections(){
+    this.currentBuild.classActive=this.repairClassSelections(this.currentBuild.classActive);
+    for(const slot of ["primary","secondary","melee"]) this.repairWeaponSelections(slot);
+  }
+
   normalizeBuild(raw){
     const d=DEFAULT_BUILD();
     const b=Object.assign(d, raw || {});
@@ -344,6 +400,22 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
       if(!b.weapons[slot] || typeof b.weapons[slot]!=="object") b.weapons[slot]=def;
       if(typeof b.weapons[slot].weapon!=="string") b.weapons[slot].weapon=def.weapon;
       if(!Array.isArray(b.weapons[slot].active)) b.weapons[slot].active=[];
+    }
+    // Repair selections from pre-0.2.8 builds so loaded builds cannot remain invalid.
+    b.classActive=this.repairClassSelections(b.classActive);
+    for(const slot of ["primary","secondary","melee"]){
+      const state=b.weapons[slot];
+      const tiers=WEAPONS[slot]?.weapons?.[state.weapon]?.tiers || [];
+      const selected=new Set(state.active);
+      for(let i=0;i<tiers.length;i++){
+        const chosen=(tiers[i].perks || []).filter(p=>selected.has(p[0]));
+        chosen.slice(1).forEach(p=>selected.delete(p[0]));
+        if(i>0){
+          const hasPrevious=(tiers[i-1].perks || []).some(p=>selected.has(p[0]));
+          if(!hasPrevious) (tiers[i].perks || []).forEach(p=>selected.delete(p[0]));
+        }
+      }
+      state.active=Array.from(selected);
     }
     return b;
   }
@@ -394,10 +466,45 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     await this.persist();new Notice(`Deleted "${b.name}".`);
     const leaves=this.app.workspace.getLeavesOfType("sm2-build-planner-view");leaves.forEach(l=>l.view.render());
   }
-  toggleClassPerk(id){const a=this.currentBuild.classActive;const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);this.autoSave();}
+  toggleClassPerk(id,rowPerks=[]){
+    const a=this.currentBuild.classActive;
+    const i=a.indexOf(id);
+    if(i>=0){
+      a.splice(i,1);
+    } else {
+      // Selecting a class perk locks the other choices in its row.
+      const rowIds=new Set((rowPerks || []).filter(p=>Array.isArray(p)).map(p=>p[0]));
+      for(let n=a.length-1;n>=0;n--) if(rowIds.has(a[n])) a.splice(n,1);
+      a.push(id);
+    }
+    this.autoSave();
+  }
   togglePrestige(id){const a=this.currentBuild.prestige;const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);this.autoSave();}
   setWeapon(slot,name){this.currentBuild.weapons[slot].weapon=name;this.currentBuild.weapons[slot].active=[];this.autoSave();}
-  toggleWeaponPerk(slot,id){const a=this.currentBuild.weapons[slot].active;const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);this.autoSave();}
+  toggleWeaponPerk(slot,id,tiers=[]){
+    const a=this.currentBuild.weapons[slot].active;
+    const i=a.indexOf(id);
+    if(i>=0){
+      a.splice(i,1);
+      // Removing a tier perk also removes every dependent later-tier perk.
+      const index=tiers.findIndex(t=>(t.perks||[]).some(p=>p[0]===id));
+      if(index>=0){
+        for(let n=index+1;n<tiers.length;n++) (tiers[n].perks||[]).forEach(p=>{const j=a.indexOf(p[0]);if(j>=0)a.splice(j,1);});
+      }
+    } else {
+      const index=tiers.findIndex(t=>(t.perks||[]).some(p=>p[0]===id));
+      if(index>0){
+        const hasPrevious=(tiers[index-1].perks||[]).some(p=>a.includes(p[0]));
+        if(!hasPrevious){new Notice(`Select a perk from ${tiers[index-1].name} first.`);return;}
+      }
+      // Only one perk can be selected from a weapon tier.
+      if(index>=0){
+        (tiers[index].perks||[]).forEach(p=>{const j=a.indexOf(p[0]);if(j>=0)a.splice(j,1);});
+      }
+      a.push(id);
+    }
+    this.autoSave();
+  }
   clearCurrent(){
     this.currentBuild.classActive=[];this.currentBuild.prestige=[];
     Object.values(this.currentBuild.weapons).forEach(w=>w.active=[]);
