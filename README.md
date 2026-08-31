@@ -1,4 +1,4 @@
-# Space Marine 2 Build Planner v0.2.7
+# Space Marine 2 Build Planner v0.2.8
 
 ## What's new
 - Fixed follow-up regression from v0.2.6: `createDiv` was destructured from
