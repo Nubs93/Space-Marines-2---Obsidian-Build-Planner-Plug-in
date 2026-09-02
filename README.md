@@ -1,4 +1,4 @@
-# Space Marine 2 Build Planner v0.2.11
+# Space Marine 2 Build Planner v0.2.13
 
 ## What's new
 - Fixed follow-up regression from v0.2.6: `createDiv` was destructured from
@@ -83,3 +83,17 @@ Then enable it under Settings → Community plugins and run:
 - Removing a selected perk now prunes later selections that are no longer reachable from the selected Standard root.
 - Corrected the Plasma Incinerator topology, including Blast Radius ↔ Common Speed and removing the false Adamant Restoration ↔ Adamant Velocity relationship.
 - Other populated weapons retain the legacy v0.2.8 tier behavior until their authoritative trees are supplied.
+
+
+## v0.2.13
+- Reorganized the Plasma Incinerator perk cards into a wiki-style 9-column graph layout while keeping selection logic separate from display position.
+- Added a weapon-version dropdown beside the weapon selector.
+- Added the current Plasma Incinerator versions from Standard through Relic.
+- Weapon-version selection is saved per build and per weapon slot. It does not change perk behavior.
+- Older builds without a saved version are migrated to the first available version for that weapon.
+- Weapons whose version data has not been populated yet show a non-interactive "Version data pending" indicator.
+
+
+## v0.2.13
+- Fixed the weapon perk graph jumping back to the far left after selecting or deselecting a perk. Each weapon slot now preserves its horizontal graph scroll position across re-renders.
+- Changed only the visual layout of Techmarine Core and Gear perk choice groups: each mutually-exclusive trio now runs top-to-bottom instead of left-to-right. Selection and mutual-exclusivity behavior are unchanged.

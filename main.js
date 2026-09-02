@@ -110,6 +110,19 @@ const WEAPONS = {
     label:"Primary",
     weapons:{
       "Plasma Incinerator": {
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"salvation_bakka_alpha",tier:"Artificer",name:"Salvation of Bakka - Alpha"},
+          {id:"salvation_bakka_beta",tier:"Artificer",name:"Salvation of Bakka - Beta"},
+          {id:"drogos_reclamation_alpha",tier:"Artificer",name:"Drogos Reclamation - Alpha"},
+          {id:"drogos_reclamation_beta",tier:"Artificer",name:"Drogos Reclamation - Beta"},
+          {id:"gathalamor_crusade_alpha",tier:"Relic",name:"Gathalamor Crusade - Alpha"},
+          {id:"gathalamor_crusade_beta",tier:"Relic",name:"Gathalamor Crusade - Beta"},
+          {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+          {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"}
+        ],
         treeMode:"connectionGraph",
         roots:["plasma_std_common_cooling","plasma_std_blast_radius"],
         exclusiveGroups:[
@@ -146,34 +159,34 @@ const WEAPONS = {
         ],
         tiers:[
           {name:"Standard",perks:[
-            ["plasma_std_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:0}],
-            ["plasma_std_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{column:0}]
+            ["plasma_std_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:0,row:1}],
+            ["plasma_std_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{column:0,row:2}]
           ]},
           {name:"Master-Crafted",perks:[
-            ["plasma_mc_rapid_cooling","Rapid Cooling","After killing 7 enemies in rapid succession, Weapons do not heat for 10 seconds. Cooldown is 15 seconds.",{column:1}],
-            ["plasma_mc_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:2}],
-            ["plasma_mc_rampage","Rampage","After killing 7 enemies in rapid succession, you deal 25% more Damage for 10 seconds. Cooldown is 15 seconds.",{column:1}],
-            ["plasma_mc_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:2}]
+            ["plasma_mc_rapid_cooling","Rapid Cooling","After killing 7 enemies in rapid succession, Weapons do not heat for 10 seconds. Cooldown is 15 seconds.",{column:1,row:1}],
+            ["plasma_mc_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:2,row:1}],
+            ["plasma_mc_rampage","Rampage","After killing 7 enemies in rapid succession, you deal 25% more Damage for 10 seconds. Cooldown is 15 seconds.",{column:1,row:2}],
+            ["plasma_mc_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:2,row:2}]
           ]},
           {name:"Artificer",perks:[
-            ["plasma_art_common_efficiency","Common Efficiency","Common Shots generate 20% less Heat. Shots charge 20% slower.",{column:4}],
-            ["plasma_art_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{column:3}],
-            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{column:4}],
-            ["plasma_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:5}],
-            ["plasma_art_charged_speed","Charged Speed","Projectile speed of Charged Shots increases by 25%.",{column:3}],
-            ["plasma_art_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{column:4}],
-            ["plasma_art_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{column:5}],
-            ["plasma_art_balanced_cooling","Balanced Cooling","Weapon cool 20% faster. Charged Shots generate 10% more Heat.",{column:4}]
+            ["plasma_art_common_efficiency","Common Efficiency","Common Shots generate 20% less Heat. Shots charge 20% slower.",{column:4,row:0}],
+            ["plasma_art_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{column:3,row:1}],
+            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{column:4,row:1}],
+            ["plasma_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:5,row:1}],
+            ["plasma_art_charged_speed","Charged Speed","Projectile speed of Charged Shots increases by 25%.",{column:3,row:2}],
+            ["plasma_art_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{column:4,row:2}],
+            ["plasma_art_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{column:5,row:2}],
+            ["plasma_art_balanced_cooling","Balanced Cooling","Weapon cool 20% faster. Charged Shots generate 10% more Heat.",{column:4,row:3}]
           ]},
           {name:"Relic",perks:[
-            ["plasma_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:7}],
-            ["plasma_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:6}],
-            ["plasma_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:7}],
-            ["plasma_relic_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:8}],
-            ["plasma_relic_perfect_radius","Perfect Radius","After a perfectly timed Dodge, the Damage radius of a Charged Shot increases by 10% for 10 seconds.",{column:6}],
-            ["plasma_relic_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{column:7}],
-            ["plasma_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:8}],
-            ["plasma_relic_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:7}]
+            ["plasma_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:7,row:0}],
+            ["plasma_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:6,row:1}],
+            ["plasma_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:7,row:1}],
+            ["plasma_relic_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:8,row:1}],
+            ["plasma_relic_perfect_radius","Perfect Radius","After a perfectly timed Dodge, the Damage radius of a Charged Shot increases by 10% for 10 seconds.",{column:6,row:2}],
+            ["plasma_relic_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{column:7,row:2}],
+            ["plasma_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:8,row:2}],
+            ["plasma_relic_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:7,row:3}]
           ]}
         ]
       },
@@ -227,9 +240,9 @@ const DEFAULT_BUILD = () => ({
   classActive:[],
   prestige:[],
   weapons:{
-    primary:{weapon:"Plasma Incinerator",active:[]},
-    secondary:{weapon:"Bolt Pistol",active:[]},
-    melee:{weapon:"Omnissian Axe",active:[]}
+    primary:{weapon:"Plasma Incinerator",variant:"standard_issue",active:[]},
+    secondary:{weapon:"Bolt Pistol",variant:null,active:[]},
+    melee:{weapon:"Omnissian Axe",variant:null,active:[]}
   },
   createdAt:new Date().toISOString(),
   updatedAt:new Date().toISOString()
@@ -251,7 +264,15 @@ class BuildNameModal extends Modal {
 }
 
 class SM2View extends require("obsidian").ItemView {
-  constructor(leaf, plugin) { super(leaf); this.plugin=plugin; this.activeTab="class"; this.openMenus=new Set(); }
+  constructor(leaf, plugin) {
+    super(leaf);
+    this.plugin=plugin;
+    this.activeTab="class";
+    this.openMenus=new Set();
+    // Keep horizontal weapon-tree positions stable across re-renders. Clicking
+    // a perk re-renders the view, so without this the graph jumps back left.
+    this.weaponGraphScroll=new Map();
+  }
   getViewType(){return "sm2-build-planner-view";}
   getDisplayText(){return "SM2 Build Planner";}
   getIcon(){return "swords";}
@@ -321,7 +342,8 @@ class SM2View extends require("obsidian").ItemView {
     const legend=main.createDiv({cls:"sm2-legend"});
     [["on","Selected"],["off","Available"]].forEach(x=>{const s=legend.createSpan();s.innerHTML=`<i class="sm2-dot ${x[0]}"></i>${x[1]}`;});
     data.categories.forEach(cat=>{
-      const sec=main.createDiv({cls:"sm2-category"});
+      const verticalChoices = cat.name.startsWith("Core") || cat.name === "Gear";
+      const sec=main.createDiv({cls:"sm2-category"+(verticalChoices?" sm2-vertical-choice-groups":"")});
       sec.createEl("h2",{text:cat.name});
       const tree=sec.createDiv({cls:"sm2-tree"});
       (cat.rows || []).forEach(row=>{
@@ -352,32 +374,94 @@ class SM2View extends require("obsidian").ItemView {
   }
 
   renderWeapons(main){
-    main.createEl("div",{cls:"sm2-section-note",text:"Select a Standard starting perk, then follow the weapon tree’s solid-line connections. Horizontal progress moves left-to-right; vertical connectors can change paths. Changes are saved automatically."});
+    main.createEl("div",{cls:"sm2-section-note",text:"Select a weapon and version, then choose perks along the connected tree. Weapon versions are saved with the current build but do not change perk behavior."});
     ["primary","secondary","melee"].forEach((slot)=>{
       const group=main.createDiv({cls:"sm2-weapon-slot"});
       const top=group.createDiv({cls:"sm2-weapon-heading"});
       top.createEl("h2",{text:WEAPONS[slot].label+" Weapon"});
+      const controls=top.createDiv({cls:"sm2-weapon-controls"});
       const names=Object.keys(WEAPONS[slot].weapons);
-      const current=this.plugin.currentBuild.weapons[slot].weapon;
-      this.makeSelect(top,names.map(x=>({value:x,label:x})),current,w=>{
+      const state=this.plugin.currentBuild.weapons[slot];
+      const current=state.weapon;
+      this.makeSelect(controls,names.map(x=>({value:x,label:x})),current,w=>{
         this.plugin.setWeapon(slot,w);this.render();
       });
-      const tree=group.createDiv({cls:"sm2-weapon-grid"});
+
       const weapon=WEAPONS[slot].weapons[current];
-      const tiers=weapon.tiers || [];
-      if(!tiers.length){
-        tree.createDiv({cls:"sm2-empty-weapon",text:"Weapon data has not been entered yet."});
+      const variants=Array.isArray(weapon?.variants) ? weapon.variants : [];
+      if(variants.length){
+        const selectedVariant=variants.some(v=>v.id===state.variant) ? state.variant : variants[0].id;
+        this.makeSelect(controls,variants.map(v=>({value:v.id,label:`${v.tier} — ${v.name}`})),selectedVariant,id=>{
+          this.plugin.setWeaponVariant(slot,id);this.render();
+        });
       } else {
-        const active=this.plugin.currentBuild.weapons[slot].active;
+        controls.createDiv({cls:"sm2-variant-pending",text:"Version data pending"});
+      }
+
+      const tiers=weapon?.tiers || [];
+      if(!tiers.length){
+        group.createDiv({cls:"sm2-empty-weapon",text:"Weapon data has not been entered yet."});
+        return;
+      }
+
+      const active=state.active;
+      if(weapon?.treeMode === "connectionGraph"){
+        const scroll=group.createDiv({cls:"sm2-weapon-graph-scroll"});
+        const savedScrollLeft=this.weaponGraphScroll.get(slot) || 0;
+        scroll.scrollLeft=savedScrollLeft;
+        scroll.addEventListener("scroll",()=>{
+          this.weaponGraphScroll.set(slot,scroll.scrollLeft);
+        },{passive:true});
+        const graph=scroll.createDiv({cls:"sm2-weapon-graph"});
+        [
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:3},
+          {name:"Relic",start:7,span:3}
+        ].forEach(t=>{
+          const h=graph.createDiv({cls:"sm2-graph-tier-heading",text:t.name});
+          h.style.gridColumn=`${t.start} / span ${t.span}`;
+          h.style.gridRow="1";
+        });
+        allWeaponPerks(tiers).forEach(p=>{
+          const id=perkId(p);
+          const meta=perkMeta(p);
+          const isActive=active.includes(id);
+          const perkState=this.plugin.getWeaponPerkState(slot,id);
+          const disabled=!isActive && !perkState.available;
+          const reason=disabled ? perkState.reason : "";
+          const el=graph.createDiv({cls:"sm2-weapon-perk sm2-graph-perk"+(isActive?" active":"")+(disabled?" disabled":"")});
+          el.style.gridColumn=String((Number.isFinite(meta.column)?meta.column:0)+1);
+          el.style.gridRow=String((Number.isFinite(meta.row)?meta.row:0)+2);
+          el.createEl("strong",{text:perkName(p)});
+          el.createDiv({cls:"sm2-small",text:perkDesc(p)});
+          if(disabled) el.setAttr("title",reason);
+          el.onclick=()=>{
+            if(disabled){new Notice(reason);return;}
+            // Capture the exact position before the click-triggered re-render.
+            this.weaponGraphScroll.set(slot,scroll.scrollLeft);
+            this.plugin.toggleWeaponPerk(slot,id);
+            this.render();
+          };
+        });
+        // Reapply after layout as well; this avoids browser/Obsidian layout timing
+        // resetting scrollLeft while the new graph is being attached.
+        if(typeof requestAnimationFrame === "function"){
+          requestAnimationFrame(()=>{
+            if(scroll.isConnected) scroll.scrollLeft=this.weaponGraphScroll.get(slot) || savedScrollLeft;
+          });
+        }
+      } else {
+        const tree=group.createDiv({cls:"sm2-weapon-grid"});
         tiers.forEach((t)=>{
           const col=tree.createDiv({cls:"sm2-tier"});
           col.createEl("h3",{text:t.name});
           (t.perks || []).forEach(p=>{
             const id=perkId(p);
             const isActive=active.includes(id);
-            const state=this.plugin.getWeaponPerkState(slot,id);
-            const disabled=!isActive && !state.available;
-            const reason=disabled ? state.reason : "";
+            const perkState=this.plugin.getWeaponPerkState(slot,id);
+            const disabled=!isActive && !perkState.available;
+            const reason=disabled ? perkState.reason : "";
             const el=col.createDiv({cls:"sm2-weapon-perk"+(isActive?" active":"")+(disabled?" disabled":"")});
             el.createEl("strong",{text:perkName(p)});
             el.createDiv({cls:"sm2-small",text:perkDesc(p)});
@@ -605,6 +689,13 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
       const def=DEFAULT_BUILD().weapons[slot];
       if(!b.weapons[slot] || typeof b.weapons[slot]!=="object") b.weapons[slot]=def;
       if(typeof b.weapons[slot].weapon!=="string") b.weapons[slot].weapon=def.weapon;
+      const weaponData=WEAPONS[slot]?.weapons?.[b.weapons[slot].weapon];
+      const variants=Array.isArray(weaponData?.variants) ? weaponData.variants : [];
+      if(variants.length){
+        if(!variants.some(v=>v.id===b.weapons[slot].variant)) b.weapons[slot].variant=variants[0].id;
+      } else {
+        b.weapons[slot].variant=null;
+      }
       if(!Array.isArray(b.weapons[slot].active)) b.weapons[slot].active=[];
     }
     this.currentBuild=b;
@@ -674,7 +765,21 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     this.autoSave();
   }
   togglePrestige(id){const a=this.currentBuild.prestige;const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);this.autoSave();}
-  setWeapon(slot,name){this.currentBuild.weapons[slot].weapon=name;this.currentBuild.weapons[slot].active=[];this.autoSave();}
+  setWeapon(slot,name){
+    const state=this.currentBuild.weapons[slot];
+    state.weapon=name;
+    state.active=[];
+    const variants=WEAPONS[slot]?.weapons?.[name]?.variants || [];
+    state.variant=variants.length ? variants[0].id : null;
+    this.autoSave();
+  }
+  setWeaponVariant(slot,id){
+    const state=this.currentBuild.weapons[slot];
+    const variants=WEAPONS[slot]?.weapons?.[state.weapon]?.variants || [];
+    if(!variants.some(v=>v.id===id)) return;
+    state.variant=id;
+    this.autoSave();
+  }
   toggleWeaponPerk(slot,id){
     const state=this.currentBuild.weapons[slot];
     const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
