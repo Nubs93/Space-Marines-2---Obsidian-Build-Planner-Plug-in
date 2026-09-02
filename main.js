@@ -108,7 +108,7 @@ const WEAPONS = {
           {name:"Artificer",perks:[
             ["plasma_art_common_efficiency","Common Efficiency","Common Shots generate 20% less Heat. Shots charge 20% slower.",{requiresAny:["plasma_art_common_speed"]}],
             ["plasma_art_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{requiresAny:["plasma_mc_fast_venting"]}],
-            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{requiresAny:["plasma_art_plasma_collection"]}],
+            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{requiresAny:["plasma_art_plasma_collection","plasma_art_blast_radius"]}],
             ["plasma_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{requiresAny:["plasma_art_common_speed"]}],
             ["plasma_art_charged_speed","Charged Speed","Projectile speed of Charged Shots increases by 25%.",{requiresAny:["plasma_mc_efficient_charge"]}],
             ["plasma_art_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{requiresAny:["plasma_art_common_speed","plasma_art_charged_speed"]}],
