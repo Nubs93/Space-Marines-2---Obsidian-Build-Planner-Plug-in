@@ -1,5 +1,15 @@
 const { Plugin, Notice, PluginSettingTab, Setting, Modal } = require("obsidian");
 
+function perkId(perk){ return Array.isArray(perk) ? perk[0] : null; }
+function perkName(perk){ return Array.isArray(perk) ? (perk[1] || "Unnamed Perk") : "Unnamed Perk"; }
+function perkDesc(perk){ return Array.isArray(perk) ? (perk[2] || "") : ""; }
+function perkMeta(perk){ return Array.isArray(perk) && perk[3] && typeof perk[3] === "object" ? perk[3] : {}; }
+function allWeaponPerks(tiers){
+  const result=[];
+  for(const tier of (tiers || [])) for(const perk of (tier?.perks || [])) if(Array.isArray(perk)) result.push(perk);
+  return result;
+}
+
 const CLASS_DATA = {
   Techmarine: {
     categories: [
@@ -81,11 +91,40 @@ const WEAPONS = {
     label:"Primary",
     weapons:{
       "Plasma Incinerator": {
+        // Graph-based weapon tree. `requiresAny` follows the visible connectors
+        // in the in-game tree; `exclusiveWith` represents branch choices.
+        treeMode:"graph",
         tiers:[
-          {name:"Standard",perks:[["plasma_standard_damage","Accelerated Plasma","Increased weapon damage."],["plasma_standard_heat","Heat Sink","Improved heat management."]]},
-          {name:"Master-Crafted",perks:[["plasma_mc_focus","Focused Beam","Improved accuracy and damage."]]},
-          {name:"Artificer",perks:[["plasma_art_fire","Firing Pattern","Improved sustained fire."],["plasma_art_heat","Thermal Regulation","Reduced heat accumulation."]]},
-          {name:"Relic",perks:[["plasma_relic_power","Relic Power","Increased damage against tougher targets."]]}
+          {name:"Standard",perks:[
+            ["plasma_std_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{exclusiveWith:["plasma_std_blast_radius"]}],
+            ["plasma_std_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{exclusiveWith:["plasma_std_common_cooling"]}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["plasma_mc_rapid_cooling","Rapid Cooling","After killing 7 enemies in rapid succession, Weapons do not heat for 10 seconds. Cooldown is 15 seconds.",{requiresAny:["plasma_std_common_cooling"]}],
+            ["plasma_mc_fast_venting","Fast Venting","Weapon cools 15% faster.",{requiresAny:["plasma_mc_rapid_cooling"]}],
+            ["plasma_mc_rampage","Rampage","After killing 7 enemies in rapid succession, you deal 25% more Damage for 10 seconds. Cooldown is 15 seconds.",{requiresAny:["plasma_std_blast_radius"]}],
+            ["plasma_mc_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{requiresAny:["plasma_mc_rampage","plasma_mc_fast_venting"]}]
+          ]},
+          {name:"Artificer",perks:[
+            ["plasma_art_common_efficiency","Common Efficiency","Common Shots generate 20% less Heat. Shots charge 20% slower.",{requiresAny:["plasma_art_common_speed"]}],
+            ["plasma_art_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{requiresAny:["plasma_mc_fast_venting"]}],
+            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{requiresAny:["plasma_art_plasma_collection"]}],
+            ["plasma_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{requiresAny:["plasma_art_common_speed"]}],
+            ["plasma_art_charged_speed","Charged Speed","Projectile speed of Charged Shots increases by 25%.",{requiresAny:["plasma_mc_efficient_charge"]}],
+            ["plasma_art_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{requiresAny:["plasma_art_common_speed","plasma_art_charged_speed"]}],
+            ["plasma_art_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{requiresAny:["plasma_art_adamant_restoration","plasma_art_blast_radius"]}],
+            ["plasma_art_balanced_cooling","Balanced Cooling","Weapon cool 20% faster. Charged Shots generate 10% more Heat.",{requiresAny:["plasma_art_blast_radius"]}]
+          ]},
+          {name:"Relic",perks:[
+            ["plasma_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{requiresAny:["plasma_relic_fast_venting"]}],
+            ["plasma_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{requiresAny:["plasma_art_adamant_restoration"]}],
+            ["plasma_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{requiresAny:["plasma_relic_retaliation"]}],
+            ["plasma_relic_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{requiresAny:["plasma_relic_fast_venting"]}],
+            ["plasma_relic_perfect_radius","Perfect Radius","After a perfectly timed Dodge, the Damage radius of a Charged Shot increases by 10% for 10 seconds.",{requiresAny:["plasma_art_adamant_velocity"]}],
+            ["plasma_relic_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{requiresAny:["plasma_relic_fast_venting","plasma_relic_perfect_radius"]}],
+            ["plasma_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{requiresAny:["plasma_relic_perpetual_velocity"]}],
+            ["plasma_relic_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{requiresAny:["plasma_relic_perpetual_velocity"]}]
+          ]}
         ]
       },
       "Auto Bolt Rifle": {tiers:[]},
@@ -263,8 +302,8 @@ class SM2View extends require("obsidian").ItemView {
   }
 
   renderWeapons(main){
-    main.createEl("div",{cls:"sm2-section-note",text:"Each slot has its own weapon selection and perk state. Changing a perk keeps you on this Weapons page."});
-    ["primary","secondary","melee"].forEach((slot,index)=>{
+    main.createEl("div",{cls:"sm2-section-note",text:"Select perks along the connected weapon tree. Locked perks show the prerequisite or branch that prevents selection. Changes are saved automatically."});
+    ["primary","secondary","melee"].forEach((slot)=>{
       const group=main.createDiv({cls:"sm2-weapon-slot"});
       const top=group.createDiv({cls:"sm2-weapon-heading"});
       top.createEl("h2",{text:WEAPONS[slot].label+" Weapon"});
@@ -274,28 +313,28 @@ class SM2View extends require("obsidian").ItemView {
         this.plugin.setWeapon(slot,w);this.render();
       });
       const tree=group.createDiv({cls:"sm2-weapon-grid"});
-      const tiers=WEAPONS[slot].weapons[current].tiers;
+      const weapon=WEAPONS[slot].weapons[current];
+      const tiers=weapon.tiers || [];
       if(!tiers.length){
         tree.createDiv({cls:"sm2-empty-weapon",text:"Weapon data has not been entered yet."});
       } else {
         const active=this.plugin.currentBuild.weapons[slot].active;
-        tiers.forEach(t=>{
+        tiers.forEach((t)=>{
           const col=tree.createDiv({cls:"sm2-tier"});
           col.createEl("h3",{text:t.name});
-          t.perks.forEach(p=>{
-            const isActive=active.includes(p[0]);
-            const tierIndex=tiers.indexOf(t);
-            const prerequisiteTier=tierIndex>0 ? tiers[tierIndex-1] : null;
-            const hasPrerequisite=!prerequisiteTier || prerequisiteTier.perks.some(prev=>active.includes(prev[0]));
-            const disabled=!isActive && !hasPrerequisite;
-            const reason=disabled ? `Unavailable: select a perk from ${prerequisiteTier.name} first.` : "";
+          (t.perks || []).forEach(p=>{
+            const id=perkId(p);
+            const isActive=active.includes(id);
+            const state=this.plugin.getWeaponPerkState(slot,id);
+            const disabled=!isActive && !state.available;
+            const reason=disabled ? state.reason : "";
             const el=col.createDiv({cls:"sm2-weapon-perk"+(isActive?" active":"")+(disabled?" disabled":"")});
-            el.createEl("strong",{text:p[1]});
-            el.createDiv({cls:"sm2-small",text:p[2]});
+            el.createEl("strong",{text:perkName(p)});
+            el.createDiv({cls:"sm2-small",text:perkDesc(p)});
             if(disabled) el.setAttr("title",reason);
             el.onclick=()=>{
               if(disabled){new Notice(reason);return;}
-              this.plugin.toggleWeaponPerk(slot,p[0],tiers);
+              this.plugin.toggleWeaponPerk(slot,id);
               this.render();
             };
           });
@@ -366,22 +405,75 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     return Array.from(selected);
   }
 
-  repairWeaponSelections(slot){
-    const state=this.currentBuild.weapons[slot];
-    const tiers=WEAPONS[slot]?.weapons?.[state.weapon]?.tiers || [];
+  repairWeaponSelections(slot, build=this.currentBuild){
+    const state=build.weapons[slot];
+    const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
+    const tiers=weapon?.tiers || [];
     const selected=new Set(Array.isArray(state.active)?state.active:[]);
-    for(let i=0;i<tiers.length;i++){
-      const tier=tiers[i];
-      const chosen=(tier.perks || []).filter(p=>selected.has(p[0]));
-      // One perk may be selected from each tier.
-      chosen.slice(1).forEach(p=>selected.delete(p[0]));
-      if(i>0){
-        const previous=tiers[i-1];
-        const hasPrevious=(previous.perks || []).some(p=>selected.has(p[0]));
-        if(!hasPrevious) (tier.perks || []).forEach(p=>selected.delete(p[0]));
+    const knownIds=new Set(allWeaponPerks(tiers).map(perkId));
+    for(const id of Array.from(selected)) if(!knownIds.has(id)) selected.delete(id);
+    if(weapon?.treeMode === "graph"){
+      // Resolve invalid/legacy selections until stable. If two mutually
+      // exclusive perks are present, keep the earlier selected entry.
+      let changed=true;
+      while(changed){
+        changed=false;
+        const perks=allWeaponPerks(tiers);
+        for(const p of perks){
+          const id=perkId(p), meta=perkMeta(p);
+          if(!selected.has(id)) continue;
+          const req=meta.requiresAny || [];
+          if(req.length && !req.some(x=>selected.has(x))){selected.delete(id);changed=true;continue;}
+          const conflict=(meta.exclusiveWith || []).find(x=>selected.has(x));
+          if(conflict){
+            // Preserve the first selected item in the stored array.
+            const first=state.active.indexOf(id) < state.active.indexOf(conflict) ? id : conflict;
+            const remove=first===id ? conflict : id;
+            if(selected.delete(remove)) changed=true;
+          }
+        }
+      }
+    } else {
+      for(let i=0;i<tiers.length;i++){
+        const tier=tiers[i];
+        const chosen=(tier.perks || []).filter(p=>selected.has(perkId(p)));
+        chosen.slice(1).forEach(p=>selected.delete(perkId(p)));
+        if(i>0){
+          const previous=tiers[i-1];
+          const hasPrevious=(previous.perks || []).some(p=>selected.has(perkId(p)));
+          if(!hasPrevious) (tier.perks || []).forEach(p=>selected.delete(perkId(p)));
+        }
       }
     }
     state.active=Array.from(selected);
+  }
+
+  getWeaponPerkState(slot,id){
+    const state=this.currentBuild.weapons[slot];
+    const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
+    const tiers=weapon?.tiers || [];
+    const perks=allWeaponPerks(tiers);
+    const perk=perks.find(p=>perkId(p)===id);
+    if(!perk) return {available:false,reason:"Weapon perk data could not be found."};
+    if(weapon?.treeMode !== "graph"){
+      const index=tiers.findIndex(t=>(t.perks||[]).some(p=>perkId(p)===id));
+      if(index<=0) return {available:true,reason:""};
+      const previous=tiers[index-1];
+      const hasPrevious=(previous.perks||[]).some(p=>state.active.includes(perkId(p)));
+      return hasPrevious ? {available:true,reason:""} : {available:false,reason:`Unavailable: select a perk from ${previous.name} first.`};
+    }
+    const meta=perkMeta(perk);
+    const req=meta.requiresAny || [];
+    if(req.length && !req.some(x=>state.active.includes(x))){
+      const labels=req.map(x=>{const p=perks.find(q=>perkId(q)===x);return p?perkName(p):x;});
+      return {available:false,reason:`Unavailable: requires ${labels.join(" or ")}.`};
+    }
+    const conflict=(meta.exclusiveWith || []).find(x=>state.active.includes(x));
+    if(conflict){
+      const p=perks.find(q=>perkId(q)===conflict);
+      return {available:false,reason:`Unavailable: ${p?perkName(p):conflict} is selected on the opposing branch.`};
+    }
+    return {available:true,reason:""};
   }
 
   normalizeSelections(){
@@ -401,24 +493,12 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
       if(typeof b.weapons[slot].weapon!=="string") b.weapons[slot].weapon=def.weapon;
       if(!Array.isArray(b.weapons[slot].active)) b.weapons[slot].active=[];
     }
-    // Repair selections from pre-0.2.8 builds so loaded builds cannot remain invalid.
+    this.currentBuild=b;
     b.classActive=this.repairClassSelections(b.classActive);
-    for(const slot of ["primary","secondary","melee"]){
-      const state=b.weapons[slot];
-      const tiers=WEAPONS[slot]?.weapons?.[state.weapon]?.tiers || [];
-      const selected=new Set(state.active);
-      for(let i=0;i<tiers.length;i++){
-        const chosen=(tiers[i].perks || []).filter(p=>selected.has(p[0]));
-        chosen.slice(1).forEach(p=>selected.delete(p[0]));
-        if(i>0){
-          const hasPrevious=(tiers[i-1].perks || []).some(p=>selected.has(p[0]));
-          if(!hasPrevious) (tiers[i].perks || []).forEach(p=>selected.delete(p[0]));
-        }
-      }
-      state.active=Array.from(selected);
-    }
+    for(const slot of ["primary","secondary","melee"]) this.repairWeaponSelections(slot,b);
     return b;
   }
+
   async loadStoredState(){
     const st=await this.loadData();
     if(st?.builds && typeof st.builds==="object"){
@@ -481,30 +561,38 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
   }
   togglePrestige(id){const a=this.currentBuild.prestige;const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);this.autoSave();}
   setWeapon(slot,name){this.currentBuild.weapons[slot].weapon=name;this.currentBuild.weapons[slot].active=[];this.autoSave();}
-  toggleWeaponPerk(slot,id,tiers=[]){
-    const a=this.currentBuild.weapons[slot].active;
+  toggleWeaponPerk(slot,id){
+    const state=this.currentBuild.weapons[slot];
+    const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
+    const tiers=weapon?.tiers || [];
+    const a=state.active;
     const i=a.indexOf(id);
     if(i>=0){
       a.splice(i,1);
-      // Removing a tier perk also removes every dependent later-tier perk.
-      const index=tiers.findIndex(t=>(t.perks||[]).some(p=>p[0]===id));
-      if(index>=0){
-        for(let n=index+1;n<tiers.length;n++) (tiers[n].perks||[]).forEach(p=>{const j=a.indexOf(p[0]);if(j>=0)a.splice(j,1);});
-      }
-    } else {
-      const index=tiers.findIndex(t=>(t.perks||[]).some(p=>p[0]===id));
+      this.repairWeaponSelections(slot);
+      this.autoSave();
+      return;
+    }
+    const check=this.getWeaponPerkState(slot,id);
+    if(!check.available){new Notice(check.reason);return;}
+    if(weapon?.treeMode !== "graph"){
+      const index=tiers.findIndex(t=>(t.perks||[]).some(p=>perkId(p)===id));
       if(index>0){
-        const hasPrevious=(tiers[index-1].perks||[]).some(p=>a.includes(p[0]));
+        const hasPrevious=(tiers[index-1].perks||[]).some(p=>a.includes(perkId(p)));
         if(!hasPrevious){new Notice(`Select a perk from ${tiers[index-1].name} first.`);return;}
       }
-      // Only one perk can be selected from a weapon tier.
-      if(index>=0){
-        (tiers[index].perks||[]).forEach(p=>{const j=a.indexOf(p[0]);if(j>=0)a.splice(j,1);});
+      if(index>=0) (tiers[index].perks||[]).forEach(p=>{const j=a.indexOf(perkId(p));if(j>=0)a.splice(j,1);});
+    } else {
+      const perk=allWeaponPerks(tiers).find(p=>perkId(p)===id);
+      for(const conflict of (perkMeta(perk).exclusiveWith || [])){
+        const j=a.indexOf(conflict); if(j>=0)a.splice(j,1);
       }
-      a.push(id);
     }
+    a.push(id);
+    this.repairWeaponSelections(slot);
     this.autoSave();
   }
+
   clearCurrent(){
     this.currentBuild.classActive=[];this.currentBuild.prestige=[];
     Object.values(this.currentBuild.weapons).forEach(w=>w.active=[]);

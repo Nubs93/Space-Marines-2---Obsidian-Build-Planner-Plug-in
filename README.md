@@ -1,4 +1,4 @@
-# Space Marine 2 Build Planner v0.2.8
+# Space Marine 2 Build Planner v0.2.9
 
 ## What's new
 - Fixed follow-up regression from v0.2.6: `createDiv` was destructured from
@@ -65,3 +65,11 @@ Then enable it under Settings → Community plugins and run:
 - Removing a weapon prerequisite automatically clears dependent later-tier selections.
 - Existing saved builds are normalized on load to prevent invalid prerequisite/exclusivity combinations.
 - Added locked/unavailable visual states and explanatory hover/notice feedback.
+
+
+## v0.2.9
+- Reworked the populated Plasma Incinerator weapon tree to include all perks shown in the current tree.
+- Replaced the one-per-tier weapon rule for Plasma Incinerator with connector-based prerequisite data.
+- Added data-driven `requiresAny` prerequisites and `exclusiveWith` branch choices for weapon perks.
+- Added automatic cleanup of obsolete/unknown weapon perk IDs when loading older builds.
+- Preserved the legacy one-per-tier behavior for the other currently populated weapon trees until their game-accurate tree images are available.
