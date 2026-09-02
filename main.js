@@ -9,6 +9,25 @@ function allWeaponPerks(tiers){
   for(const tier of (tiers || [])) for(const perk of (tier?.perks || [])) if(Array.isArray(perk)) result.push(perk);
   return result;
 }
+function weaponPerkMap(weapon){
+  return new Map(allWeaponPerks(weapon?.tiers || []).map(p=>[perkId(p),p]));
+}
+function weaponAdjacency(weapon){
+  const adj=new Map();
+  for(const id of weaponPerkMap(weapon).keys()) adj.set(id,new Set());
+  for(const edge of (weapon?.connections || [])){
+    if(!Array.isArray(edge) || edge.length<2) continue;
+    const [a,b]=edge;
+    if(!adj.has(a) || !adj.has(b)) continue;
+    adj.get(a).add(b);
+    adj.get(b).add(a);
+  }
+  return adj;
+}
+function perkColumn(perk){
+  const value=perkMeta(perk).column;
+  return Number.isFinite(value) ? value : 0;
+}
 
 const CLASS_DATA = {
   Techmarine: {
@@ -91,39 +110,70 @@ const WEAPONS = {
     label:"Primary",
     weapons:{
       "Plasma Incinerator": {
-        // Graph-based weapon tree. `requiresAny` follows the visible connectors
-        // in the in-game tree; `exclusiveWith` represents branch choices.
-        treeMode:"graph",
+        treeMode:"connectionGraph",
+        roots:["plasma_std_common_cooling","plasma_std_blast_radius"],
+        exclusiveGroups:[
+          ["plasma_std_common_cooling","plasma_std_blast_radius"]
+        ],
+        // Literal solid-line topology from the supplied Plasma Incinerator
+        // perk-tree image. Connections are undirected here; progression uses
+        // each perk's `column` value so selections move left-to-right while
+        // same-column vertical connectors can be traversed in either direction.
+        connections:[
+          ["plasma_std_common_cooling","plasma_mc_rapid_cooling"],
+          ["plasma_std_blast_radius","plasma_mc_rampage"],
+          ["plasma_mc_rapid_cooling","plasma_mc_fast_venting"],
+          ["plasma_mc_rampage","plasma_mc_efficient_charge"],
+          ["plasma_mc_fast_venting","plasma_mc_efficient_charge"],
+          ["plasma_mc_fast_venting","plasma_art_plasma_collection"],
+          ["plasma_mc_efficient_charge","plasma_art_charged_speed"],
+          ["plasma_art_plasma_collection","plasma_art_common_speed"],
+          ["plasma_art_charged_speed","plasma_art_blast_radius"],
+          ["plasma_art_common_efficiency","plasma_art_common_speed"],
+          ["plasma_art_common_speed","plasma_art_blast_radius"],
+          ["plasma_art_common_speed","plasma_art_adamant_restoration"],
+          ["plasma_art_blast_radius","plasma_art_adamant_velocity"],
+          ["plasma_art_blast_radius","plasma_art_balanced_cooling"],
+          ["plasma_art_adamant_restoration","plasma_relic_retaliation"],
+          ["plasma_art_adamant_velocity","plasma_relic_perfect_radius"],
+          ["plasma_relic_retaliation","plasma_relic_fast_venting"],
+          ["plasma_relic_perfect_radius","plasma_relic_perpetual_velocity"],
+          ["plasma_relic_honed_precision","plasma_relic_fast_venting"],
+          ["plasma_relic_fast_venting","plasma_relic_perpetual_velocity"],
+          ["plasma_relic_fast_venting","plasma_relic_common_cooling"],
+          ["plasma_relic_perpetual_velocity","plasma_relic_efficient_charge"],
+          ["plasma_relic_perpetual_velocity","plasma_relic_great_might"]
+        ],
         tiers:[
           {name:"Standard",perks:[
-            ["plasma_std_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{exclusiveWith:["plasma_std_blast_radius"]}],
-            ["plasma_std_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{exclusiveWith:["plasma_std_common_cooling"]}]
+            ["plasma_std_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:0}],
+            ["plasma_std_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{column:0}]
           ]},
           {name:"Master-Crafted",perks:[
-            ["plasma_mc_rapid_cooling","Rapid Cooling","After killing 7 enemies in rapid succession, Weapons do not heat for 10 seconds. Cooldown is 15 seconds.",{requiresAny:["plasma_std_common_cooling"]}],
-            ["plasma_mc_fast_venting","Fast Venting","Weapon cools 15% faster.",{requiresAny:["plasma_mc_rapid_cooling"]}],
-            ["plasma_mc_rampage","Rampage","After killing 7 enemies in rapid succession, you deal 25% more Damage for 10 seconds. Cooldown is 15 seconds.",{requiresAny:["plasma_std_blast_radius"]}],
-            ["plasma_mc_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{requiresAny:["plasma_mc_rampage","plasma_mc_fast_venting"]}]
+            ["plasma_mc_rapid_cooling","Rapid Cooling","After killing 7 enemies in rapid succession, Weapons do not heat for 10 seconds. Cooldown is 15 seconds.",{column:1}],
+            ["plasma_mc_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:2}],
+            ["plasma_mc_rampage","Rampage","After killing 7 enemies in rapid succession, you deal 25% more Damage for 10 seconds. Cooldown is 15 seconds.",{column:1}],
+            ["plasma_mc_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:2}]
           ]},
           {name:"Artificer",perks:[
-            ["plasma_art_common_efficiency","Common Efficiency","Common Shots generate 20% less Heat. Shots charge 20% slower.",{requiresAny:["plasma_art_common_speed"]}],
-            ["plasma_art_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{requiresAny:["plasma_mc_fast_venting"]}],
-            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{requiresAny:["plasma_art_plasma_collection","plasma_art_blast_radius"]}],
-            ["plasma_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{requiresAny:["plasma_art_common_speed"]}],
-            ["plasma_art_charged_speed","Charged Speed","Projectile speed of Charged Shots increases by 25%.",{requiresAny:["plasma_mc_efficient_charge"]}],
-            ["plasma_art_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{requiresAny:["plasma_art_common_speed","plasma_art_charged_speed"]}],
-            ["plasma_art_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{requiresAny:["plasma_art_adamant_restoration","plasma_art_blast_radius"]}],
-            ["plasma_art_balanced_cooling","Balanced Cooling","Weapon cool 20% faster. Charged Shots generate 10% more Heat.",{requiresAny:["plasma_art_blast_radius"]}]
+            ["plasma_art_common_efficiency","Common Efficiency","Common Shots generate 20% less Heat. Shots charge 20% slower.",{column:4}],
+            ["plasma_art_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{column:3}],
+            ["plasma_art_common_speed","Common Speed","Projectile speed of Common Shots increases by 25%.",{column:4}],
+            ["plasma_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:5}],
+            ["plasma_art_charged_speed","Charged Speed","Projectile speed of Charged Shots increases by 25%.",{column:3}],
+            ["plasma_art_blast_radius","Blast Radius","Damage radius of a Charged Shot increases by 10%.",{column:4}],
+            ["plasma_art_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{column:5}],
+            ["plasma_art_balanced_cooling","Balanced Cooling","Weapon cool 20% faster. Charged Shots generate 10% more Heat.",{column:4}]
           ]},
           {name:"Relic",perks:[
-            ["plasma_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{requiresAny:["plasma_relic_fast_venting"]}],
-            ["plasma_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{requiresAny:["plasma_art_adamant_restoration"]}],
-            ["plasma_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{requiresAny:["plasma_relic_retaliation"]}],
-            ["plasma_relic_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{requiresAny:["plasma_relic_fast_venting"]}],
-            ["plasma_relic_perfect_radius","Perfect Radius","After a perfectly timed Dodge, the Damage radius of a Charged Shot increases by 10% for 10 seconds.",{requiresAny:["plasma_art_adamant_velocity"]}],
-            ["plasma_relic_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{requiresAny:["plasma_relic_fast_venting","plasma_relic_perfect_radius"]}],
-            ["plasma_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{requiresAny:["plasma_relic_perpetual_velocity"]}],
-            ["plasma_relic_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{requiresAny:["plasma_relic_perpetual_velocity"]}]
+            ["plasma_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:7}],
+            ["plasma_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:6}],
+            ["plasma_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:7}],
+            ["plasma_relic_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:8}],
+            ["plasma_relic_perfect_radius","Perfect Radius","After a perfectly timed Dodge, the Damage radius of a Charged Shot increases by 10% for 10 seconds.",{column:6}],
+            ["plasma_relic_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{column:7}],
+            ["plasma_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:8}],
+            ["plasma_relic_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:7}]
           ]}
         ]
       },
@@ -302,7 +352,7 @@ class SM2View extends require("obsidian").ItemView {
   }
 
   renderWeapons(main){
-    main.createEl("div",{cls:"sm2-section-note",text:"Select perks along the connected weapon tree. Locked perks show the prerequisite or branch that prevents selection. Changes are saved automatically."});
+    main.createEl("div",{cls:"sm2-section-note",text:"Select a Standard starting perk, then follow the weapon tree’s solid-line connections. Horizontal progress moves left-to-right; vertical connectors can change paths. Changes are saved automatically."});
     ["primary","secondary","melee"].forEach((slot)=>{
       const group=main.createDiv({cls:"sm2-weapon-slot"});
       const top=group.createDiv({cls:"sm2-weapon-heading"});
@@ -409,12 +459,41 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     const state=build.weapons[slot];
     const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
     const tiers=weapon?.tiers || [];
-    const selected=new Set(Array.isArray(state.active)?state.active:[]);
+    const selectedOrder=Array.isArray(state.active) ? state.active.slice() : [];
     const knownIds=new Set(allWeaponPerks(tiers).map(perkId));
-    for(const id of Array.from(selected)) if(!knownIds.has(id)) selected.delete(id);
-    if(weapon?.treeMode === "graph"){
-      // Resolve invalid/legacy selections until stable. If two mutually
-      // exclusive perks are present, keep the earlier selected entry.
+    let selected=new Set(selectedOrder.filter(id=>knownIds.has(id)));
+
+    if(weapon?.treeMode === "connectionGraph"){
+      const perkMap=weaponPerkMap(weapon);
+      const adj=weaponAdjacency(weapon);
+
+      // Enforce explicit exclusivity independently from graph topology.
+      for(const group of (weapon.exclusiveGroups || [])){
+        const chosen=selectedOrder.filter(id=>selected.has(id) && group.includes(id));
+        for(const id of chosen.slice(1)) selected.delete(id);
+      }
+
+      // A valid selection must remain connected to one of the selected roots
+      // while never travelling backwards to an earlier display column.
+      const roots=(weapon.roots || []).filter(id=>selected.has(id));
+      const reachable=new Set();
+      const queue=roots.slice();
+      roots.forEach(id=>reachable.add(id));
+      while(queue.length){
+        const current=queue.shift();
+        const currentPerk=perkMap.get(current);
+        const currentCol=perkColumn(currentPerk);
+        for(const next of (adj.get(current) || [])){
+          if(!selected.has(next) || reachable.has(next)) continue;
+          const nextPerk=perkMap.get(next);
+          if(perkColumn(nextPerk) < currentCol) continue;
+          reachable.add(next);
+          queue.push(next);
+        }
+      }
+      selected=reachable;
+    } else if(weapon?.treeMode === "graph"){
+      // Legacy graph mode kept only for compatibility with any older data.
       let changed=true;
       while(changed){
         changed=false;
@@ -426,8 +505,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
           if(req.length && !req.some(x=>selected.has(x))){selected.delete(id);changed=true;continue;}
           const conflict=(meta.exclusiveWith || []).find(x=>selected.has(x));
           if(conflict){
-            // Preserve the first selected item in the stored array.
-            const first=state.active.indexOf(id) < state.active.indexOf(conflict) ? id : conflict;
+            const first=selectedOrder.indexOf(id) < selectedOrder.indexOf(conflict) ? id : conflict;
             const remove=first===id ? conflict : id;
             if(selected.delete(remove)) changed=true;
           }
@@ -445,7 +523,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
         }
       }
     }
-    state.active=Array.from(selected);
+    state.active=selectedOrder.filter(id=>selected.has(id));
   }
 
   getWeaponPerkState(slot,id){
@@ -455,6 +533,42 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     const perks=allWeaponPerks(tiers);
     const perk=perks.find(p=>perkId(p)===id);
     if(!perk) return {available:false,reason:"Weapon perk data could not be found."};
+
+    if(weapon?.treeMode === "connectionGraph"){
+      if(state.active.includes(id)) return {available:true,reason:""};
+      const perkMap=weaponPerkMap(weapon);
+      const adj=weaponAdjacency(weapon);
+
+      for(const group of (weapon.exclusiveGroups || [])){
+        if(!group.includes(id)) continue;
+        const conflict=group.find(other=>other!==id && state.active.includes(other));
+        if(conflict){
+          const other=perkMap.get(conflict);
+          return {available:false,reason:`Unavailable: ${other?perkName(other):conflict} is selected on the alternate starting path.`};
+        }
+      }
+
+      if(!state.active.length){
+        return (weapon.roots || []).includes(id)
+          ? {available:true,reason:""}
+          : {available:false,reason:"Unavailable: select a Standard starting perk first."};
+      }
+
+      const candidateCol=perkColumn(perk);
+      const validNeighbor=Array.from(adj.get(id) || []).find(other=>{
+        if(!state.active.includes(other)) return false;
+        const otherPerk=perkMap.get(other);
+        return perkColumn(otherPerk) <= candidateCol;
+      });
+      if(validNeighbor) return {available:true,reason:""};
+
+      const connectedSelected=Array.from(adj.get(id) || []).filter(other=>state.active.includes(other));
+      if(connectedSelected.length){
+        return {available:false,reason:"Unavailable: this connection would move backwards through the perk tree."};
+      }
+      return {available:false,reason:"Unavailable: this perk is not connected to your current selected path."};
+    }
+
     if(weapon?.treeMode !== "graph"){
       const index=tiers.findIndex(t=>(t.perks||[]).some(p=>perkId(p)===id));
       if(index<=0) return {available:true,reason:""};
@@ -573,9 +687,22 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
       this.autoSave();
       return;
     }
+
     const check=this.getWeaponPerkState(slot,id);
     if(!check.available){new Notice(check.reason);return;}
-    if(weapon?.treeMode !== "graph"){
+
+    if(weapon?.treeMode === "connectionGraph"){
+      // Explicit exclusivity is separate from connection topology. Currently
+      // the Plasma Incinerator uses this for its two Standard starting paths.
+      for(const group of (weapon.exclusiveGroups || [])){
+        if(!group.includes(id)) continue;
+        for(const other of group){
+          if(other===id) continue;
+          const j=a.indexOf(other);
+          if(j>=0) a.splice(j,1);
+        }
+      }
+    } else if(weapon?.treeMode !== "graph"){
       const index=tiers.findIndex(t=>(t.perks||[]).some(p=>perkId(p)===id));
       if(index>0){
         const hasPrevious=(tiers[index-1].perks||[]).some(p=>a.includes(perkId(p)));
@@ -592,6 +719,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     this.repairWeaponSelections(slot);
     this.autoSave();
   }
+
 
   clearCurrent(){
     this.currentBuild.classActive=[];this.currentBuild.prestige=[];
