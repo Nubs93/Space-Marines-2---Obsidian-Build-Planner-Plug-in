@@ -21,30 +21,15 @@
 
 .sm2-perk.disabled,.sm2-weapon-perk.disabled{opacity:.45;cursor:not-allowed;border-style:dashed}.sm2-perk.disabled:hover,.sm2-weapon-perk.disabled:hover{border-color:var(--background-modifier-border)}.sm2-perk.disabled .sm2-perk-meta{color:var(--text-faint)}
 
-/* v0.2.12 — weapon version selector + graph layout */
+
+/* v0.3.0 graph layouts and weapon versions */
+.sm2-vertical-choice-groups .sm2-tree{grid-template-columns:repeat(3,minmax(150px,1fr));align-items:start}
+.sm2-vertical-choice-groups .sm2-row{grid-template-columns:1fr;align-content:start}
 .sm2-weapon-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .sm2-weapon-controls .sm2-select-wrap{min-width:220px}
 .sm2-variant-pending{padding:7px 10px;border:1px dashed var(--background-modifier-border);border-radius:7px;color:var(--text-muted);font-size:12px;white-space:nowrap}
 .sm2-weapon-graph-scroll{overflow-x:auto;overflow-y:hidden;padding:3px 0 8px}
-.sm2-weapon-graph{display:grid;grid-template-columns:repeat(9,minmax(145px,1fr));grid-template-rows:auto repeat(4,minmax(92px,auto));gap:10px;min-width:1370px;align-items:stretch}
+.sm2-weapon-graph{display:grid;gap:10px;align-items:stretch}
 .sm2-graph-tier-heading{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-accent);padding:8px 10px;border-bottom:1px solid var(--background-modifier-border);align-self:end}
 .sm2-graph-perk{margin:0;min-height:84px;background:var(--background-secondary);align-self:stretch}
-@media(max-width:650px){
-  .sm2-weapon-controls{display:grid;grid-template-columns:1fr;justify-content:stretch;margin-top:8px}
-  .sm2-weapon-controls .sm2-select-wrap{width:100%;min-width:0}
-  .sm2-weapon-graph-scroll{margin-right:-12px;padding-right:12px}
-}
-
-
-/* v0.2.13 — class choice groups run top-to-bottom; weapon graph keeps scroll position */
-.sm2-vertical-choice-groups .sm2-tree{
-  grid-template-columns:repeat(3,minmax(150px,1fr));
-  align-items:start;
-}
-.sm2-vertical-choice-groups .sm2-row{
-  grid-template-columns:1fr;
-  align-content:start;
-}
-@media(max-width:650px){
-  .sm2-vertical-choice-groups .sm2-tree{grid-template-columns:1fr}
-}
+@media(max-width:650px){.sm2-vertical-choice-groups .sm2-tree{grid-template-columns:1fr}.sm2-weapon-controls{display:grid;grid-template-columns:1fr;justify-content:stretch;margin-top:8px}.sm2-weapon-controls .sm2-select-wrap{width:100%;min-width:0}.sm2-weapon-graph-scroll{margin-right:-12px;padding-right:12px}}
