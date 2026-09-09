@@ -1,4 +1,4 @@
-# Space Marine 2 Build Planner v0.4.0
+# Space Marine 2 Build Planner v0.5.0
 
 
 ## v0.3.1 — selector scroll regression fix
@@ -108,3 +108,64 @@ Then enable it under Settings → Community plugins and run:
 - Power Axe includes the Heroic **Sanguine Edge** perk.
 - With these two additions, every Primary, Secondary, and Melee weapon currently listed for Techmarine now has a populated perk tree and weapon-version list.
 - Preserved the existing in-place weapon graph refresh and scrolling behavior.
+
+
+## v0.4.1 — Heavy class
+- Added **Heavy** as the second selectable class.
+- Added a class selector in the header; the selected class is stored per build.
+- Added the current Heavy Core, Team, Gear, Signature, Starting, and Prestige perks.
+- Class perk mutual-exclusivity remains row-based, identical to the Techmarine implementation.
+- Added class-specific weapon availability. Techmarine and Heavy now reference the same canonical shared weapon definitions where applicable.
+- Heavy exposes Heavy Bolt Rifle, Heavy Bolter, Heavy Plasma Incinerator, Multi-Melta, and Pyrecannon as Primary choices; Bolt Pistol, Heavy Bolt Pistol, Plasma Pistol, and Inferno Pistol as Secondary choices; Heavy has no Melee slot.
+- Added current weapon-version lists for Heavy Bolter, Heavy Plasma Incinerator, Multi-Melta, and Pyrecannon. Their perk trees are intentionally left pending until authoritative tree screenshots are supplied.
+- Switching a build's class resets class perks, prestige selections, and loadout to that class's defaults so selections cannot leak between classes.
+- New builds inherit the currently selected class.
+
+
+## v0.4.2
+- Corrected Heavy **Core** choice columns and mutual exclusivity. The three vertical choice groups are now Restoration / Multi-Kill / Auxiliary Ammunition; Thermal Boost / Fortitude / Strategic Stand; and Enhanced Force / Overwhelming Power / Versatility.
+- Corrected Heavy **Gear** choice columns and mutual exclusivity. The three vertical choice groups are now Adamant Will / Consecutive Execution / Emperor's Protection; Obdurate Bastion / Field Adjustment / Power Regulator; and Saving Grace / Brute Force / Wrath of the Imperium.
+- Changing the class from the class dropdown now creates and immediately saves a **new build with a new ID**. The build you were previously editing remains preserved under its original class and ID.
+- Class switching no longer transforms or overwrites the current saved build.
+- No weapon data or weapon perk-tree behavior was changed.
+
+
+## v0.4.3
+- Added the **Heavy Bolter** as a full graph-based Heavy primary weapon tree from the supplied perk-tree screenshot, including the Heroic **Reinforced Guncasing** perk.
+- Added the **Pyrecannon** as a full graph-based Heavy primary weapon tree from the supplied perk-tree screenshot.
+- Added the **Techmarine starting perk** to the class GUI using the same always-active Starting Perk panel already used by Heavy.
+- No changes were made to Heavy class perk grouping/exclusivity or class-switch save behavior from v0.4.2.
+
+
+## v0.4.4
+- Added the **Heavy Plasma Incinerator** as a fully populated graph-based Heavy primary weapon using the supplied perk-tree screenshot as the topology source.
+- Added the **Multi-Melta** as a fully populated graph-based Heavy primary weapon using the supplied perk-tree screenshot as the topology source.
+- Added the Heavy Plasma Incinerator Heroic perk **Plasma Hail** as a standalone selectable perk under the existing simplified Heroic system.
+- Preserved all v0.4.3 class, save, scroll, and weapon-selection behavior.
+
+
+## v0.4.5
+- Added the **Sniper** class: Starting Perk, all Core/Team/Gear/Signature choices, Prestige perks, and class-specific loadout rules.
+- Added Sniper loadout entries for Stalker Bolt Rifle, Instigator Bolt Carbine, Bolt Sniper Rifle, Bolt Carbine, and Las Fusil. Their perk trees are intentionally blank until authoritative tree images are supplied.
+- Shared Sniper weapons (Bolt Pistol, Heavy Bolt Pistol, Inferno Pistol, and Combat Knife) reuse their existing canonical weapon data.
+- Saved builds are now displayed automatically in case-insensitive alphabetical order by build name in both the header dropdown and sidebar. Renaming a build therefore repositions it automatically.
+- Class switching keeps the v0.4.2 behavior: choosing another class creates a new saved build instead of converting the current build.
+
+
+## v0.4.6
+- Added the **Las Fusil** as a fully populated graph-based Sniper primary weapon using the supplied perk-tree image as the authoritative topology source.
+- Added the current Standard, Master-Crafted, Artificer, and Relic Las Fusil variants.
+- No Heroic Las Fusil is included because the current weapon family has no Heroic version.
+- Preserved the existing Sniper class data, alphabetical build-list behavior, save isolation, and in-place weapon-tree scroll behavior.
+
+
+## v0.5.0
+- Added the Sniper's final two primary weapon trees: **Instigator Bolt Carbine** and **Bolt Carbine**.
+- Added the **Wrapped** Heroic Instigator Bolt Carbine with **Higher-Rate Burst**.
+- Added the Patch 14 **Combi-Flamer** Heroic Bolt Carbine.
+
+## v0.4.7
+- Added the **Bolt Sniper Rifle** as a complete graph-based Sniper primary, including the Heroic **Wrapped** variant and **Replenishing Hit** perk.
+- Added the **Stalker Bolt Rifle** as a complete graph-based Sniper primary using the supplied screenshot for the Standard-to-Relic topology.
+- Added the Patch 14 **Deathwatch** Heroic Stalker Bolt Rifle and its **Auspex Shot** perk. The Heroic effect uses the current Hotfix 14.1 trigger/radius: 3 body shots and a 10-metre Auspex Scan area.
+- Preserved existing class, save, alphabetical build-list, and in-place weapon-graph scrolling behavior.

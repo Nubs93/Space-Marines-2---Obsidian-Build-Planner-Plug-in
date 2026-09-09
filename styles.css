@@ -33,3 +33,11 @@
 .sm2-graph-tier-heading{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-accent);padding:8px 10px;border-bottom:1px solid var(--background-modifier-border);align-self:end}
 .sm2-graph-perk{margin:0;min-height:84px;background:var(--background-secondary);align-self:stretch}
 @media(max-width:650px){.sm2-vertical-choice-groups .sm2-tree{grid-template-columns:1fr}.sm2-weapon-controls{display:grid;grid-template-columns:1fr;justify-content:stretch;margin-top:8px}.sm2-weapon-controls .sm2-select-wrap{width:100%;min-width:0}.sm2-weapon-graph-scroll{margin-right:-12px;padding-right:12px}}
+
+
+/* v0.4.1 — multi-class selector + class-specific loadouts */
+.sm2-class-wrap{display:flex;align-items:center;gap:6px;margin-right:auto;color:var(--text-muted)}
+.sm2-class-wrap .sm2-select-wrap{min-width:150px}
+.sm2-starting-perk{padding:10px 12px;margin:0 0 14px;border:1px solid var(--background-modifier-border);border-radius:8px;background:var(--background-secondary)}
+.sm2-starting-perk strong{display:block;margin-bottom:4px;color:var(--text-accent)}
+@media(max-width:650px){.sm2-class-wrap{width:100%;margin-right:0}.sm2-class-wrap .sm2-select-wrap{flex:1;min-width:0}}

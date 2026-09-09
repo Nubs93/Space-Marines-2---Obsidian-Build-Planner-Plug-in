@@ -25,6 +25,7 @@ function weaponAdjacency(weapon){
 
 const CLASS_DATA = {
   Techmarine: {
+    startingPerk:["techmarine_tarantula_sentry","Tarantula Sentry Gun","You can detect and activate Tarantula Sentry Guns. They automatically attack nearby enemies until they run out of ammunition or are destroyed."],
     categories: [
       {
         name: "Core — Combat",
@@ -99,10 +100,847 @@ const CLASS_DATA = {
   }
 };
 
+// Class definitions reference canonical shared weapon names. Weapon perk trees
+// remain global in WEAPONS and selected weapon/perk state remains build-local.
+CLASS_DATA.Techmarine.weaponOptions={
+  primary:["Plasma Incinerator","Auto Bolt Rifle","Bolt Rifle","Heavy Bolt Rifle","Occulus Bolt Carbine"],
+  secondary:["Bolt Pistol","Heavy Bolt Pistol","Plasma Pistol","Inferno Pistol","Neo-Volkite Pistol"],
+  melee:["Omnissian Axe","Combat Knife","Power Sword","Power Axe"]
+};
+CLASS_DATA.Techmarine.defaultLoadout={
+  primary:{weapon:"Plasma Incinerator",variant:"standard_issue"},
+  secondary:{weapon:"Bolt Pistol",variant:"standard_issue"},
+  melee:{weapon:"Omnissian Axe",variant:"standard_issue"}
+};
+
+CLASS_DATA.Heavy={
+  startingPerk:["heavy_iron_halo","Iron Halo","When Iron Halo is active, all Squad Members within 50 metres take 10% less Damage from Ranged Attacks."],
+  categories:[
+    {name:"Core",rows:[
+      [
+        ["heavy_restoration","Restoration","Killing 10 enemies within 5 seconds restores 1 Armour Segment. Cooldown is 15 seconds."],
+        ["heavy_multi_kill","Multi-Kill","Killing 5 or more enemies with one shot from a Multi-Melta restores Ammo by 1."],
+        ["heavy_auxiliary_ammunition","Auxiliary Ammunition","When your Primary Weapon is out of Ammo, killing 7 enemies within 6 seconds restores Ammo Reserve by 20%. Cooldown is 30 seconds."]
+      ],
+      [
+        ["heavy_thermal_boost","Thermal Boost","When a Ranged Weapon is 50% Overheated or has 50% ammo remaining in its Magazine, Ranged Damage increases by 15%."],
+        ["heavy_fortitude","Fortitude","Health increases by 30%."],
+        ["heavy_strategic_stand","Strategic Stand","While in Heavy Stance, dealing Damage restores 15% more Contested Health; you do not lose control upon taking Heavy Hits and cannot be knocked back, but you cannot move."]
+      ],
+      [
+        ["heavy_enhanced_force","Enhanced Force","Melee Damage increases by 30%."],
+        ["heavy_overwhelming_power","Overwhelming Power","When Iron Halo is active, all Squad Members within 10 metres deal 10% more Ranged Damage."],
+        ["heavy_versatility","Versatility","After switching Weapons, your Secondary Weapon deals 20% more Damage. The effect lasts until reloading or switching back to your Primary Weapon."]
+      ]
+    ]},
+    {name:"Team",rows:[[
+      ["heavy_encompassing_aegis","Encompassing Aegis","All Squad Members take 25% less Damage from Ranged Attacks."],
+      ["heavy_additional_supplies","Additional Supplies","Ammo Capacity for all Squad Members' Weapons increases by 25%."],
+      ["heavy_bonds_of_brotherhood","Bonds of Brotherhood","Reviving a Squad Member restores them to full Health."]
+    ]]},
+    {name:"Gear",rows:[
+      [
+        ["heavy_adamant_will","Adamant Will","After Iron Halo deactivates, you take 20% less Health Damage for 10 seconds."],
+        ["heavy_consecutive_execution","Consecutive Execution","Killing 7 enemies within 5 seconds restores Equipment Charge. Cooldown is 90 seconds."],
+        ["heavy_emperors_protection","Emperor's Protection","When Iron Halo expends all its energy, 1 Armour Segment is restored for all Squad Members."]
+      ],
+      [
+        ["heavy_obdurate_bastion","Obdurate Bastion","Iron Halo's Durability increases by 20%."],
+        ["heavy_field_adjustment","Field Adjustment","Iron Halo recharges 20% faster, but its Durability is reduced by 25%."],
+        ["heavy_power_regulator","Power Regulator","Iron Halo loses energy 20% more slowly."]
+      ],
+      [
+        ["heavy_saving_grace","Saving Grace","Reviving a Squad Member fully restores Iron Halo's Charge and all Armour Segments."],
+        ["heavy_brute_force","Brute Force","When Iron Halo is in cooldown, Ranged Damage increases by 15%."],
+        ["heavy_wrath_of_the_imperium","Wrath of the Imperium","When Iron Halo expends all its energy, enemies in a 10-metre radius take significant Damage that scales with difficulty."]
+      ]
+    ]},
+    {name:"Signature — Ability",rows:[[
+      ["heavy_offensive_capability","Offensive Capability","When active, Iron Halo deals Damage over time that scales with difficulty to all enemies within 5 metres."],
+      ["heavy_coolant_reserve","Coolant Reserve","If both Squad Members are Incapacitated or grabbed, your Primary Weapon will not Overheat and you deal 15% more Damage."],
+      ["heavy_conversion_field","Conversion Field","When Iron Halo is active, all Squad Members within 20 metres regenerate Ability Charge 50% faster."]
+    ]]}
+  ],
+  prestige:[
+    ["heavy_reverberating_impact","Reverberating Impact","Stomp area-of-effect radius increases by 50%."],
+    ["heavy_auxiliary_reload","Auxiliary Reload","Melee kills of Extremis-level or higher enemies restore your Primary Weapon's Ammo by 1 Magazine."],
+    ["heavy_conviction","Conviction","When your Armour is fully depleted, you take 25% less Health Damage for 10 seconds."],
+    ["heavy_exponential_force","Exponential Force","Melee Damage increases by 100%."],
+    ["heavy_indomitable_spirit","Indomitable Spirit","While performing a Gun Strike, you do not lose control upon taking Heavy Hits and cannot be knocked back."],
+    ["heavy_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 25% when firing without aiming."],
+    ["heavy_duellist","Duellist","Perfect Parry and Perfect Block windows increase by 25%."]
+  ],
+  weaponOptions:{
+    primary:["Heavy Bolter","Heavy Plasma Incinerator","Multi-Melta","Pyrecannon","Heavy Bolt Rifle"],
+    secondary:["Bolt Pistol","Heavy Bolt Pistol","Plasma Pistol","Inferno Pistol"],
+    melee:[]
+  },
+  defaultLoadout:{
+    primary:{weapon:"Heavy Bolter",variant:"standard_issue"},
+    secondary:{weapon:"Bolt Pistol",variant:"standard_issue"}
+  }
+};
+
+CLASS_DATA.Sniper={
+  startingPerk:["sniper_camo_cloak","Camo Cloak","Headshot Damage increases by 10%."],
+  categories:[
+    {name:"Core",rows:[
+      [
+        ["sniper_block_break","Block Break","Shots penetrate enemy Block Stances, dealing 50% of the usual Damage."],
+        ["sniper_melee_mastery","Melee Mastery","Melee Damage increases by 20% against Majoris-level and higher enemies."],
+        ["sniper_medicae_adept","Medicae Adept","You revive Squad Members 30% faster."]
+      ],
+      [
+        ["sniper_high_capacity","High Capacity","The maximum amount of Ammo you can carry increases by 10%."],
+        ["sniper_vantage_point","Vantage Point","Remaining stationary for 2 seconds increases your Ranged Weapons' Damage by 20%."],
+        ["sniper_adaptability","Adaptability","Reloading while having Low Ammo or manually activating Camo Cloak increases Melee Damage by 25% for 10 seconds."]
+      ],
+      [
+        ["sniper_iron_grip","Iron Grip","Weapon Spread and Recoil are reduced by 20%, and Ranged Damage against Terminus-level enemies is increased by 15% for Bolt Sniper Rifles and Stalker Bolt Rifles."],
+        ["sniper_dexterous_hands","Dexterous Hands","Bolt Carbines reload 20% faster, and their Weapon Spread and Recoil are reduced by 15%."],
+        ["sniper_lethal_efficiency","Lethal Efficiency","Killing more than 1 enemy with one shot from a Las Fusil restores its charge by 1."]
+      ]
+    ]},
+    {name:"Team",rows:[[
+      ["sniper_marksmanship","Marksmanship","Headshot Damage increases by 10% for all Squad Members."],
+      ["sniper_precision_targeting","Precision Targeting","Weapon Spread is reduced by 25%, and Ranged Damage against Extremis- and Terminus-level enemies is increased by 15% for all Squad Members."],
+      ["sniper_squad_renewal","Squad Renewal","A Headshot kill restores Ability Charge by 10% for any Squad Member."]
+    ]]},
+    {name:"Gear",rows:[
+      [
+        ["sniper_purification","Purification","Manually activating Camo Cloak removes negative Status Effects and restores all Contested Health."],
+        ["sniper_efficient_readiness","Efficient Readiness","Camo Cloak increases movement speed by 20%, and manually activating Camo Cloak automatically reloads Ranged Weapons. This effect lasts 5 seconds after deactivation."],
+        ["sniper_renewal","Renewal","A Headshot kill restores Camo Cloak's Charge by 5%."]
+      ],
+      [
+        ["sniper_guardian_protocol","Guardian Protocol","When you are reviving a Squad Member, Camo Cloak hides you and the Squad Member for 5 seconds without spending Charge."],
+        ["sniper_targeted_shot","Targeted Shot","The first Ranged Attack that breaks Camo Cloak deals 75% more Damage."],
+        ["sniper_tactical_ambush","Tactical Ambush","The first Melee Attack that breaks Camo Cloak deals 150% more Damage."]
+      ],
+      [
+        ["sniper_persistence","Persistence","When Camo Cloak deactivates, you take 20% less Health Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back for 10 seconds."],
+        ["sniper_lingering_concealment","Lingering Concealment","After performing an attack that breaks Camo Cloak, you remain hidden for 2 seconds."],
+        ["sniper_ambush","Ambush","When Camo Cloak deactivates, it startles and slows nearby enemies for 10 seconds. They temporarily lose control or are knocked back. Cooldown is 15 seconds."]
+      ]
+    ]},
+    {name:"Signature — Ability",rows:[[
+      ["sniper_evasion","Evasion","After a perfectly timed Dodge, Camo Cloak automatically activates without spending Charge for 5 seconds. Cooldown is 30 seconds."],
+      ["sniper_emergency_override","Emergency Override","When you receive Lethal Damage, Camo Cloak automatically activates without spending Charge and you become Invulnerable for 5 seconds. Cooldown is 180 seconds."],
+      ["sniper_pattern_of_excellence","Pattern of Excellence","Performing 3 consecutive Headshots restores Equipment Charge by 1. Cooldown is 30 seconds."]
+    ]]}
+  ],
+  prestige:[
+    ["sniper_emperors_grace","Emperor's Grace","When Camo Cloak activates, you become Invulnerable to Damage for 2 seconds."],
+    ["sniper_versatile_precision","Versatile Precision","Performing a kill with your Secondary Weapon restores 15% of your Primary Weapon's Ammo. Cooldown is 15 seconds."],
+    ["sniper_material_upgrade","Material Upgrade","Equipment Damage radius increases by 15%."],
+    ["sniper_versatility","Versatility","After switching Weapons, your Secondary Weapon deals 20% more Damage. The effect lasts until reloading or switching back to your Primary Weapon."],
+    ["sniper_indomitable_spirit","Indomitable Spirit","While performing a Gun Strike, you do not lose control upon taking Heavy Hits and cannot be knocked back."],
+    ["sniper_conviction","Conviction","When your Armour is fully depleted, you take 25% less Health Damage for 15 seconds."],
+    ["sniper_exacting_focus","Exacting Focus","After a Gun Strike, you deal 20% more Ranged Damage for 10 seconds."]
+  ],
+  weaponOptions:{
+    primary:["Stalker Bolt Rifle","Instigator Bolt Carbine","Bolt Sniper Rifle","Bolt Carbine","Las Fusil"],
+    secondary:["Bolt Pistol","Heavy Bolt Pistol","Inferno Pistol"],
+    melee:["Combat Knife"]
+  },
+  defaultLoadout:{
+    primary:{weapon:"Stalker Bolt Rifle",variant:"standard_issue"},
+    secondary:{weapon:"Bolt Pistol",variant:"standard_issue"},
+    melee:{weapon:"Combat Knife",variant:"standard_issue"}
+  }
+};
+
 const WEAPONS = {
   primary: {
     label:"Primary",
     weapons:{
+      "Stalker Bolt Rifle": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+          {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+          {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+          {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+          {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"},
+          {id:"deathwatch",tier:"Heroic",name:"Deathwatch"}
+        ],
+        layout:{columnCount:9,rowCount:2,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:2},
+          {name:"Relic",start:6,span:3},
+          {name:"Heroic",start:9,span:1}
+        ]},
+        roots:["sbr_std_unwavering_resolve","sbr_std_divine_might"],
+        exclusiveGroups:[["sbr_std_unwavering_resolve","sbr_std_divine_might"]],
+        connections:[
+          ["sbr_std_unwavering_resolve","sbr_mc_adamant_hunter"],
+          ["sbr_std_divine_might","sbr_mc_survival_instinct"],
+          ["sbr_mc_adamant_hunter","sbr_mc_head_hunter"],
+          ["sbr_mc_survival_instinct","sbr_mc_adamantine_grip"],
+          ["sbr_mc_head_hunter","sbr_mc_adamantine_grip"],
+          ["sbr_mc_head_hunter","sbr_art_cleaving_fire"],
+          ["sbr_mc_adamantine_grip","sbr_art_extended_magazine"],
+          ["sbr_art_cleaving_fire","sbr_art_head_hunter"],
+          ["sbr_art_extended_magazine","sbr_art_increased_capacity"],
+          ["sbr_art_head_hunter","sbr_art_increased_capacity"],
+          ["sbr_art_head_hunter","sbr_relic_agile_hunter"],
+          ["sbr_art_increased_capacity","sbr_relic_reloaded_restoration"],
+          ["sbr_relic_agile_hunter","sbr_relic_fast_reload"],
+          ["sbr_relic_reloaded_restoration","sbr_relic_great_might"],
+          ["sbr_relic_fast_reload","sbr_relic_great_might"],
+          ["sbr_relic_fast_reload","sbr_relic_recoupment"],
+          ["sbr_relic_great_might","sbr_relic_remote_threat"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["sbr_std_unwavering_resolve","Unwavering Resolve","After reloading while having Low Ammo, Damage increases by 25% for 5 seconds.",{column:0,row:0}],
+            ["sbr_std_divine_might","Divine Might","Damage increases by 10%.",{column:0,row:1}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["sbr_mc_adamant_hunter","Adamant Hunter","When your Health is below 30%, Headshots deal 25% more Damage.",{column:1,row:0}],
+            ["sbr_mc_survival_instinct","Survival Instinct","When your Health is below 30%, you deal 25% more Damage.",{column:1,row:1}],
+            ["sbr_mc_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:2,row:0}],
+            ["sbr_mc_adamantine_grip","Adamantine Grip","Recoil is reduced by 25%.",{column:2,row:1}]
+          ]},
+          {name:"Artificer",perks:[
+            ["sbr_art_cleaving_fire","Cleaving Fire","Shots will penetrate enemy Block Stances, dealing 25% of the usual Damage.",{column:3,row:0}],
+            ["sbr_art_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:3,row:1}],
+            ["sbr_art_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:4,row:0}],
+            ["sbr_art_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:4,row:1}]
+          ]},
+          {name:"Relic",perks:[
+            ["sbr_relic_agile_hunter","Agile Hunter","After a perfectly timed Dodge, Headshots deal 35% more Damage for 10 seconds.",{column:5,row:0}],
+            ["sbr_relic_reloaded_restoration","Reloaded Restoration","After reloading, your Ammo Reserve is restored by 50% of the number of enemies hit. Cannot exceed maximum Ammo capacity.",{column:5,row:1}],
+            ["sbr_relic_fast_reload","Fast Reload","Reload all Weapons 10% faster.",{column:6,row:0}],
+            ["sbr_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:6,row:1}],
+            ["sbr_relic_recoupment","Recoupment","Killing a Majoris-level or higher enemy with a headshot with this Weapon restores 1 Armour Segment. Cooldown is 15 seconds.",{column:7,row:0}],
+            ["sbr_relic_remote_threat","Remote Threat","Enemies at a distance of more than 25 metres take 20% more Damage.",{column:7,row:1}]
+          ]},
+          {name:"Heroic",perks:[
+            ["sbr_heroic_auspex_shot","Auspex Shot","Landing 3 body shots in short succession creates a 10-metre Auspex Scan area.",{column:8,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+          ]}
+        ]
+      },
+      "Instigator Bolt Carbine": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"salvation_of_bakka_alpha",tier:"Artificer",name:"Salvation of Bakka - Alpha"},
+          {id:"salvation_of_bakka_beta",tier:"Artificer",name:"Salvation of Bakka - Beta"},
+          {id:"drogos_reclamation_alpha",tier:"Artificer",name:"Drogos Reclamation - Alpha"},
+          {id:"gathalamor_crusade_alpha",tier:"Relic",name:"Gathalamor Crusade - Alpha"},
+          {id:"gathalamor_crusade_beta",tier:"Relic",name:"Gathalamor Crusade - Beta"},
+          {id:"ophelian_liberation",tier:"Relic",name:"Ophelian Liberation"},
+          {id:"wrapped",tier:"Heroic",name:"Wrapped"}
+        ],
+        layout:{columnCount:10,rowCount:4,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:3},
+          {name:"Relic",start:7,span:3},
+          {name:"Heroic",start:10,span:1}
+        ]},
+        roots:["ibc_std_head_hunter","ibc_std_extended_magazine"],
+        exclusiveGroups:[["ibc_std_head_hunter","ibc_std_extended_magazine"]],
+        connections:[
+          ["ibc_std_head_hunter","ibc_mc_efficient_hunter"],
+          ["ibc_std_extended_magazine","ibc_mc_reloaded_restoration"],
+          ["ibc_mc_efficient_hunter","ibc_mc_fast_reload"],
+          ["ibc_mc_reloaded_restoration","ibc_mc_divine_might"],
+          ["ibc_mc_fast_reload","ibc_mc_divine_might"],
+          ["ibc_mc_fast_reload","ibc_art_finisher_reload"],
+          ["ibc_mc_divine_might","ibc_art_increased_capacity"],
+          ["ibc_art_tactical_precision","ibc_art_recoupment"],
+          ["ibc_art_finisher_reload","ibc_art_recoupment"],
+          ["ibc_art_increased_capacity","ibc_art_great_might"],
+          ["ibc_art_recoupment","ibc_art_great_might"],
+          ["ibc_art_recoupment","ibc_art_head_hunter"],
+          ["ibc_art_great_might","ibc_art_honed_precision"],
+          ["ibc_art_great_might","ibc_art_cleaving_fire"],
+          ["ibc_art_head_hunter","ibc_relic_rapid_health"],
+          ["ibc_art_cleaving_fire","ibc_relic_rampage"],
+          ["ibc_relic_rapid_health","ibc_relic_perpetual_penetration"],
+          ["ibc_relic_rampage","ibc_relic_reloading_immunity"],
+          ["ibc_relic_perpetual_penetration","ibc_relic_reloading_immunity"],
+          ["ibc_relic_perpetual_penetration","ibc_relic_inspired_aim"],
+          ["ibc_relic_reloading_immunity","ibc_relic_death_strike"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["ibc_std_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:0,row:1}],
+            ["ibc_std_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:0,row:2}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["ibc_mc_efficient_hunter","Efficient Hunter","After reloading while having Low Ammo, Headshots deal 35% more Damage for 5 seconds.",{column:1,row:1}],
+            ["ibc_mc_reloaded_restoration","Reloaded Restoration","After reloading, your Ammo Reserve is restored by 50% of the number of enemies hit. Cannot exceed maximum Ammo capacity.",{column:1,row:2}],
+            ["ibc_mc_fast_reload","Fast Reload","Reload all Weapons 10% faster.",{column:2,row:1}],
+            ["ibc_mc_divine_might","Divine Might","Damage increases by 10%.",{column:2,row:2}]
+          ]},
+          {name:"Artificer",perks:[
+            ["ibc_art_tactical_precision","Tactical Precision","Headshots deal 20% more Damage. Non-Headshot Damage decreases by 10%.",{column:4,row:0}],
+            ["ibc_art_finisher_reload","Finisher Reload","After a Finisher, the equipped Weapon instantly reloads.",{column:3,row:1}],
+            ["ibc_art_recoupment","Recoupment","Killing a Majoris-level or higher enemy with a headshot with this Weapon restores 1 Armour Segment. Cooldown is 15 seconds.",{column:4,row:1}],
+            ["ibc_art_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:5,row:1}],
+            ["ibc_art_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:3,row:2}],
+            ["ibc_art_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:4,row:2}],
+            ["ibc_art_cleaving_fire","Cleaving Fire","Shots will penetrate enemy Block Stances, dealing 25% of the usual Damage.",{column:5,row:2}],
+            ["ibc_art_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:4,row:3}]
+          ]},
+          {name:"Relic",perks:[
+            ["ibc_relic_rapid_health","Rapid Health","When your Health is below 30%, killing 7 enemies in rapid succession restores Health by 10%. Cooldown is 0 seconds.",{column:6,row:1}],
+            ["ibc_relic_perpetual_penetration","Perpetual Penetration","Each shot penetrates 1 additional target.",{column:7,row:1}],
+            ["ibc_relic_inspired_aim","Inspired Aim","After killing a Majoris-level or higher enemy with a Melee Weapon, headshots deal 20% more Damage for 10 seconds.",{column:8,row:1}],
+            ["ibc_relic_rampage","Rampage","After killing 7 enemies in rapid succession, you deal 25% more Damage for 10 seconds. Cooldown is 15 seconds.",{column:6,row:2}],
+            ["ibc_relic_reloading_immunity","Reloading Immunity","While reloading, you do not lose control from Heavy Hits.",{column:7,row:2}],
+            ["ibc_relic_death_strike","Death Strike","After killing a Majoris-level or higher enemy with a Melee Weapon, you deal 25% more Damage for 10 seconds.",{column:8,row:2}]
+          ]},
+          {name:"Heroic",perks:[
+            ["ibc_heroic_higher_rate_burst","Higher-Rate Burst","Fire rounds in higher-rate bursts.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+          ]}
+        ]
+      },
+      "Bolt Sniper Rifle": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+          {id:"drogos_reclamation_alpha",tier:"Artificer",name:"Drogos Reclamation - Alpha"},
+          {id:"drogos_reclamation_beta",tier:"Artificer",name:"Drogos Reclamation - Beta"},
+          {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+          {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+          {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"},
+          {id:"wrapped",tier:"Heroic",name:"Wrapped"}
+        ],
+        layout:{columnCount:9,rowCount:4,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:2},
+          {name:"Relic",start:6,span:3},
+          {name:"Heroic",start:9,span:1}
+        ]},
+        roots:["bsr_std_extended_magazine","bsr_std_remote_threat"],
+        exclusiveGroups:[["bsr_std_extended_magazine","bsr_std_remote_threat"]],
+        connections:[
+          ["bsr_std_extended_magazine","bsr_mc_divine_might"],
+          ["bsr_std_remote_threat","bsr_mc_survival_instinct"],
+          ["bsr_mc_divine_might","bsr_mc_finisher_reload"],
+          ["bsr_mc_survival_instinct","bsr_mc_adamantine_grip"],
+          ["bsr_mc_finisher_reload","bsr_mc_adamantine_grip"],
+          ["bsr_mc_finisher_reload","bsr_art_unwavering_resolve"],
+          ["bsr_mc_adamantine_grip","bsr_art_fast_reload"],
+          ["bsr_art_unwavering_resolve","bsr_art_head_hunter"],
+          ["bsr_art_fast_reload","bsr_art_increased_capacity"],
+          ["bsr_art_honed_precision","bsr_art_head_hunter"],
+          ["bsr_art_head_hunter","bsr_art_increased_capacity"],
+          ["bsr_art_increased_capacity","bsr_art_reloading_immunity"],
+          ["bsr_art_head_hunter","bsr_relic_strong_start"],
+          ["bsr_art_increased_capacity","bsr_relic_strong_finish"],
+          ["bsr_relic_strong_start","bsr_relic_cleaving_fire"],
+          ["bsr_relic_strong_finish","bsr_relic_reloaded_restoration"],
+          ["bsr_relic_cleaving_fire","bsr_relic_reloaded_restoration"],
+          ["bsr_relic_cleaving_fire","bsr_relic_recoupment"],
+          ["bsr_relic_reloaded_restoration","bsr_relic_great_might"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["bsr_std_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:0,row:1}],
+            ["bsr_std_remote_threat","Remote Threat","Enemies at a distance of more than 25 metres take 20% more Damage.",{column:0,row:2}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["bsr_mc_divine_might","Divine Might","Damage increases by 10%.",{column:1,row:1}],
+            ["bsr_mc_survival_instinct","Survival Instinct","When your Health is below 30%, you deal 25% more Damage.",{column:1,row:2}],
+            ["bsr_mc_finisher_reload","Finisher Reload","After a Finisher, the equipped Weapon instantly reloads.",{column:2,row:1}],
+            ["bsr_mc_adamantine_grip","Adamantine Grip","Recoil is reduced by 25%.",{column:2,row:2}]
+          ]},
+          {name:"Artificer",perks:[
+            ["bsr_art_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:4,row:0}],
+            ["bsr_art_unwavering_resolve","Unwavering Resolve","After reloading while having Low Ammo, Damage increases by 25% for 5 seconds.",{column:3,row:1}],
+            ["bsr_art_fast_reload","Fast Reload","Reload all Weapons 10% faster.",{column:3,row:2}],
+            ["bsr_art_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:4,row:1}],
+            ["bsr_art_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:4,row:2}],
+            ["bsr_art_reloading_immunity","Reloading Immunity","While reloading, you do not lose control from Heavy Hits.",{column:4,row:3}]
+          ]},
+          {name:"Relic",perks:[
+            ["bsr_relic_strong_start","Strong Start","First round in a magazine deals 25% more Damage.",{column:5,row:1}],
+            ["bsr_relic_strong_finish","Strong Finish","Last round in a magazine deals 50% more Damage.",{column:5,row:2}],
+            ["bsr_relic_cleaving_fire","Cleaving Fire","Shots will penetrate enemy Block Stances, dealing 25% of the usual Damage.",{column:6,row:1}],
+            ["bsr_relic_reloaded_restoration","Reloaded Restoration","After reloading, your Ammo Reserve is restored by 50% of the number of enemies hit. Cannot exceed maximum Ammo capacity.",{column:6,row:2}],
+            ["bsr_relic_recoupment","Recoupment","Killing a Majoris-level or higher enemy with a headshot with this Weapon restores 1 Armour Segment. Cooldown is 15 seconds.",{column:7,row:1}],
+            ["bsr_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:7,row:2}]
+          ]},
+          {name:"Heroic",perks:[
+            ["bsr_heroic_replenishing_hit","Replenishing Hit","After performing a Headshot, one round is automatically reloaded into the Weapon.",{column:8,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+          ]}
+        ]
+      },
+      "Bolt Carbine": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted",tier:"Master-Crafted",name:"Master-Crafted"},
+          {id:"master_crafted_marksman",tier:"Master-Crafted",name:"Master-Crafted Marksman"},
+          {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+          {id:"salvation_of_bakka_marksman",tier:"Artificer",name:"Salvation of Bakka Marksman"},
+          {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+          {id:"drogos_reclamation_marksman",tier:"Artificer",name:"Drogos Reclamation Marksman"},
+          {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+          {id:"gathalamor_crusade_marksman",tier:"Relic",name:"Gathalamor Crusade Marksman"},
+          {id:"ophelian_liberation",tier:"Relic",name:"Ophelian Liberation"},
+          {id:"ophelian_liberation_marksman",tier:"Relic",name:"Ophelian Liberation Marksman"},
+          {id:"combi_flamer",tier:"Heroic",name:"Combi-Flamer"}
+        ],
+        layout:{columnCount:10,rowCount:4,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:3},
+          {name:"Relic",start:7,span:3},
+          {name:"Heroic",start:10,span:1}
+        ]},
+        roots:["bc_std_head_hunter","bc_std_great_might"],
+        exclusiveGroups:[["bc_std_head_hunter","bc_std_great_might"]],
+        connections:[
+          ["bc_std_head_hunter","bc_mc_rapid_health"],
+          ["bc_std_great_might","bc_mc_retaliation"],
+          ["bc_mc_rapid_health","bc_mc_honed_precision"],
+          ["bc_mc_retaliation","bc_mc_adamantine_grip"],
+          ["bc_mc_honed_precision","bc_mc_adamantine_grip"],
+          ["bc_mc_honed_precision","bc_art_divine_might_a"],
+          ["bc_mc_adamantine_grip","bc_art_unwavering_resolve"],
+          ["bc_art_divine_might_a","bc_art_head_hunter_b"],
+          ["bc_art_head_hunter_a","bc_art_head_hunter_b"],
+          ["bc_art_unwavering_resolve","bc_art_extended_magazine"],
+          ["bc_art_head_hunter_b","bc_art_extended_magazine"],
+          ["bc_art_head_hunter_b","bc_art_cleaving_fire"],
+          ["bc_art_extended_magazine","bc_art_increased_capacity"],
+          ["bc_art_extended_magazine","bc_art_divine_might_b"],
+          ["bc_art_cleaving_fire","bc_relic_adamant_hunter"],
+          ["bc_art_increased_capacity","bc_relic_magazine_restoration"],
+          ["bc_relic_gun_strike_reload","bc_relic_perpetual_precision"],
+          ["bc_relic_adamant_hunter","bc_relic_perpetual_precision"],
+          ["bc_relic_magazine_restoration","bc_relic_adamantine_grip"],
+          ["bc_relic_perpetual_precision","bc_relic_adamantine_grip"],
+          ["bc_relic_perpetual_precision","bc_relic_recoupment"],
+          ["bc_relic_adamantine_grip","bc_relic_divine_might"],
+          ["bc_relic_adamantine_grip","bc_relic_reloading_immunity"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["bc_std_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:0,row:1}],
+            ["bc_std_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:0,row:2}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["bc_mc_rapid_health","Rapid Health","When your Health is below 30%, killing 7 enemies in rapid succession restores Health by 10%. Cooldown is 0 seconds.",{column:1,row:1}],
+            ["bc_mc_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:1,row:2}],
+            ["bc_mc_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:2,row:1}],
+            ["bc_mc_adamantine_grip","Adamantine Grip","Recoil is reduced by 25%.",{column:2,row:2}]
+          ]},
+          {name:"Artificer",perks:[
+            ["bc_art_head_hunter_a","Head Hunter","Headshots deal 10% more Damage.",{column:4,row:0}],
+            ["bc_art_divine_might_a","Divine Might","Damage increases by 10%.",{column:3,row:1}],
+            ["bc_art_head_hunter_b","Head Hunter","Headshots deal 10% more Damage.",{column:4,row:1}],
+            ["bc_art_cleaving_fire","Cleaving Fire","Shots will penetrate enemy Block Stances, dealing 25% of the usual Damage.",{column:5,row:1}],
+            ["bc_art_unwavering_resolve","Unwavering Resolve","After reloading while having Low Ammo, Damage increases by 25% for 5 seconds.",{column:3,row:2}],
+            ["bc_art_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:4,row:2}],
+            ["bc_art_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:5,row:2}],
+            ["bc_art_divine_might_b","Divine Might","Damage increases by 10%.",{column:4,row:3}]
+          ]},
+          {name:"Relic",perks:[
+            ["bc_relic_gun_strike_reload","Gun Strike Reload","After a Gun Strike, the equipped Weapon instantly reloads.",{column:7,row:0}],
+            ["bc_relic_adamant_hunter","Adamant Hunter","When your Health is below 30%, Headshots deal 25% more Damage.",{column:6,row:1}],
+            ["bc_relic_perpetual_precision","Perpetual Precision","Maximum Spread decreases by 10%.",{column:7,row:1}],
+            ["bc_relic_recoupment","Recoupment","Killing a Majoris-level or higher enemy with a headshot with this Weapon restores 1 Armour Segment. Cooldown is 15 seconds.",{column:8,row:1}],
+            ["bc_relic_magazine_restoration","Magazine Restoration","When your Health drops below 30%, your Ammo Reserve is restored by a full Magazine. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:6,row:2}],
+            ["bc_relic_adamantine_grip","Adamantine Grip","Recoil is reduced by 25%.",{column:7,row:2}],
+            ["bc_relic_divine_might","Divine Might","Damage increases by 10%.",{column:8,row:2}],
+            ["bc_relic_reloading_immunity","Reloading Immunity","While reloading, you do not lose control from Heavy Hits.",{column:7,row:3}]
+          ]},
+          {name:"Heroic",perks:[
+            ["bc_heroic_combi_flamer","Combi-Flamer","Augmented Vision switches the weapon to an under-barrel Pyreblaster firing mode.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+          ]}
+        ]
+      },
+      "Las Fusil": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"salvation_of_bakka_alpha",tier:"Artificer",name:"Salvation of Bakka - Alpha"},
+          {id:"salvation_of_bakka_beta",tier:"Artificer",name:"Salvation of Bakka - Beta"},
+          {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+          {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+          {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+          {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"}
+        ],
+        layout:{columnCount:8,rowCount:4,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:2},
+          {name:"Relic",start:6,span:3}
+        ]},
+        roots:["lf_std_perpetual_velocity","lf_std_increased_capacity"],
+        exclusiveGroups:[["lf_std_perpetual_velocity","lf_std_increased_capacity"]],
+        connections:[
+          ["lf_std_perpetual_velocity","lf_mc_adamant_velocity"],
+          ["lf_std_increased_capacity","lf_mc_adamant_restoration"],
+          ["lf_mc_adamant_velocity","lf_mc_head_hunter"],
+          ["lf_mc_adamant_restoration","lf_mc_amplification"],
+          ["lf_mc_head_hunter","lf_mc_amplification"],
+          ["lf_mc_head_hunter","lf_art_perpetual_velocity"],
+          ["lf_mc_amplification","lf_art_amplification"],
+          ["lf_art_perpetual_velocity","lf_art_amplification"],
+          ["lf_art_perpetual_velocity","lf_art_charging_immunity"],
+          ["lf_art_amplification","lf_art_great_might"],
+          ["lf_art_head_hunter","lf_art_charging_immunity"],
+          ["lf_art_great_might","lf_art_divine_might"],
+          ["lf_art_charging_immunity","lf_relic_instant_health"],
+          ["lf_art_great_might","lf_relic_brutal_rampage"],
+          ["lf_relic_instant_health","lf_relic_head_hunter"],
+          ["lf_relic_brutal_rampage","lf_relic_increased_capacity_a"],
+          ["lf_relic_head_hunter","lf_relic_increased_capacity_a"],
+          ["lf_relic_head_hunter","lf_relic_recoupment"],
+          ["lf_relic_increased_capacity_a","lf_relic_increased_capacity_b"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["lf_std_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{column:0,row:1}],
+            ["lf_std_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:0,row:2}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["lf_mc_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{column:1,row:1}],
+            ["lf_mc_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:1,row:2}],
+            ["lf_mc_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:2,row:1}],
+            ["lf_mc_amplification","Amplification","Radius of Beam Weapons increases by 15%.",{column:2,row:2}]
+          ]},
+          {name:"Artificer",perks:[
+            ["lf_art_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:4,row:0}],
+            ["lf_art_perpetual_velocity","Perpetual Velocity","Shots Charge 20% faster.",{column:3,row:1}],
+            ["lf_art_charging_immunity","Charging Immunity","While Charging a shot, you do not lose control from Heavy Hits.",{column:4,row:1}],
+            ["lf_art_amplification","Amplification","Radius of Beam Weapons increases by 15%.",{column:3,row:2}],
+            ["lf_art_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:4,row:2}],
+            ["lf_art_divine_might","Divine Might","Damage increases by 10%.",{column:4,row:3}]
+          ]},
+          {name:"Relic",perks:[
+            ["lf_relic_instant_health","Instant Health","When your Health is below 30%, killing 3 enemies or more with one shot restores Health by 5%.",{column:5,row:1}],
+            ["lf_relic_brutal_rampage","Brutal Rampage","After killing 3 enemies or more with one shot, you deal 25% more Damage for 5 seconds.",{column:5,row:2}],
+            ["lf_relic_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:6,row:1}],
+            ["lf_relic_increased_capacity_a","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:6,row:2}],
+            ["lf_relic_recoupment","Recoupment","Killing a Majoris-level or higher enemy with a headshot with this Weapon restores 1 Armour Segment. Cooldown is 15 seconds.",{column:7,row:1}],
+            ["lf_relic_increased_capacity_b","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:7,row:2}]
+          ]}
+        ]
+      },
+      "Heavy Bolter": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"master_crafted_gamma",tier:"Master-Crafted",name:"Master-Crafted - Gamma"},
+          {id:"salvation_of_bakka_alpha",tier:"Artificer",name:"Salvation of Bakka - Alpha"},
+          {id:"salvation_of_bakka_beta",tier:"Artificer",name:"Salvation of Bakka - Beta"},
+          {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+          {id:"gathalamor_crusade_alpha",tier:"Relic",name:"Gathalamor Crusade - Alpha"},
+          {id:"gathalamor_crusade_beta",tier:"Relic",name:"Gathalamor Crusade - Beta"},
+          {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+          {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"},
+          {id:"chains_of_duty",tier:"Heroic",name:"Chains of Duty"}
+        ],
+        layout:{columnCount:9,rowCount:4,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:2},
+          {name:"Relic",start:6,span:3},
+          {name:"Heroic",start:9,span:1}
+        ]},
+        roots:["hb_std_fast_venting","hb_std_perpetual_cooling"],
+        exclusiveGroups:[["hb_std_fast_venting","hb_std_perpetual_cooling"]],
+        connections:[
+          ["hb_std_fast_venting","hb_mc_perfect_cooling"],
+          ["hb_std_perpetual_cooling","hb_mc_contingency_plan"],
+          ["hb_mc_perfect_cooling","hb_mc_increased_capacity"],
+          ["hb_mc_contingency_plan","hb_mc_head_hunter"],
+          ["hb_mc_heavy_immunity","hb_mc_increased_capacity"],
+          ["hb_mc_increased_capacity","hb_mc_head_hunter"],
+          ["hb_mc_head_hunter","hb_mc_perpetual_penetration"],
+          ["hb_mc_increased_capacity","hb_art_adamant_restoration"],
+          ["hb_mc_head_hunter","hb_art_adamant_hunter"],
+          ["hb_art_heavy_might_top","hb_art_heavy_might"],
+          ["hb_art_heavy_might","hb_art_heavy_precision"],
+          ["hb_art_heavy_precision","hb_art_honed_precision"],
+          ["hb_art_adamant_restoration","hb_art_heavy_might"],
+          ["hb_art_adamant_hunter","hb_art_heavy_precision"],
+          ["hb_art_heavy_might","hb_relic_discipline"],
+          ["hb_art_heavy_precision","hb_relic_efficient_precision"],
+          ["hb_relic_increased_capacity","hb_relic_fast_venting"],
+          ["hb_relic_fast_venting","hb_relic_perpetual_cooling"],
+          ["hb_relic_perpetual_cooling","hb_relic_weapon_strike"],
+          ["hb_relic_discipline","hb_relic_fast_venting"],
+          ["hb_relic_fast_venting","hb_relic_great_might"],
+          ["hb_relic_efficient_precision","hb_relic_perpetual_cooling"],
+          ["hb_relic_perpetual_cooling","hb_relic_divine_might"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["hb_std_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:0,row:1}],
+            ["hb_std_perpetual_cooling","Perpetual Cooling","Weapon Heating decreases by 10%.",{column:0,row:2}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["hb_mc_perfect_cooling","Perfect Cooling","After a perfectly timed Dodge, the equipped Weapon is completely cooled.",{column:1,row:1}],
+            ["hb_mc_contingency_plan","Contingency Plan","When your Ammo Reserve is less than 25% of your Ammo capacity, Melee Damage increases by 20%.",{column:1,row:2}],
+            ["hb_mc_heavy_immunity","Heavy Immunity","While in Heavy Stance, you do not lose control from Heavy Hits.",{column:2,row:0}],
+            ["hb_mc_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:2,row:1}],
+            ["hb_mc_head_hunter","Head Hunter","Headshots deal 10% more Damage.",{column:2,row:2}],
+            ["hb_mc_perpetual_penetration","Perpetual Penetration","Each shot penetrates 1 additional target.",{column:2,row:3}]
+          ]},
+          {name:"Artificer",perks:[
+            ["hb_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:3,row:1}],
+            ["hb_art_adamant_hunter","Adamant Hunter","When your Health is below 30%, Headshots deal 25% more Damage.",{column:3,row:2}],
+            ["hb_art_heavy_might_top","Heavy Might","While in Heavy Stance, you deal 15% more Damage.",{column:4,row:0}],
+            ["hb_art_heavy_might","Heavy Might","While in Heavy Stance, you deal 15% more Damage.",{column:4,row:1}],
+            ["hb_art_heavy_precision","Heavy Precision","While in Heavy Stance, Maximum Spread decreases by 10%.",{column:4,row:2}],
+            ["hb_art_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:4,row:3}]
+          ]},
+          {name:"Relic",perks:[
+            ["hb_relic_discipline","Discipline","When you have Low Ammo, you deal 25% more Damage.",{column:5,row:1}],
+            ["hb_relic_efficient_precision","Efficient Precision","When you have Low Ammo, Maximum Spread decreases by 25%.",{column:5,row:2}],
+            ["hb_relic_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:6,row:0}],
+            ["hb_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:6,row:1}],
+            ["hb_relic_perpetual_cooling","Perpetual Cooling","Weapon Heating decreases by 10%.",{column:6,row:2}],
+            ["hb_relic_weapon_strike","Weapon Strike","Melee Damage increases by 50%.",{column:6,row:3}],
+            ["hb_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:7,row:1}],
+            ["hb_relic_divine_might","Divine Might","Damage increases by 10%.",{column:7,row:2}]
+          ]},
+          {name:"Heroic",perks:[
+            ["hb_heroic_reinforced_guncasing","Reinforced Guncasing","Perfect Parry window increases by 50%. After a Gun Strike, the Weapon is completely cooled.",{column:8,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+          ]}
+        ]
+      },
+      "Heavy Plasma Incinerator": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"master_crafted_gamma",tier:"Master-Crafted",name:"Master-Crafted - Gamma"},
+          {id:"salvation_of_bakka_alpha",tier:"Artificer",name:"Salvation of Bakka - Alpha"},
+          {id:"salvation_of_bakka_beta",tier:"Artificer",name:"Salvation of Bakka - Beta"},
+          {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+          {id:"gathalamor_crusade_alpha",tier:"Relic",name:"Gathalamor Crusade - Alpha"},
+          {id:"gathalamor_crusade_beta",tier:"Relic",name:"Gathalamor Crusade - Beta"},
+          {id:"ophelian_liberation",tier:"Relic",name:"Ophelian Liberation"},
+          {id:"relic_battle_worn",tier:"Heroic",name:"Relic Battle-Worn"}
+        ],
+        layout:{columnCount:11,rowCount:2,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:3},
+          {name:"Artificer",start:5,span:3},
+          {name:"Relic",start:8,span:3},
+          {name:"Heroic",start:11,span:1}
+        ]},
+        roots:["hpi_std_common_cooling","hpi_std_fast_venting"],
+        exclusiveGroups:[["hpi_std_common_cooling","hpi_std_fast_venting"]],
+        connections:[
+          ["hpi_std_common_cooling","hpi_mc_rapid_cooling"],
+          ["hpi_std_fast_venting","hpi_mc_contingency_plan"],
+          ["hpi_mc_rapid_cooling","hpi_mc_heavy_velocity"],
+          ["hpi_mc_contingency_plan","hpi_mc_plasma_collection"],
+          ["hpi_mc_heavy_velocity","hpi_mc_plasma_collection"],
+          ["hpi_mc_heavy_velocity","hpi_mc_supercharged_shot"],
+          ["hpi_mc_plasma_collection","hpi_mc_efficient_charge"],
+          ["hpi_mc_supercharged_shot","hpi_art_adamant_velocity"],
+          ["hpi_mc_efficient_charge","hpi_art_adamant_restoration"],
+          ["hpi_art_adamant_velocity","hpi_art_supercharged_shot"],
+          ["hpi_art_adamant_restoration","hpi_art_heavy_fire"],
+          ["hpi_art_supercharged_shot","hpi_art_heavy_fire"],
+          ["hpi_art_supercharged_shot","hpi_art_heavy_immunity"],
+          ["hpi_art_heavy_fire","hpi_art_weapon_strike"],
+          ["hpi_art_heavy_immunity","hpi_relic_retaliation"],
+          ["hpi_art_weapon_strike","hpi_relic_elusive_fire"],
+          ["hpi_relic_retaliation","hpi_relic_charged_cooling"],
+          ["hpi_relic_elusive_fire","hpi_relic_fast_venting"],
+          ["hpi_relic_charged_cooling","hpi_relic_fast_venting"],
+          ["hpi_relic_charged_cooling","hpi_relic_brutal_rampage"],
+          ["hpi_relic_fast_venting","hpi_relic_plasma_collection"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["hpi_std_common_cooling","Common Cooling","Common Shots generate 10% less Heat.",{column:0,row:0}],
+            ["hpi_std_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:0,row:1}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["hpi_mc_rapid_cooling","Rapid Cooling","After killing 7 enemies in rapid succession, Weapons do not heat for 10 seconds. Cooldown is 15 seconds.",{column:1,row:0}],
+            ["hpi_mc_contingency_plan","Contingency Plan","When your Ammo Reserve is less than 25% of your Ammo capacity, Melee Damage increases by 20%.",{column:1,row:1}],
+            ["hpi_mc_heavy_velocity","Heavy Velocity","When in Heavy Stance, shots Charge 15% faster.",{column:2,row:0}],
+            ["hpi_mc_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{column:2,row:1}],
+            ["hpi_mc_supercharged_shot","Supercharged Shot","Damage from a Charged Shot increases by 10%.",{column:3,row:0}],
+            ["hpi_mc_efficient_charge","Efficient Charge","Charged Shots from Plasma Weapons use 2 less energy.",{column:3,row:1}]
+          ]},
+          {name:"Artificer",perks:[
+            ["hpi_art_adamant_velocity","Adamant Velocity","When your Health is below 30%, shots Charge 25% faster.",{column:4,row:0}],
+            ["hpi_art_adamant_restoration","Adamant Restoration","When your Health drops below 30%, your Ammo Reserve is restored by 25% of the maximum capacity. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:4,row:1}],
+            ["hpi_art_supercharged_shot","Supercharged Shot","Damage from a Charged Shot increases by 10%.",{column:5,row:0}],
+            ["hpi_art_heavy_fire","Heavy Fire","While in Heavy Stance, Fire Rate increases by 15%.",{column:5,row:1}],
+            ["hpi_art_heavy_immunity","Heavy Immunity","While in Heavy Stance, you do not lose control from Heavy Hits.",{column:6,row:0}],
+            ["hpi_art_weapon_strike","Weapon Strike","Melee Damage increases by 50%.",{column:6,row:1}]
+          ]},
+          {name:"Relic",perks:[
+            ["hpi_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:7,row:0}],
+            ["hpi_relic_elusive_fire","Elusive Fire","After a perfectly timed Dodge, Fire Rate increases by 25% for 10 seconds.",{column:7,row:1}],
+            ["hpi_relic_charged_cooling","Charged Cooling","Charged Shots generate 10% less Heat.",{column:8,row:0}],
+            ["hpi_relic_fast_venting","Fast Venting","Weapon cools 15% faster.",{column:8,row:1}],
+            ["hpi_relic_brutal_rampage","Brutal Rampage","After killing 3 enemies or more with one shot, you deal 25% more Damage for 5 seconds.",{column:9,row:0}],
+            ["hpi_relic_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{column:9,row:1}]
+          ]},
+          {name:"Heroic",perks:[
+            ["hpi_heroic_plasma_hail","Plasma Hail","In Heavy Stance, get an increase in Fire Rate instead of Charged Shots.",{column:10,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+          ]}
+        ]
+      },
+      "Multi-Melta": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"master_crafted_gamma",tier:"Master-Crafted",name:"Master-Crafted - Gamma"},
+          {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+          {id:"drogos_reclamation_alpha",tier:"Artificer",name:"Drogos Reclamation - Alpha"},
+          {id:"drogos_reclamation_beta",tier:"Artificer",name:"Drogos Reclamation - Beta"},
+          {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+          {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+          {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"}
+        ],
+        layout:{columnCount:10,rowCount:2,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:3},
+          {name:"Artificer",start:5,span:3},
+          {name:"Relic",start:8,span:3}
+        ]},
+        roots:["mm_std_increased_capacity","mm_std_weapon_strike"],
+        exclusiveGroups:[["mm_std_increased_capacity","mm_std_weapon_strike"]],
+        connections:[
+          ["mm_std_increased_capacity","mm_mc_elite_restoration"],
+          ["mm_std_weapon_strike","mm_mc_decisive_reload"],
+          ["mm_mc_elite_restoration","mm_mc_heavy_fire"],
+          ["mm_mc_decisive_reload","mm_mc_perpetual_range_a"],
+          ["mm_mc_heavy_fire","mm_mc_perpetual_range_a"],
+          ["mm_mc_heavy_fire","mm_mc_heavy_immunity"],
+          ["mm_mc_perpetual_range_a","mm_mc_perpetual_range_b"],
+          ["mm_mc_heavy_immunity","mm_art_executioners_fire"],
+          ["mm_mc_perpetual_range_b","mm_art_executioners_range"],
+          ["mm_art_executioners_fire","mm_art_heavy_might_a"],
+          ["mm_art_executioners_range","mm_art_trick_shot"],
+          ["mm_art_heavy_might_a","mm_art_trick_shot"],
+          ["mm_art_heavy_might_a","mm_art_heavy_might_b"],
+          ["mm_art_trick_shot","mm_art_divine_might"],
+          ["mm_art_heavy_might_b","mm_relic_death_strike"],
+          ["mm_art_divine_might","mm_relic_elite_health"],
+          ["mm_relic_death_strike","mm_relic_increased_capacity"],
+          ["mm_relic_elite_health","mm_relic_discipline"],
+          ["mm_relic_increased_capacity","mm_relic_discipline"],
+          ["mm_relic_increased_capacity","mm_relic_divine_might"],
+          ["mm_relic_discipline","mm_relic_expedient_barrage"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["mm_std_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:0,row:0}],
+            ["mm_std_weapon_strike","Weapon Strike","Melee Damage increases by 50%.",{column:0,row:1}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["mm_mc_elite_restoration","Elite Restoration","Killing a Majoris-level or higher enemy restores 10% of your maximum Ammo Reserve. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:1,row:0}],
+            ["mm_mc_decisive_reload","Decisive Reload","Performing a Finisher on a Majoris-level or higher enemy restores Melta ammo by 1.",{column:1,row:1}],
+            ["mm_mc_heavy_fire","Heavy Fire","While in Heavy Stance, Fire Rate increases by 15%.",{column:2,row:0}],
+            ["mm_mc_perpetual_range_a","Perpetual Range","Effective Range increases by 1 metre.",{column:2,row:1}],
+            ["mm_mc_heavy_immunity","Heavy Immunity","While in Heavy Stance, you do not lose control from Heavy Hits.",{column:3,row:0}],
+            ["mm_mc_perpetual_range_b","Perpetual Range","Effective Range increases by 1 metre.",{column:3,row:1}]
+          ]},
+          {name:"Artificer",perks:[
+            ["mm_art_executioners_fire","Executioner's Fire","After a Finisher, Fire Rate increases by 25% for 10 seconds.",{column:4,row:0}],
+            ["mm_art_executioners_range","Executioner's Range","After a Finisher, Effective Range increases by 3 metres for 10 seconds.",{column:4,row:1}],
+            ["mm_art_heavy_might_a","Heavy Might","While in Heavy Stance, you deal 15% more Damage.",{column:5,row:0}],
+            ["mm_art_trick_shot","Trick Shot","Killing 5 enemies with one shot restores 1 Armour Segment. Cooldown is 30 seconds.",{column:5,row:1}],
+            ["mm_art_heavy_might_b","Heavy Might","While in Heavy Stance, you deal 15% more Damage.",{column:6,row:0}],
+            ["mm_art_divine_might","Divine Might","Damage increases by 10%.",{column:6,row:1}]
+          ]},
+          {name:"Relic",perks:[
+            ["mm_relic_death_strike","Death Strike","After killing a Majoris-level or higher enemy with a Melee Weapon, you deal 25% more Damage for 10 seconds.",{column:7,row:0}],
+            ["mm_relic_elite_health","Elite Health","When your Health is below 30%, killing a Majoris-level or higher enemy with Melee Damage restores Health by 10%.",{column:7,row:1}],
+            ["mm_relic_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:8,row:0}],
+            ["mm_relic_discipline","Discipline","When you have Low Ammo, you deal 25% more Damage.",{column:8,row:1}],
+            ["mm_relic_divine_might","Divine Might","Damage increases by 10%.",{column:9,row:0}],
+            ["mm_relic_expedient_barrage","Expedient Barrage","Fire Rate increases by 33% when firing without aiming.",{column:9,row:1}]
+          ]}
+        ]
+      },
+      "Pyrecannon": {
+        treeMode:"connectionGraph",
+        variants:[
+          {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+          {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+          {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+          {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+          {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+          {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+          {id:"ophelian_liberation",tier:"Relic",name:"Ophelian Liberation"}
+        ],
+        layout:{columnCount:7,rowCount:2,tierHeadings:[
+          {name:"Standard",start:1,span:1},
+          {name:"Master-Crafted",start:2,span:2},
+          {name:"Artificer",start:4,span:2},
+          {name:"Relic",start:6,span:2}
+        ]},
+        roots:["pyre_std_improved_fast_venting","pyre_std_perpetual_cooling"],
+        exclusiveGroups:[["pyre_std_improved_fast_venting","pyre_std_perpetual_cooling"]],
+        connections:[
+          ["pyre_std_improved_fast_venting","pyre_mc_eternal_flame"],
+          ["pyre_std_perpetual_cooling","pyre_mc_flame_of_protection"],
+          ["pyre_mc_eternal_flame","pyre_mc_increased_capacity"],
+          ["pyre_mc_flame_of_protection","pyre_mc_contingency_plan"],
+          ["pyre_mc_increased_capacity","pyre_mc_contingency_plan"],
+          ["pyre_mc_increased_capacity","pyre_art_flame_of_ascension"],
+          ["pyre_mc_contingency_plan","pyre_art_rapid_health"],
+          ["pyre_art_flame_of_ascension","pyre_art_potent_flame"],
+          ["pyre_art_rapid_health","pyre_art_divine_might"],
+          ["pyre_art_potent_flame","pyre_art_divine_might"],
+          ["pyre_art_potent_flame","pyre_relic_resilient_flame"],
+          ["pyre_art_divine_might","pyre_relic_heavy_immunity"],
+          ["pyre_relic_resilient_flame","pyre_relic_pure_flame"],
+          ["pyre_relic_heavy_immunity","pyre_relic_flash_burn"]
+        ],
+        tiers:[
+          {name:"Standard",perks:[
+            ["pyre_std_improved_fast_venting","Improved Fast Venting","Weapon cools 20% faster.",{column:0,row:0}],
+            ["pyre_std_perpetual_cooling","Perpetual Cooling","Weapon Heating decreases by 20%.",{column:0,row:1}]
+          ]},
+          {name:"Master-Crafted",perks:[
+            ["pyre_mc_eternal_flame","Eternal Flame","Burning time increases by 20%.",{column:1,row:0}],
+            ["pyre_mc_flame_of_protection","Flame of Protection","Burning enemies deal 20% less Melee Damage.",{column:1,row:1}],
+            ["pyre_mc_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:2,row:0}],
+            ["pyre_mc_contingency_plan","Contingency Plan","When your Ammo Reserve is less than 25% of your Ammo capacity, Melee Damage increases by 20%.",{column:2,row:1}]
+          ]},
+          {name:"Artificer",perks:[
+            ["pyre_art_flame_of_ascension","Flame of Ascension","Burning 5 enemies restores 1 Armour Segment. Cooldown is 30 seconds.",{column:3,row:0}],
+            ["pyre_art_rapid_health","Rapid Health","When your Health is below 30%, killing 7 enemies in rapid succession restores Health by 10%. Cooldown is 0 seconds.",{column:3,row:1}],
+            ["pyre_art_potent_flame","Potent Flame","Burning Damage increases by 15%.",{column:4,row:0}],
+            ["pyre_art_divine_might","Divine Might","Damage increases by 10%.",{column:4,row:1}]
+          ]},
+          {name:"Relic",perks:[
+            ["pyre_relic_resilient_flame","Resilient Flame","Charging time decreases by 75%.",{column:5,row:0}],
+            ["pyre_relic_heavy_immunity","Heavy Immunity","While in Heavy Stance, you do not lose control from Heavy Hits.",{column:5,row:1}],
+            ["pyre_relic_pure_flame","Pure Flame","Burning Damage increases by 15%. Direct Damage decreases by 50%.",{column:6,row:0}],
+            ["pyre_relic_flash_burn","Flash Burn","Enemies at a distance of less than 10 metres take 20% more Damage.",{column:6,row:1}]
+          ]}
+        ]
+      },
       "Plasma Incinerator": {
         treeMode:"connectionGraph",
         variants:[
@@ -1165,20 +2003,42 @@ const WEAPONS = {
   }
 };
 
-const DEFAULT_BUILD = () => ({
-  id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(),
-  name:"Techmarine — New Build",
-  className:"Techmarine",
-  classActive:[],
-  prestige:[],
-  weapons:{
-    primary:{weapon:"Plasma Incinerator",variant:"standard_issue",active:[]},
-    secondary:{weapon:"Bolt Pistol",variant:"standard_issue",active:[]},
-    melee:{weapon:"Omnissian Axe",variant:"standard_issue",active:[]}
-  },
-  createdAt:new Date().toISOString(),
-  updatedAt:new Date().toISOString()
-});
+function getClassData(className){
+  return CLASS_DATA[className] || CLASS_DATA.Techmarine;
+}
+function getClassWeaponSlots(className){
+  const options=getClassData(className)?.weaponOptions || {};
+  return ["primary","secondary","melee"].filter(slot=>Array.isArray(options[slot]) && options[slot].length>0);
+}
+function getAllowedClassWeapons(className,slot){
+  const options=getClassData(className)?.weaponOptions?.[slot];
+  return Array.isArray(options) ? options.filter(name=>WEAPONS[slot]?.weapons?.[name]) : [];
+}
+function getDefaultWeaponState(className,slot){
+  const allowed=getAllowedClassWeapons(className,slot);
+  const requested=getClassData(className)?.defaultLoadout?.[slot] || {};
+  const weapon=allowed.includes(requested.weapon) ? requested.weapon : (allowed[0] || "");
+  const variants=WEAPONS[slot]?.weapons?.[weapon]?.variants || [];
+  const variant=variants.length
+    ? (variants.some(v=>v.id===requested.variant) ? requested.variant : variants[0].id)
+    : null;
+  return {weapon,variant,active:[]};
+}
+const DEFAULT_BUILD = (className="Techmarine") => {
+  const resolved=CLASS_DATA[className] ? className : "Techmarine";
+  const weapons={};
+  for(const slot of getClassWeaponSlots(resolved)) weapons[slot]=getDefaultWeaponState(resolved,slot);
+  return {
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(),
+    name:`${resolved} — New Build`,
+    className:resolved,
+    classActive:[],
+    prestige:[],
+    weapons,
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString()
+  };
+};
 
 class BuildNameModal extends Modal {
   constructor(app, initial, onSubmit) { super(app); this.initial=initial; this.onSubmit=onSubmit; }
@@ -1215,7 +2075,15 @@ class SM2View extends require("obsidian").ItemView {
     const build=this.plugin.currentBuild;
     const header=root.createDiv({cls:"sm2-header"});
     const title=header.createEl("h1",{text:"⚙ Space Marine 2 Build Planner"});
-    const classLabel=header.createSpan({cls:"sm2-class-label",text:"Techmarine"});
+    const classWrap=header.createDiv({cls:"sm2-class-wrap"});
+    classWrap.createSpan({text:"Class:"});
+    this.makeSelect(classWrap,Object.keys(CLASS_DATA).map(name=>({value:name,label:name})),build.className,name=>{
+      this.plugin.setClass(name).then(changed=>{
+        if(!changed) return;
+        this.weaponGraphScroll.clear();
+        this.render();
+      });
+    });
     const buildWrap=header.createDiv({cls:"sm2-build-wrap"});
     buildWrap.createSpan({text:"Build:"});
     const buildSelect=this.makeSelect(buildWrap, this.plugin.getBuilds().map(b=>({value:b.id,label:b.name})), build.id, id=>{
@@ -1265,12 +2133,18 @@ class SM2View extends require("obsidian").ItemView {
   }
 
   renderClass(main){
-    const data=CLASS_DATA.Techmarine;
+    const className=this.plugin.currentBuild.className;
+    const data=CLASS_DATA[className];
     if(!data || !Array.isArray(data.categories)){
-      main.createDiv({cls:"sm2-empty-weapon",text:"Techmarine class data could not be loaded."});
+      main.createDiv({cls:"sm2-empty-weapon",text:`${className} class data could not be loaded.`});
       return;
     }
     main.createEl("div",{cls:"sm2-section-note",text:"Click any perk to toggle it. Changes are saved automatically to the current build."});
+    if(Array.isArray(data.startingPerk)){
+      const starting=main.createDiv({cls:"sm2-starting-perk"});
+      starting.createEl("strong",{text:`Starting Perk — ${data.startingPerk[1]}`});
+      starting.createDiv({cls:"sm2-small",text:data.startingPerk[2]});
+    }
     const legend=main.createDiv({cls:"sm2-legend"});
     [["on","Selected"],["off","Available"]].forEach(x=>{const s=legend.createSpan();s.innerHTML=`<i class="sm2-dot ${x[0]}"></i>${x[1]}`;});
     data.categories.forEach(cat=>{
@@ -1300,7 +2174,7 @@ class SM2View extends require("obsidian").ItemView {
     sec.createEl("h2",{text:"Prestige — select up to 4"});
     const grid=sec.createDiv({cls:"sm2-freegrid"});
     data.prestige.forEach(p=>grid.appendChild(this.perkCard(p,this.plugin.currentBuild.prestige.includes(p[0]),()=>{
-      if(!this.plugin.currentBuild.prestige.includes(p[0])&&this.plugin.currentBuild.prestige.length>=4){new Notice("Techmarine Prestige is limited to 4 selections.");return;}
+      if(!this.plugin.currentBuild.prestige.includes(p[0])&&this.plugin.currentBuild.prestige.length>=4){new Notice(`${className} Prestige is limited to 4 selections.`);return;}
       this.plugin.togglePrestige(p[0]);this.render();
     })));
   }
@@ -1330,12 +2204,12 @@ class SM2View extends require("obsidian").ItemView {
 
   renderWeapons(main){
     main.createEl("div",{cls:"sm2-section-note",text:"Select a weapon and version, then choose perks along the connected tree. Locked perks show the prerequisite or branch that prevents selection. Changes are saved automatically."});
-    ["primary","secondary","melee"].forEach((slot)=>{
+    this.plugin.getClassWeaponSlots().forEach((slot)=>{
       const group=main.createDiv({cls:"sm2-weapon-slot"});
       const top=group.createDiv({cls:"sm2-weapon-heading"});
       top.createEl("h2",{text:WEAPONS[slot].label+" Weapon"});
       const controls=top.createDiv({cls:"sm2-weapon-controls"});
-      const names=Object.keys(WEAPONS[slot].weapons);
+      const names=this.plugin.getAllowedWeapons(slot);
       const state=this.plugin.currentBuild.weapons[slot];
       const current=state.weapon;
       this.makeSelect(controls,names.map(x=>({value:x,label:x})),current,w=>{
@@ -1486,11 +2360,23 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     await leaf.setViewState({type:"sm2-build-planner-view",active:true});
     this.app.workspace.revealLeaf(leaf);
   }
-  getBuilds(){return Object.values(this.builds);}
+  getBuilds(){
+    return Object.values(this.builds).slice().sort((a,b)=>{
+      const byName=String(a?.name || "").localeCompare(String(b?.name || ""),undefined,{sensitivity:"base",numeric:true});
+      if(byName) return byName;
+      const byClass=String(a?.className || "").localeCompare(String(b?.className || ""),undefined,{sensitivity:"base"});
+      if(byClass) return byClass;
+      return String(a?.id || "").localeCompare(String(b?.id || ""));
+    });
+  }
+  getClassWeaponSlots(className=this.currentBuild?.className || "Techmarine"){return getClassWeaponSlots(className);}
+  getAllowedWeapons(slot,className=this.currentBuild?.className || "Techmarine"){return getAllowedClassWeapons(className,slot);}
 
-  repairClassSelections(classActive){
-    const selected=new Set(Array.isArray(classActive)?classActive:[]);
-    const data=CLASS_DATA.Techmarine;
+  repairClassSelections(classActive,className=this.currentBuild?.className || "Techmarine"){
+    const data=getClassData(className);
+    const validIds=new Set();
+    for(const cat of (data?.categories || [])) for(const row of (cat.rows || [])) for(const p of (row || [])) if(Array.isArray(p)) validIds.add(p[0]);
+    const selected=new Set((Array.isArray(classActive)?classActive:[]).filter(id=>validIds.has(id)));
     for(const cat of (data?.categories || [])){
       for(const row of (cat.rows || [])){
         const chosen=(row || []).filter(p=>Array.isArray(p) && selected.has(p[0]));
@@ -1501,9 +2387,14 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     }
     return Array.from(selected);
   }
+  repairPrestigeSelections(prestige,className=this.currentBuild?.className || "Techmarine"){
+    const valid=new Set((getClassData(className)?.prestige || []).filter(Array.isArray).map(p=>p[0]));
+    return Array.from(new Set((Array.isArray(prestige)?prestige:[]).filter(id=>valid.has(id)))).slice(0,4);
+  }
 
   repairWeaponSelections(slot, build=this.currentBuild){
-    const state=build.weapons[slot];
+    const state=build.weapons?.[slot];
+    if(!state) return;
     const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
     const tiers=weapon?.tiers || [];
     const selectedOrder=Array.isArray(state.active) ? state.active.slice() : [];
@@ -1573,7 +2464,8 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
   }
 
   getWeaponPerkState(slot,id){
-    const state=this.currentBuild.weapons[slot];
+    const state=this.currentBuild.weapons?.[slot];
+    if(!state) return {available:false,reason:"This weapon slot is not available to the selected class."};
     const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
     const tiers=weapon?.tiers || [];
     const perks=allWeaponPerks(tiers);
@@ -1636,13 +2528,16 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
 
 
   normalizeSelections(){
-    this.currentBuild.classActive=this.repairClassSelections(this.currentBuild.classActive);
-    for(const slot of ["primary","secondary","melee"]) this.repairWeaponSelections(slot);
+    this.currentBuild.classActive=this.repairClassSelections(this.currentBuild.classActive,this.currentBuild.className);
+    this.currentBuild.prestige=this.repairPrestigeSelections(this.currentBuild.prestige,this.currentBuild.className);
+    for(const slot of this.getClassWeaponSlots()) this.repairWeaponSelections(slot);
   }
 
   normalizeBuild(raw){
-    const d=DEFAULT_BUILD();
+    const resolvedClass=CLASS_DATA[raw?.className] ? raw.className : "Techmarine";
+    const d=DEFAULT_BUILD(resolvedClass);
     const b=Object.assign(d, raw || {});
+    b.className=resolvedClass;
     const plasmaPistolV034Migration={
       pp_std_common_cooling:"pp_std_plasma_collection",
       pp_mc_blast_radius:"pp_mc_plasma_collection",
@@ -1656,26 +2551,34 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     };
     if(!Array.isArray(b.classActive)) b.classActive=[];
     if(!Array.isArray(b.prestige)) b.prestige=[];
-    if(!b.weapons || typeof b.weapons!=="object") b.weapons={};
-    for(const slot of ["primary","secondary","melee"]){
-      const def=DEFAULT_BUILD().weapons[slot];
-      if(!b.weapons[slot] || typeof b.weapons[slot]!=="object") b.weapons[slot]=def;
-      if(typeof b.weapons[slot].weapon!=="string") b.weapons[slot].weapon=def.weapon;
-      const variants=WEAPONS[slot]?.weapons?.[b.weapons[slot].weapon]?.variants || [];
+    const rawWeapons=raw?.weapons && typeof raw.weapons==="object" ? raw.weapons : {};
+    const normalizedWeapons={};
+    for(const slot of getClassWeaponSlots(resolvedClass)){
+      const def=getDefaultWeaponState(resolvedClass,slot);
+      const source=rawWeapons[slot] && typeof rawWeapons[slot]==="object" ? rawWeapons[slot] : {};
+      const state=Object.assign({},def,source);
+      const allowed=getAllowedClassWeapons(resolvedClass,slot);
+      if(!allowed.includes(state.weapon)){
+        state.weapon=def.weapon;
+        state.variant=def.variant;
+        state.active=[];
+      }
+      const variants=WEAPONS[slot]?.weapons?.[state.weapon]?.variants || [];
       if(variants.length){
-        if(!variants.some(v=>v.id===b.weapons[slot].variant)) b.weapons[slot].variant=variants[0].id;
-      } else {
-        b.weapons[slot].variant=null;
+        if(!variants.some(v=>v.id===state.variant)) state.variant=variants[0].id;
+      } else state.variant=null;
+      if(!Array.isArray(state.active)) state.active=[];
+      if(slot==="secondary" && state.weapon==="Plasma Pistol"){
+        state.active=state.active.map(id=>plasmaPistolV034Migration[id] || id);
+        state.active=Array.from(new Set(state.active));
       }
-      if(!Array.isArray(b.weapons[slot].active)) b.weapons[slot].active=[];
-      if(slot==="secondary" && b.weapons[slot].weapon==="Plasma Pistol"){
-        b.weapons[slot].active=b.weapons[slot].active.map(id=>plasmaPistolV034Migration[id] || id);
-        b.weapons[slot].active=Array.from(new Set(b.weapons[slot].active));
-      }
+      normalizedWeapons[slot]=state;
     }
+    b.weapons=normalizedWeapons;
     this.currentBuild=b;
-    b.classActive=this.repairClassSelections(b.classActive);
-    for(const slot of ["primary","secondary","melee"]) this.repairWeaponSelections(slot,b);
+    b.classActive=this.repairClassSelections(b.classActive,b.className);
+    b.prestige=this.repairPrestigeSelections(b.prestige,b.className);
+    for(const slot of getClassWeaponSlots(b.className)) this.repairWeaponSelections(slot,b);
     return b;
   }
 
@@ -1691,7 +2594,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     if(st?.currentId && this.builds[st.currentId]){
       this.currentBuild=this.normalizeBuild(this.builds[st.currentId]);
     } else if(Object.keys(this.builds).length){
-      this.currentBuild=this.normalizeBuild(Object.values(this.builds)[0]);
+      this.currentBuild=this.normalizeBuild(this.getBuilds()[0]);
     } else {
       const b=DEFAULT_BUILD();
       this.currentBuild=b;
@@ -1705,7 +2608,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     await this.saveData({builds:this.builds,currentId:this.currentBuild.id});
   }
   async autoSave(){await this.persist();}
-  startNewBuild(){this.currentBuild=DEFAULT_BUILD();new Notice("New unsaved build created.");}
+  startNewBuild(){this.currentBuild=DEFAULT_BUILD(this.currentBuild?.className || "Techmarine");new Notice("New unsaved build created.");}
   async saveCurrentBuild(){
     new BuildNameModal(this.app,this.currentBuild.name,name=>{
       this.currentBuild.name=name;this.persist().then(()=>new Notice(`Saved "${name}".`));
@@ -1722,7 +2625,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     const b=this.builds[id];if(!b)return;
     if(Object.keys(this.builds).length<=1){new Notice("Keep at least one build.");return;}
     delete this.builds[id];
-    if(this.currentBuild.id===id)this.currentBuild=JSON.parse(JSON.stringify(Object.values(this.builds)[0]));
+    if(this.currentBuild.id===id)this.currentBuild=JSON.parse(JSON.stringify(this.getBuilds()[0]));
     await this.persist();new Notice(`Deleted "${b.name}".`);
     const leaves=this.app.workspace.getLeavesOfType("sm2-build-planner-view");leaves.forEach(l=>l.view.render());
   }
@@ -1740,7 +2643,25 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     this.autoSave();
   }
   togglePrestige(id){const a=this.currentBuild.prestige;const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);this.autoSave();}
+  async setClass(name){
+    if(!CLASS_DATA[name] || this.currentBuild.className===name) return false;
+
+    // Preserve the current build under its existing ID before changing class.
+    // Class changes intentionally create a new build so a Techmarine build can
+    // never be silently transformed into (and overwrite) a Heavy build, or vice versa.
+    const old=JSON.parse(JSON.stringify(this.currentBuild));
+    old.updatedAt=new Date().toISOString();
+    this.builds[old.id]=old;
+
+    const fresh=DEFAULT_BUILD(name);
+    this.currentBuild=fresh;
+    this.builds[fresh.id]=JSON.parse(JSON.stringify(fresh));
+    await this.saveData({builds:this.builds,currentId:fresh.id});
+    new Notice(`Created new ${name} build.`);
+    return true;
+  }
   setWeapon(slot,name){
+    if(!this.getAllowedWeapons(slot).includes(name)) return;
     const state=this.currentBuild.weapons[slot];
     state.weapon=name;
     state.active=[];
