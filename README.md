@@ -1,4 +1,50 @@
-# Space Marine 2 Build Planner v0.5.0
+# Space Marine 2 Build Planner v0.5.6
+
+
+## v0.5.6 — Assault class
+- Added **Assault** as a selectable class with its current Starting, Core, Team, Gear, Signature, and seven Prestige perks.
+- Uses the current post-Patch-12 class layout, including **Strong Strikes** in the first Gear choice group and **Hammer of Wrath** in the Prestige pool.
+- Includes the current perk values introduced by later balance updates, including 15% **Squad Cohesion**, the reworked 25% **Act of Attrition**, and the current **Winged Fury** area-of-effect behavior.
+- Added Assault's current weapon availability: Bolt Pistol, Heavy Bolt Pistol, Plasma Pistol, Inferno Pistol, Neo-Volkite Pistol, Bolt Carbine One-Handed, Chainsword, Thunder Hammer, Power Fist, Power Sword, and Power Axe.
+- Assault has no Primary slot and defaults to **Bolt Pistol + Chainsword**.
+- All Assault weapons reuse the canonical weapon definitions already present in v0.5.5; no weapon perk tree was duplicated or altered.
+- No desktop/iOS layout, persistence, build sorting, or existing class/weapon behavior was changed.
+
+
+## v0.5.5 — Patch 14 Thunder Hammer Heroic + Combat Knife verification
+- Added the Patch 14 **Lord Executioner's Axe** as a second Heroic Thunder Hammer variant.
+- Added its standalone Heroic perk, **Whirling Strike**, which replaces Aftershock with a spinning attack and grants 1 Adrenaline Surge stack when a single attack hits at least 5 enemies.
+- Double-checked the **Combat Knife** graph against the current perk-tree ordering. **Shadow Stab remains the upper Artificer branch and Shoulder Bash remains the lower Artificer branch**, so their v0.5.4 positions were left unchanged.
+- No desktop/iOS layout, persistence, class data, or other weapon-tree behavior was changed.
+
+
+## v0.5.4 — Bulwark melee weapon perk trees
+- Populated the **Thunder Hammer**, **Chainsword**, and **Power Fist** perk trees using the existing connection-graph architecture.
+- Added the current Standard through Heroic perk nodes, explicit graph connections, and the existing mutually exclusive Standard starting paths for all three weapons.
+- Added the **Deathwatch Power Fist** as a second Heroic Power Fist variant and added its standalone Heroic perk, **Burning Impact**, alongside **Follow-Up Shot**.
+- Updated **Follow-Up Shot** to its current 200% Light Attack Damage tooltip value.
+- Preserved all existing weapon variants other than the explicitly added Deathwatch Power Fist.
+- No desktop/iOS layout, persistence, build sorting, class data, or other weapon-tree behavior was changed.
+
+
+## v0.5.3 — Bolt Carbine One-Handed perk tree
+- Populated the **Bolt Carbine One-Handed** weapon perk tree from the supplied screenshot.
+- Added all 14 Standard, Master-Crafted, Artificer, and Relic perks using the existing connection-graph architecture.
+- Transcribed only the explicit relationships visible in the supplied topology: two horizontal paths plus the vertical **Fast Reload ↔ Cleaving Fire** and **Perpetual Precision ↔ Tactical Precision** links.
+- Preserved the two mutually exclusive Standard starting paths.
+- Reused the existing seven weapon variants already introduced in v0.5.2.
+- Thunder Hammer, Chainsword, and Power Fist perk trees remain intentionally blank pending source data.
+- No desktop/iOS layout, persistence, build sorting, class data, or other weapon-tree behavior was changed.
+
+
+## v0.5.2 — Bulwark class
+- Added **Bulwark** as a selectable class with its current Starting, Core, Team, Gear, Signature, and Prestige perks.
+- Preserved the established vertical Core/Gear choice-column layout and existing row-based mutual-exclusivity behavior.
+- Added Bulwark's current weapon availability: Bolt Pistol, Heavy Bolt Pistol, Plasma Pistol, Neo-Volkite Pistol, Bolt Carbine One-Handed, Thunder Hammer, Chainsword, Power Fist, Power Sword, and Power Axe.
+- Existing canonical weapon trees are reused wherever already present.
+- Added current weapon-version lists for Bolt Carbine One-Handed, Thunder Hammer, Chainsword, and Power Fist; their **perk trees remain intentionally blank** until authoritative topology data is supplied.
+- Bulwark defaults to Bolt Pistol + Chainsword.
+- No desktop/iOS layout, persistence, build sorting, or existing class/weapon behavior was changed.
 
 
 ## v0.3.1 — selector scroll regression fix
@@ -158,6 +204,13 @@ Then enable it under Settings → Community plugins and run:
 - No Heroic Las Fusil is included because the current weapon family has no Heroic version.
 - Preserved the existing Sniper class data, alphabetical build-list behavior, save isolation, and in-place weapon-tree scroll behavior.
 
+
+## v0.5.1
+- Added iOS/mobile safe-area spacing so the sticky planner header sits below the Dynamic Island/notch area.
+- Confined horizontal scrolling on mobile to the weapon perk-tree viewport; the rest of the planner remains fixed to the device width.
+- Preserved normal vertical scrolling for the complete planner.
+- Constrained weapon/variant selectors and weapon headings to the mobile viewport so they no longer stretch to the graph's full width.
+- Desktop layout and behavior are unchanged.
 
 ## v0.5.0
 - Added the Sniper's final two primary weapon trees: **Instigator Bolt Carbine** and **Bolt Carbine**.

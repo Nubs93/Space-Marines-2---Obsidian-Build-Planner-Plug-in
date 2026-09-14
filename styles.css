@@ -41,3 +41,88 @@
 .sm2-starting-perk{padding:10px 12px;margin:0 0 14px;border:1px solid var(--background-modifier-border);border-radius:8px;background:var(--background-secondary)}
 .sm2-starting-perk strong{display:block;margin-bottom:4px;color:var(--text-accent)}
 @media(max-width:650px){.sm2-class-wrap{width:100%;margin-right:0}.sm2-class-wrap .sm2-select-wrap{flex:1;min-width:0}}
+
+
+/* v0.5.1 — iOS/mobile viewport containment
+   Desktop layout is intentionally unchanged. On Obsidian mobile, the planner
+   itself may scroll vertically, while horizontal overflow is confined to the
+   weapon perk graph. */
+.is-mobile .sm2-root{
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+.is-mobile .sm2-header{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.is-phone .sm2-header{
+  /* Obsidian exposes the platform safe area on phones. Keep the plugin's
+     sticky header controls below the iPhone status/Dynamic Island region. */
+  padding-top:calc(var(--safe-area-inset-top, 0px) + 12px);
+}
+.is-mobile .sm2-body,
+.is-mobile .sm2-main,
+.is-mobile .sm2-weapon-slot,
+.is-mobile .sm2-weapon-heading,
+.is-mobile .sm2-weapon-controls,
+.is-mobile .sm2-build-wrap{
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+}
+.is-mobile .sm2-main,
+.is-mobile .sm2-weapon-slot,
+.is-mobile .sm2-weapon-heading{
+  width:100%;
+}
+.is-mobile .sm2-weapon-graph-scroll{
+  display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:auto;
+  overflow-y:hidden;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x pan-y;
+}
+.is-mobile .sm2-weapon-controls .sm2-select-wrap,
+.is-mobile .sm2-weapon-controls .sm2-select-btn,
+.is-mobile .sm2-build-wrap .sm2-select-wrap,
+.is-mobile .sm2-build-wrap .sm2-select-btn{
+  min-width:0;
+  max-width:100%;
+}
+.is-mobile .sm2-weapon-controls .sm2-select-btn,
+.is-mobile .sm2-build-wrap .sm2-select-btn{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Phone-sized mobile layout: keep every non-tree control pinned to the
+   viewport width. The graph's inner grid remains intentionally wide. */
+@media(max-width:650px){
+  .is-mobile .sm2-root{padding-left:12px;padding-right:12px}
+  .is-mobile .sm2-header{padding-bottom:12px}
+  .is-mobile .sm2-tabs,
+  .is-mobile .sm2-body,
+  .is-mobile .sm2-section-note,
+  .is-mobile .sm2-weapon-heading,
+  .is-mobile .sm2-weapon-controls,
+  .is-mobile .sm2-side{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+  .is-mobile .sm2-tabs,
+  .is-mobile .sm2-section-note,
+  .is-mobile .sm2-weapon-heading,
+  .is-mobile .sm2-weapon-controls{box-sizing:border-box}
+  .is-mobile .sm2-build-wrap{width:100%;max-width:100%;min-width:0}
+  .is-mobile .sm2-build-wrap .sm2-select-wrap{flex:1 1 auto;min-width:0}
+  .is-mobile .sm2-weapon-graph-scroll{
+    /* Replace the old negative-margin mobile bleed. It could enlarge the
+       planner's horizontal scrollable area instead of only the graph. */
+    margin-right:0;
+    padding-right:0;
+  }
+}

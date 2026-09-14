@@ -250,6 +250,144 @@ CLASS_DATA.Sniper={
   }
 };
 
+
+CLASS_DATA.Bulwark={
+  startingPerk:["bulwark_chapter_banner","Chapter Banner","Health increases by 30%."],
+  categories:[
+    {name:"Core",rows:[
+      [
+        ["bulwark_conviction","Conviction","When your Armour is fully depleted, you take 25% less Health Damage for 10 seconds."],
+        ["bulwark_intimidating_aura","Intimidating Aura","A perfectly timed Parry deals area-of-effect Damage that scales with difficulty within a 5-metre radius."],
+        ["bulwark_forward_momentum","Forward Momentum","After a Shield Bash or Thunder Hammer Pommel Smash, Melee Damage increases by 30% for 10 seconds."]
+      ],
+      [
+        ["bulwark_armour_of_contempt","Armour of Contempt","When you Block a Ranged Attack, enemies within a 10-metre radius take the Damage instead."],
+        ["bulwark_shock_and_awe","Shock and Awe","Enemies in a Shock area take 25% more Damage."],
+        ["bulwark_scrambled_targeting","Scrambled Targeting","If you are surrounded by 5 or more enemies, you take 25% less Damage from Ranged Attacks."]
+      ],
+      [
+        ["bulwark_defensive_advantage","Defensive Advantage","A perfectly timed Parry or Block creates a Shock area for 5 seconds. Cooldown is 30 seconds."],
+        ["bulwark_steel_within","Steel Within","When your Health is less than 50%, you take 30% less Health Damage."],
+        ["bulwark_armour_reinforcement","Armour Reinforcement","Non-Finisher Gun Strikes restore 1 Armour Segment."]
+      ]
+    ]},
+    {name:"Team",rows:[[
+      ["bulwark_focused_restoration","Focused Restoration","Every 30 seconds, all Squad Members automatically restore 1 Armour Segment."],
+      ["bulwark_advanced_conditioning","Advanced Conditioning","Contested Health fades 50% more slowly for all Squad Members."],
+      ["bulwark_effective_formation","Effective Formation","All Squad Members take 20% less Health Damage from Extremis- and Terminus-level enemies."]
+    ]]},
+    {name:"Gear",rows:[
+      [
+        ["bulwark_purity_of_purpose","Purity of Purpose","The banner deals Damage that scales with difficulty over time to enemies within its area of effect."],
+        ["bulwark_rapid_regeneration","Rapid Regeneration","The banner restores Armour 300% faster, but its Duration is reduced to 10 seconds."],
+        ["bulwark_focused_strength","Focused Strength","Shield Bash knocks enemies back and makes them lose control for a longer period of time."]
+      ],
+      [
+        ["bulwark_concussive_force","Concussive Force","Shield Bash deals 200% more Damage. Thunder Hammer Pommel Smash deals 100% more Damage and deals area-of-effect Damage within a 7-metre radius. Cooldown is 5 seconds."],
+        ["bulwark_glorys_shield","Glory's Shield","All Squad Members within the banner's area of effect take 20% less Damage, and the banner lasts 20% longer."],
+        ["bulwark_invigorating_icon","Invigorating Icon","When the banner is activated, all Squad Members regain maximum Contested Health, but Chapter Banner recharges 50% slower."]
+      ],
+      [
+        ["bulwark_rejuvenating_effect","Rejuvenating Effect","When the banner is activated, it revives Incapacitated Squad Members within its area of effect."],
+        ["bulwark_merciless_resolve","Merciless Resolve","After a Shield Bash or Thunder Hammer Pommel Smash, Melee Damage increases by 15%, you do not lose control upon taking Heavy Hits and you cannot be knocked back for 10 seconds."],
+        ["bulwark_inspiration","Inspiration","All Squad Members within the banner's area of effect deal 20% more Damage."]
+      ]
+    ]},
+    {name:"Signature — Ability",rows:[[
+      ["bulwark_emergency_countermeasure","Emergency Countermeasure","When your Armour is depleted, a reserve Shock Grenade automatically detonates at your position. Cooldown is 45 seconds."],
+      ["bulwark_defensive_mastery","Defensive Mastery","A perfectly timed Parry instantly Incapacitates a Majoris- or Extremis-level enemy. Cooldown is 90 seconds."],
+      ["bulwark_armoured_advance","Armoured Advance","If you have Armour remaining, you do not lose control upon taking Heavy Hits and you cannot be knocked back."]
+    ]]}
+  ],
+  prestige:[
+    ["bulwark_auxiliary_reload","Auxiliary Reload","Melee kills of Extremis-level or higher enemies restore your Primary Weapon's Ammo by 1 Magazine."],
+    ["bulwark_resilience","Resilience","Medicae Stimms restore 40% more Health."],
+    ["bulwark_overcharge","Overcharge","Charged Attack Damage increases by 20%."],
+    ["bulwark_powerful_shot","Powerful Shot","Ranged Damage increases by 20%."],
+    ["bulwark_masterful_defence","Masterful Defence","Ability Charge is restored by 1% for every blocked Ranged Attack."],
+    ["bulwark_standard_bearer","Standard Bearer","When Chapter Banner activates, you become Invulnerable to Damage for 2 seconds."],
+    ["bulwark_emboldened_stand","Emboldened Stand","When the Chapter Banner is active, all Squad Members do not lose control upon taking Heavy Hits and cannot be knocked back within its zone."]
+  ],
+  weaponOptions:{
+    primary:[],
+    secondary:["Bolt Pistol","Heavy Bolt Pistol","Plasma Pistol","Neo-Volkite Pistol","Bolt Carbine One-Handed"],
+    melee:["Thunder Hammer","Chainsword","Power Fist","Power Sword","Power Axe"]
+  },
+  defaultLoadout:{
+    secondary:{weapon:"Bolt Pistol",variant:"standard_issue"},
+    melee:{weapon:"Chainsword",variant:"standard_issue"}
+  }
+};
+
+
+CLASS_DATA.Assault={
+  startingPerk:["assault_jump_pack","Jump Pack","Perfect Dodge timing increases by 50%."],
+  categories:[
+    {name:"Core",rows:[
+      [
+        ["assault_winged_fury","Winged Fury","Damage from Melee Attacks executed while sprinting or dashing increases by 100%. Deals area-of-effect Damage within a 7-metre radius. Cooldown is 5 seconds."],
+        ["assault_overcharge","Overcharge","Damage of Charged Attacks increases by 25%."],
+        ["assault_armour_reinforcement","Armour Reinforcement","Non-Finisher Gun Strikes also restore 1 Armour Segment."]
+      ],
+      [
+        ["assault_auxiliary_arsenal","Auxiliary Arsenal","Secondary Weapon's Damage increases by 20%."],
+        ["assault_defense_mechanism","Defense Mechanism","Contested Health fades 50% more slowly."],
+        ["assault_consecutive_execution","Consecutive Execution","Killing 7 enemies within 6 seconds restores Equipment Charge by 1. Cooldown is 90 seconds."]
+      ],
+      [
+        ["assault_perseverance","Perseverance","While performing Charged Attacks, you take 25% less Health Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back."],
+        ["assault_knowledge_of_the_enemy","Knowledge of the Enemy","Melee Damage increases by 15% against Majoris- or Extremis-level enemies."],
+        ["assault_act_of_attrition","Act of Attrition","Enemies hit by Damage from Melee Attacks executed while sprinting or dashing take 25% more Damage for 5 seconds."]
+      ]
+    ]},
+    {name:"Team",rows:[[
+      ["assault_squad_cohesion","Squad Cohesion","All Squad Members' Abilities recharge 15% faster."],
+      ["assault_strategic_strikes","Strategic Strikes","All Squad Members deal 20% more Melee Damage against Extremis- and Terminus-level enemies."],
+      ["assault_proven_efficiency","Proven Efficiency","All Squad Members deal 30% more Gun Strike Damage."]
+    ]]},
+    {name:"Gear",rows:[
+      [
+        ["assault_smiting_angel","Smiting Angel","Ground Pound's Damage increases by 25%."],
+        ["assault_strong_strikes","Strong Strikes","Hitting an enemy with an attack after a Jump Pack Dash restores Jump Pack Ability Charge by 1. Cooldown is 10 seconds."],
+        ["assault_precision_strike","Precision Strike","Ground Pound deals 100% more Damage, but its radius is reduced by 50%."]
+      ],
+      [
+        ["assault_wings_of_flame","Wings of Flame","Jump Pack Dash deals Damage that scales with difficulty to enemies along its trajectory and always works as a Perfect Dodge when dodging an attack."],
+        ["assault_manoeuvrability","Manoeuvrability","Jump Pack recharges 20% faster."],
+        ["assault_zealous_blow","Zealous Blow","A Ground Pound kill restores Jump Pack's Charge by 10%."]
+      ],
+      [
+        ["assault_pride_in_duty","Pride in Duty","After a Finisher, Ground Pound deals 25% more Damage for 10 seconds."],
+        ["assault_diligence","Diligence","A fully prepared Ground Pound deals 20% more Damage, but preparation time increases by 25%."],
+        ["assault_aerial_grace","Aerial Grace","After a perfectly timed Dodge using a Jump Pack Dash, you deal 30% more Damage for 10 seconds."]
+      ]
+    ]},
+    {name:"Signature — Ability",rows:[[
+      ["assault_ample_ammunition","Ample Ammunition","Any use of Jump Pack reloads the equipped Ranged Weapon and increases Ranged Damage by 50% for 10 seconds."],
+      ["assault_ascension","Ascension","Jump Pack Leap deals Damage to enemies near the takeoff area. Damage is strongest within 1 metre, drops off to zero at 5 metres, and can hit up to 20 enemies."],
+      ["assault_commitment","Commitment","A perfectly timed Dodge using a Jump Pack Dash restores Jump Pack's Ability Charge."]
+    ]]}
+  ],
+  prestige:[
+    ["assault_unyielding_oath","Unyielding Oath","When charging a Ground Pound, you become Invulnerable for 3 seconds."],
+    ["assault_adrenaline_boost","Adrenaline Boost","After a perfectly timed Parry, Block, or Dodge, you do not lose control upon taking Heavy Hits and cannot be knocked back for 10 seconds."],
+    ["assault_duellist","Duellist","Perfect Parry and Perfect Block windows increase by 25%."],
+    ["assault_fortitude","Fortitude","Health increases by 15%."],
+    ["assault_scrambled_targeting","Scrambled Targeting","If you are surrounded by 5 or more enemies, you take 20% less Damage from Ranged Attacks."],
+    ["assault_practiced_aim","Practiced Aim","Ranged Damage increases by 15%."],
+    ["assault_hammer_of_wrath","Hammer of Wrath","After using Jump Pack, you take 30% less Ranged Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back for 15 seconds."]
+  ],
+  weaponOptions:{
+    primary:[],
+    secondary:["Bolt Pistol","Heavy Bolt Pistol","Plasma Pistol","Inferno Pistol","Neo-Volkite Pistol","Bolt Carbine One-Handed"],
+    melee:["Chainsword","Thunder Hammer","Power Fist","Power Sword","Power Axe"]
+  },
+  defaultLoadout:{
+    secondary:{weapon:"Bolt Pistol",variant:"standard_issue"},
+    melee:{weapon:"Chainsword",variant:"standard_issue"}
+  }
+};
+
 const WEAPONS = {
   primary: {
     label:"Primary",
@@ -2001,6 +2139,318 @@ const WEAPONS = {
       }
     }
   }
+};
+
+
+// Bolt Carbine One-Handed — topology transcribed from the supplied perk-tree
+// screenshot. Only explicit horizontal/vertical connections are represented.
+WEAPONS.secondary.weapons["Bolt Carbine One-Handed"]={
+  treeMode:"connectionGraph",
+  variants:[
+    {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+    {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+    {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+    {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+    {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+    {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+    {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"}
+  ],
+  layout:{columnCount:7,rowCount:2,tierHeadings:[
+    {name:"Standard",start:1,span:1},
+    {name:"Master-Crafted",start:2,span:2},
+    {name:"Artificer",start:4,span:2},
+    {name:"Relic",start:6,span:2}
+  ]},
+  roots:["bcoh_std_increased_capacity","bcoh_std_divine_might"],
+  exclusiveGroups:[["bcoh_std_increased_capacity","bcoh_std_divine_might"]],
+  connections:[
+    ["bcoh_std_increased_capacity","bcoh_mc_extended_magazine"],
+    ["bcoh_std_divine_might","bcoh_mc_adamant_hunter"],
+    ["bcoh_mc_extended_magazine","bcoh_mc_fast_reload"],
+    ["bcoh_mc_adamant_hunter","bcoh_mc_cleaving_fire"],
+    ["bcoh_mc_fast_reload","bcoh_mc_cleaving_fire"],
+    ["bcoh_mc_fast_reload","bcoh_art_remote_threat"],
+    ["bcoh_mc_cleaving_fire","bcoh_art_retaliation"],
+    ["bcoh_art_remote_threat","bcoh_art_perpetual_precision"],
+    ["bcoh_art_retaliation","bcoh_art_tactical_precision"],
+    ["bcoh_art_perpetual_precision","bcoh_art_tactical_precision"],
+    ["bcoh_art_perpetual_precision","bcoh_relic_victorious_restoration"],
+    ["bcoh_art_tactical_precision","bcoh_relic_gun_strike_reload"],
+    ["bcoh_relic_victorious_restoration","bcoh_relic_honed_precision"],
+    ["bcoh_relic_gun_strike_reload","bcoh_relic_elite_hunter"]
+  ],
+  tiers:[
+    {name:"Standard",perks:[
+      ["bcoh_std_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:0,row:0}],
+      ["bcoh_std_divine_might","Divine Might","Damage increases by 10%.",{column:0,row:1}]
+    ]},
+    {name:"Master-Crafted",perks:[
+      ["bcoh_mc_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:1,row:0}],
+      ["bcoh_mc_adamant_hunter","Adamant Hunter","When your Health is below 30%, Headshots deal 25% more Damage.",{column:1,row:1}],
+      ["bcoh_mc_fast_reload","Fast Reload","Reload all Weapons 10% faster.",{column:2,row:0}],
+      ["bcoh_mc_cleaving_fire","Cleaving Fire","Shots will penetrate enemy Block Stances, dealing 25% of the usual Damage.",{column:2,row:1}]
+    ]},
+    {name:"Artificer",perks:[
+      ["bcoh_art_remote_threat","Remote Threat","Enemies at a distance of more than 25 metres take 20% more Damage.",{column:3,row:0}],
+      ["bcoh_art_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:3,row:1}],
+      ["bcoh_art_perpetual_precision","Perpetual Precision","Maximum Spread decreases by 10%.",{column:4,row:0}],
+      ["bcoh_art_tactical_precision","Tactical Precision","Headshots deal 30% more Damage. Ranged Damage decreases by 10%.",{column:4,row:1}]
+    ]},
+    {name:"Relic",perks:[
+      ["bcoh_relic_victorious_restoration","Victorious Restoration","Killing 10 enemies in rapid succession restores 1 Armour Segment. Cooldown is 30 seconds.",{column:5,row:0}],
+      ["bcoh_relic_gun_strike_reload","Gun Strike Reload","After a Gun Strike, the equipped Weapon instantly reloads.",{column:5,row:1}],
+      ["bcoh_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:6,row:0}],
+      ["bcoh_relic_elite_hunter","Elite Hunter","After killing a Majoris-level or higher enemy with a Melee Weapon, Headshots deal 50% more Damage for 10 seconds.",{column:6,row:1}]
+    ]}
+  ]
+};
+
+// Bulwark melee weapons populated from the current perk-tree architecture.
+WEAPONS.melee.weapons["Thunder Hammer"]={
+  treeMode:"connectionGraph",
+  variants:[
+    {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+    {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+    {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+    {id:"master_crafted_gamma",tier:"Master-Crafted",name:"Master-Crafted - Gamma"},
+    {id:"salvation_of_bakka_alpha",tier:"Artificer",name:"Salvation of Bakka - Alpha"},
+    {id:"salvation_of_bakka_beta",tier:"Artificer",name:"Salvation of Bakka - Beta"},
+    {id:"salvation_of_bakka_gamma",tier:"Artificer",name:"Salvation of Bakka - Gamma"},
+    {id:"salvation_of_bakka_delta",tier:"Artificer",name:"Salvation of Bakka - Delta"},
+    {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+    {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"},
+    {id:"ophelian_liberation_gamma",tier:"Relic",name:"Ophelian Liberation - Gamma"},
+    {id:"storms_dominion",tier:"Heroic",name:"Storm's Dominion"},
+    {id:"lord_executioners_axe",tier:"Heroic",name:"Lord Executioner's Axe"}
+  ],
+  layout:{columnCount:11,rowCount:4,tierHeadings:[
+    {name:"Standard",start:1,span:1},
+    {name:"Master-Crafted",start:2,span:3},
+    {name:"Artificer",start:5,span:3},
+    {name:"Relic",start:8,span:3},
+    {name:"Heroic",start:11,span:1}
+  ]},
+  roots:["th_std_armoured_strength","th_std_perpetual_strength"],
+  exclusiveGroups:[["th_std_armoured_strength","th_std_perpetual_strength"]],
+  connections:[
+    ["th_std_armoured_strength","th_mc_calm_before_the_storm"],
+    ["th_std_perpetual_strength","th_mc_fast_preparation"],
+    ["th_mc_calm_before_the_storm","th_mc_perpetual_strength_top"],
+    ["th_mc_fast_preparation","th_mc_perpetual_strength_bottom"],
+    ["th_mc_perpetual_strength_top","th_mc_perpetual_strength_bottom"],
+    ["th_mc_perpetual_strength_top","th_mc_extremis_slayer"],
+    ["th_mc_perpetual_strength_bottom","th_mc_shattering_impact"],
+    ["th_mc_extremis_slayer","th_art_reclamation"],
+    ["th_mc_shattering_impact","th_art_seismic_chain"],
+    ["th_art_reclamation","th_art_offense_initiated"],
+    ["th_art_seismic_chain","th_art_perpetual_strength"],
+    ["th_art_braced_preparation","th_art_offense_initiated"],
+    ["th_art_offense_initiated","th_art_perpetual_strength"],
+    ["th_art_perpetual_strength","th_art_after_aftershock"],
+    ["th_art_offense_initiated","th_art_hard_target"],
+    ["th_art_perpetual_strength","th_art_kill_streak"],
+    ["th_art_hard_target","th_relic_patience_rewarded"],
+    ["th_art_kill_streak","th_relic_aftershock_improved"],
+    ["th_relic_patience_rewarded","th_relic_majoris_slayer"],
+    ["th_relic_aftershock_improved","th_relic_minoris_slayer"],
+    ["th_relic_majoris_slayer","th_relic_minoris_slayer"],
+    ["th_relic_majoris_slayer","th_relic_reeling_blow"],
+    ["th_relic_minoris_slayer","th_relic_dead_end"]
+  ],
+  tiers:[
+    {name:"Standard",perks:[
+      ["th_std_armoured_strength","Armoured Strength","If you have Armour remaining, Melee Damage increases by 10%.",{column:0,row:1}],
+      ["th_std_perpetual_strength","Perpetual Strength","Melee Damage increases by 5%.",{column:0,row:2}]
+    ]},
+    {name:"Master-Crafted",perks:[
+      ["th_mc_calm_before_the_storm","Calm Before The Storm","When preparing Aftershock, you take 10% less Ranged Damage.",{column:1,row:1}],
+      ["th_mc_fast_preparation","Fast Preparation","Aftershock preparation time is reduced by 30%.",{column:1,row:2}],
+      ["th_mc_perpetual_strength_top","Perpetual Strength","Melee Damage increases by 5%.",{column:2,row:1}],
+      ["th_mc_perpetual_strength_bottom","Perpetual Strength","Melee Damage increases by 5%.",{column:2,row:2}],
+      ["th_mc_extremis_slayer","Extremis Slayer","Melee Damage against Extremis-level enemies increases by 15%.",{column:3,row:1}],
+      ["th_mc_shattering_impact","Shattering Impact","Ground Slam area-of-effect radius increases by 50%.",{column:3,row:2}]
+    ]},
+    {name:"Artificer",perks:[
+      ["th_art_reclamation","Reclamation","Aftershock and Ground Slam restore 100% more Contested Health.",{column:4,row:1}],
+      ["th_art_seismic_chain","Seismic Chain","After performing a Ground Slam, hold the Attack button to perform an additional Ground Slam.",{column:4,row:2}],
+      ["th_art_braced_preparation","Braced Preparation","While preparing Aftershock, you do not lose control upon taking Heavy Hits and cannot be knocked back.",{column:5,row:0}],
+      ["th_art_offense_initiated","Offense Initiated","If your Armour is fully depleted, this Weapon deals 10% more Melee Damage.",{column:5,row:1}],
+      ["th_art_perpetual_strength","Perpetual Strength","Melee Damage increases by 5%.",{column:5,row:2}],
+      ["th_art_after_aftershock","After Aftershock","After hitting an enemy with Aftershock, you deal 10% more Melee Damage for 10 seconds.",{column:5,row:3}],
+      ["th_art_hard_target","Hard Target","While performing a Light Combo, you take 15% less Ranged Damage.",{column:6,row:1}],
+      ["th_art_kill_streak","Kill Streak","After killing 7 enemies in rapid succession with a Light Combo, you do not lose control upon taking Heavy Hits and cannot be knocked back for 5 seconds. Cooldown is 10 seconds.",{column:6,row:2}]
+    ]},
+    {name:"Relic",perks:[
+      ["th_relic_patience_rewarded","Patience Rewarded","Aftershock hit restores 1 Armour Segment.",{column:7,row:1}],
+      ["th_relic_aftershock_improved","Aftershock Improved","Aftershock gains an additional spin.",{column:7,row:2}],
+      ["th_relic_majoris_slayer","Majoris Slayer","Melee Damage against Majoris-level enemies increases by 10%.",{column:8,row:1}],
+      ["th_relic_minoris_slayer","Minoris Slayer","Melee Damage against Minoris-level enemies increases by 20%.",{column:8,row:2}],
+      ["th_relic_reeling_blow","Reeling Blow","Enemies hit by Pommel Smash deal 30% less Damage for 4 seconds. Cooldown is 10 seconds.",{column:9,row:1}],
+      ["th_relic_dead_end","Dead End","Pommel Smash deals 50% more Damage.",{column:9,row:2}]
+    ]},
+    {name:"Heroic",perks:[
+      ["th_heroic_electrified_thunderclap","Electrified Thunderclap","Fully Charged Attacks leave behind a Shock Grenade effect.",{column:10,row:1,alwaysAvailable:true}],
+      ["th_heroic_whirling_strike","Whirling Strike","Replaces Aftershock with a spinning attack. Hitting at least 5 enemies in one attack grants 1 Adrenaline Surge stack.",{column:10,row:2,alwaysAvailable:true}]
+    ]}
+  ]
+};
+
+WEAPONS.melee.weapons["Chainsword"]={
+  treeMode:"connectionGraph",
+  variants:[
+    {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+    {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+    {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+    {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+    {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+    {id:"achortan_oath",tier:"Artificer",name:"Achortan Oath"},
+    {id:"cholers_teeth",tier:"Relic",name:"Choler's Teeth"},
+    {id:"aquilan_dedication",tier:"Relic",name:"Aquilan Dedication"},
+    {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+    {id:"double_edged_relic",tier:"Heroic",name:"Double-Edged Relic"},
+    {id:"white_scars",tier:"Heroic",name:"White Scars"}
+  ],
+  layout:{columnCount:9,rowCount:4,tierHeadings:[
+    {name:"Standard",start:1,span:1},
+    {name:"Master-Crafted",start:2,span:2},
+    {name:"Artificer",start:4,span:3},
+    {name:"Relic",start:7,span:2},
+    {name:"Heroic",start:9,span:1}
+  ]},
+  roots:["cs_std_armoured_strength","cs_std_perpetual_strength"],
+  exclusiveGroups:[["cs_std_armoured_strength","cs_std_perpetual_strength"]],
+  connections:[
+    ["cs_std_armoured_strength","cs_mc_crushing_heel"],
+    ["cs_std_perpetual_strength","cs_mc_swift_recovery"],
+    ["cs_mc_crushing_heel","cs_mc_perpetual_strength_top"],
+    ["cs_mc_swift_recovery","cs_mc_perpetual_strength_bottom"],
+    ["cs_mc_perpetual_strength_top","cs_mc_perpetual_strength_bottom"],
+    ["cs_mc_perpetual_strength_top","cs_art_reverberating_impact"],
+    ["cs_mc_perpetual_strength_bottom","cs_art_saw_blade"],
+    ["cs_art_reverberating_impact","cs_art_combined_onslaught"],
+    ["cs_art_saw_blade","cs_art_heavy_onslaught"],
+    ["cs_art_trampling_stride","cs_art_combined_onslaught"],
+    ["cs_art_combined_onslaught","cs_art_heavy_onslaught"],
+    ["cs_art_heavy_onslaught","cs_art_full_throttle"],
+    ["cs_art_combined_onslaught","cs_art_hard_target"],
+    ["cs_art_heavy_onslaught","cs_art_minoris_slayer"],
+    ["cs_art_hard_target","cs_relic_majoris_slayer"],
+    ["cs_art_minoris_slayer","cs_relic_extremis_slayer"],
+    ["cs_relic_majoris_slayer","cs_relic_extremis_slayer"],
+    ["cs_relic_majoris_slayer","cs_relic_kill_streak"],
+    ["cs_relic_extremis_slayer","cs_relic_momentum_gain"]
+  ],
+  tiers:[
+    {name:"Standard",perks:[
+      ["cs_std_armoured_strength","Armoured Strength","If you have Armour remaining, Melee Damage increases by 10%.",{column:0,row:1}],
+      ["cs_std_perpetual_strength","Perpetual Strength","Melee Damage increases by 5%.",{column:0,row:2}]
+    ]},
+    {name:"Master-Crafted",perks:[
+      ["cs_mc_crushing_heel","Crushing Heel","Enemies hit by Stomp deal 30% less Damage for 4 seconds. Cooldown is 10 seconds.",{column:1,row:1}],
+      ["cs_mc_swift_recovery","Swift Recovery","Heavy Attacks restore 100% more Contested Health. Applies to Quick Punch, Front Kick, Shoulder Bash, and Stomp.",{column:1,row:2}],
+      ["cs_mc_perpetual_strength_top","Perpetual Strength","Melee Damage increases by 5%.",{column:2,row:1}],
+      ["cs_mc_perpetual_strength_bottom","Perpetual Strength","Melee Damage increases by 5%.",{column:2,row:2}]
+    ]},
+    {name:"Artificer",perks:[
+      ["cs_art_reverberating_impact","Reverberating Impact","Stomp area-of-effect radius increases by 50%.",{column:3,row:1}],
+      ["cs_art_saw_blade","Saw Blade","Light Combo length increases from 4 to 5 strikes.",{column:3,row:2}],
+      ["cs_art_trampling_stride","Trampling Stride","After performing a Stomp, hold the Attack button to perform an additional Stomp.",{column:4,row:0}],
+      ["cs_art_combined_onslaught","Combined Onslaught","Light Combo Attacks with this Weapon deal 10% more Melee Damage.",{column:4,row:1}],
+      ["cs_art_heavy_onslaught","Heavy Onslaught","Heavy Attacks with this Weapon deal 15% more Melee Damage.",{column:4,row:2}],
+      ["cs_art_full_throttle","Full Throttle","Switches Punch with Full Throttle. Hold the Attack button to prepare the attack. Damage increases by 100% per 1 second while preparing.",{column:4,row:3}],
+      ["cs_art_hard_target","Hard Target","While performing a Light Combo, you take 15% less Ranged Damage.",{column:5,row:1}],
+      ["cs_art_minoris_slayer","Minoris Slayer","Melee Damage against Minoris-level enemies increases by 20%.",{column:5,row:2}]
+    ]},
+    {name:"Relic",perks:[
+      ["cs_relic_majoris_slayer","Majoris Slayer","Melee Damage against Majoris-level enemies increases by 10%.",{column:6,row:1}],
+      ["cs_relic_extremis_slayer","Extremis Slayer","Melee Damage against Extremis-level enemies increases by 15%.",{column:6,row:2}],
+      ["cs_relic_kill_streak","Kill Streak","After killing 7 enemies in rapid succession with a Light Combo, you do not lose control upon taking Heavy Hits and cannot be knocked back for 5 seconds. Cooldown is 10 seconds.",{column:7,row:1}],
+      ["cs_relic_momentum_gain","Momentum Gain","Each consecutive Light Attack increases Light Attack Melee Damage by 3% (up to 30%) for 3 seconds.",{column:7,row:2}]
+    ]},
+    {name:"Heroic",perks:[
+      ["cs_heroic_fistfight","Fistfight","You can perform an additional Heavy Attack after a Quick Punch. Front Kick is replaced with Quick Punch, and all Heavy Attacks deal 15% more Damage.",{column:8,row:1,alwaysAvailable:true}],
+      ["cs_heroic_fury_of_chogoris","Fury of Chogoris","Adrenaline Surge stacks are increased to 3. The third stack has a higher Damage bonus, while the bonus for the second stack is reduced.",{column:8,row:2,alwaysAvailable:true}]
+    ]}
+  ]
+};
+
+WEAPONS.melee.weapons["Power Fist"]={
+  treeMode:"connectionGraph",
+  variants:[
+    {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+    {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+    {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+    {id:"achortan_oath_alpha",tier:"Artificer",name:"Achortan Oath - Alpha"},
+    {id:"achortan_oath_beta",tier:"Artificer",name:"Achortan Oath - Beta"},
+    {id:"achortan_oath_gamma",tier:"Artificer",name:"Achortan Oath - Gamma"},
+    {id:"aggamedes_gift_alpha",tier:"Relic",name:"Aggamedes's Gift - Alpha"},
+    {id:"aggamedes_gift_beta",tier:"Relic",name:"Aggamedes's Gift - Beta"},
+    {id:"aggamedes_gift_gamma",tier:"Relic",name:"Aggamedes's Gift - Gamma"},
+    {id:"deaths_grasp",tier:"Heroic",name:"Death's Grasp"},
+    {id:"deathwatch_power_fist",tier:"Heroic",name:"Deathwatch Power Fist"}
+  ],
+  layout:{columnCount:9,rowCount:4,tierHeadings:[
+    {name:"Standard",start:1,span:1},
+    {name:"Master-Crafted",start:2,span:2},
+    {name:"Artificer",start:4,span:3},
+    {name:"Relic",start:7,span:2},
+    {name:"Heroic",start:9,span:1}
+  ]},
+  roots:["pf_std_armoured_strength","pf_std_perpetual_strength"],
+  exclusiveGroups:[["pf_std_armoured_strength","pf_std_perpetual_strength"]],
+  connections:[
+    ["pf_std_armoured_strength","pf_mc_swift_recovery"],
+    ["pf_std_perpetual_strength","pf_mc_heavy_penetration"],
+    ["pf_mc_swift_recovery","pf_mc_perpetual_strength_top"],
+    ["pf_mc_heavy_penetration","pf_mc_perpetual_strength_bottom"],
+    ["pf_mc_perpetual_strength_top","pf_mc_perpetual_strength_bottom"],
+    ["pf_mc_perpetual_strength_top","pf_art_focused_intention"],
+    ["pf_mc_perpetual_strength_bottom","pf_art_rally"],
+    ["pf_art_focused_intention","pf_art_tide_of_battle"],
+    ["pf_art_rally","pf_art_strength_of_will"],
+    ["pf_art_following_blow","pf_art_tide_of_battle"],
+    ["pf_art_tide_of_battle","pf_art_strength_of_will"],
+    ["pf_art_strength_of_will","pf_art_ground_shake"],
+    ["pf_art_tide_of_battle","pf_art_combo"],
+    ["pf_art_strength_of_will","pf_art_concussive_impact"],
+    ["pf_art_combo","pf_relic_majoris_slayer"],
+    ["pf_art_concussive_impact","pf_relic_minoris_slayer"],
+    ["pf_relic_majoris_slayer","pf_relic_minoris_slayer"],
+    ["pf_relic_majoris_slayer","pf_relic_heavy_armament"],
+    ["pf_relic_minoris_slayer","pf_relic_reeling_blow"]
+  ],
+  tiers:[
+    {name:"Standard",perks:[
+      ["pf_std_armoured_strength","Armoured Strength","If you have Armour remaining, Melee Damage increases by 10%.",{column:0,row:1}],
+      ["pf_std_perpetual_strength","Perpetual Strength","Melee Damage increases by 5%.",{column:0,row:2}]
+    ]},
+    {name:"Master-Crafted",perks:[
+      ["pf_mc_swift_recovery","Swift Recovery","Heavy Attacks restore 100% more Contested Health. Applies to Thrust Jab, Backfist, Hammer Hook, Backfist 2, and Thrust Jab 2.",{column:1,row:1}],
+      ["pf_mc_heavy_penetration","Heavy Penetration","Heavy Attack preparation time is reduced by 30%. Applies to Thrust Jab, Backfist, Hammer Hook, Backfist 2, and Thrust Jab 2.",{column:1,row:2}],
+      ["pf_mc_perpetual_strength_top","Perpetual Strength","Melee Damage increases by 5%.",{column:2,row:1}],
+      ["pf_mc_perpetual_strength_bottom","Perpetual Strength","Melee Damage increases by 5%.",{column:2,row:2}]
+    ]},
+    {name:"Artificer",perks:[
+      ["pf_art_focused_intention","Focused Intention","When your Health is below 30%, you take 50% less Health Damage while preparing Heavy Attacks.",{column:3,row:1}],
+      ["pf_art_rally","Rally","When your Health is below 30%, a successful Backfist 2 or Thrust Jab 2 restores 1 Armour Segment.",{column:3,row:2}],
+      ["pf_art_following_blow","Following Blow","Backfist and Backfist 2 can be performed instantly after a charged Thrust Jab or Hammer Hook.",{column:4,row:0}],
+      ["pf_art_tide_of_battle","Tide Of Battle","Power Wave forward distance increases by 100% to 8 metres. Applies to Thrust Jab, Backfist, Hammer Hook, Backfist 2, and Thrust Jab 2.",{column:4,row:1}],
+      ["pf_art_strength_of_will","Strength of Will","While performing a Heavy Attack, you take 20% less Ranged Damage.",{column:4,row:2}],
+      ["pf_art_ground_shake","Ground Shake","Switches Thrust Jab with Ground Shake. Slam the ground to deal area-of-effect Damage in a 10-metre radius.",{column:4,row:3}],
+      ["pf_art_combo","Combo","After a successful Heavy Attack, the next Light Attack deals 10% more Melee Damage.",{column:5,row:1}],
+      ["pf_art_concussive_impact","Concussive Impact","Backfist 2 and Thrust Jab 2 area-of-effect radius increases by 50%.",{column:5,row:2}]
+    ]},
+    {name:"Relic",perks:[
+      ["pf_relic_majoris_slayer","Majoris Slayer","Melee Damage against Majoris-level enemies increases by 10%.",{column:6,row:1}],
+      ["pf_relic_minoris_slayer","Minoris Slayer","Melee Damage against Minoris-level enemies increases by 20%.",{column:6,row:2}],
+      ["pf_relic_heavy_armament","Heavy Armament","Cannon Punch deals 50% more Damage.",{column:7,row:1}],
+      ["pf_relic_reeling_blow","Reeling Blow","Enemies hit by Cannon Punch deal 30% less Damage for 4 seconds. Cooldown is 10 seconds.",{column:7,row:2}]
+    ]},
+    {name:"Heroic",perks:[
+      ["pf_heroic_follow_up_shot","Follow-Up Shot","Performing a Finisher marks a nearby Majoris-level or higher enemy for a Gun Strike. Light Attack Damage increases by 200%, but Charged Attack Damage decreases by 50%.",{column:8,row:1,alwaysAvailable:true}],
+      ["pf_heroic_burning_impact","Burning Impact","After a Light Attack, pause to enter a stance, then follow with another Light Attack to fire a Melta Blast that inflicts Burn. A Melta Blast can also be fired after a single charge in hold stance.",{column:8,row:2,alwaysAvailable:true}]
+    ]}
+  ]
 };
 
 function getClassData(className){
