@@ -1,4 +1,32 @@
-# Space Marine 2 Build Planner v0.8.0
+# Space Marine 2 Build Planner v0.9.0
+
+
+## v0.9.0 — source/data separation
+
+- Separated the editable **class reference data** from application logic into `src/data/classes.json`. This file now owns the seven class definitions, class perk data, class weapon availability/default loadouts, and class dropdown order.
+- Separated the editable **weapon reference data** into `src/data/weapons.json`. This file now owns all canonical weapon variants, perk trees, graph relationships, exclusive groups, and Heroic weapon-variant/perk mappings.
+- Restored `src/main.js` as the application source. It contains the planner UI, selection rules, build management, and vault persistence logic without the large embedded class/weapon datasets.
+- Added a dependency-free `build.js`. Running `node build.js` validates the JSON data and injects it into the root `main.js` used by Obsidian.
+- The root `main.js` remains a self-contained distributable bundle, so Obsidian/BRAT **does not need to load the JSON files at runtime**. This keeps the existing desktop/iOS runtime behavior unchanged.
+- Build storage remains `SM2 Build Planner/builds.json` in the vault with the same schema and v0.8.0 migration behavior. No build migration is required for v0.9.0.
+- No class perks, weapon perks, weapon variants, selected-state colors, Heroic behavior, selector ordering, or UI behavior were intentionally changed in this release.
+
+### Development layout
+
+```text
+sm2-build-planner/
+├── main.js                 # generated Obsidian runtime bundle
+├── manifest.json
+├── styles.css
+├── build.js                # builds/validates main.js
+└── src/
+    ├── main.js             # application source
+    └── data/
+        ├── classes.json    # class/perk/loadout reference data
+        └── weapons.json    # weapon/perk/Heroic reference data
+```
+
+After editing anything under `src/`, run `node build.js` before packaging or publishing a release.
 
 
 ## v0.8.0 — Obsidian vault build storage

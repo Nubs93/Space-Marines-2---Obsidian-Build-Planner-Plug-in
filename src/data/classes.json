@@ -1,0 +1,1643 @@
+{
+  "dropdownOrder": [
+    "Tactical",
+    "Vanguard",
+    "Assault",
+    "Bulwark",
+    "Sniper",
+    "Heavy",
+    "Techmarine"
+  ],
+  "classes": {
+    "Techmarine": {
+      "startingPerk": [
+        "techmarine_tarantula_sentry",
+        "Tarantula Sentry Gun",
+        "You can detect and activate Tarantula Sentry Guns. They automatically attack nearby enemies until they run out of ammunition or are destroyed."
+      ],
+      "categories": [
+        {
+          "name": "Core — Combat",
+          "rows": [
+            [
+              [
+                "explosive_enfilade",
+                "Explosive Enfilade",
+                "After using Equipment, ranged damage increases by 15% for 10 seconds."
+              ],
+              [
+                "precision_enhancement",
+                "Precision Enhancement",
+                "Servo-Gun locks onto a single target and fires powerful precision shots."
+              ],
+              [
+                "plasma_enhancement",
+                "Plasma Enhancement",
+                "Servo-Gun fires exploding Plasma projectiles."
+              ]
+            ],
+            [
+              [
+                "arc_cleave",
+                "Arc Cleave",
+                "Charged melee attacks deal increased damage."
+              ],
+              [
+                "methodical_destruction",
+                "Methodical Destruction",
+                "Enemies damaged by Equipment take increased damage for 10 seconds."
+              ],
+              [
+                "omnissian_axe_deflection",
+                "Omnissian Axe Deflection",
+                "After a Perfect Parry or Perfect Block, ranged damage taken is reduced for a duration."
+              ]
+            ],
+            [
+              [
+                "explosives_adept",
+                "Explosives Adept",
+                "Equipment damage is increased."
+              ],
+              [
+                "push_the_advantage",
+                "Push the Advantage",
+                "After a Finisher, your melee weapon deals increased damage for 15 seconds."
+              ],
+              [
+                "long_range_barrage",
+                "Long-Range Barrage",
+                "Ranged damage at ranges greater than 20 metres increases."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "reinforced_position",
+                "Reinforced Position",
+                "Squad members near an active Tarantula Sentry Gun take less damage and deal more damage."
+              ],
+              [
+                "battlefield_repairs",
+                "Battlefield Repairs",
+                "Medicae Stimms fully regenerate squad Armour and grant an additional Armour Segment."
+              ],
+              [
+                "combat_squad_resupply",
+                "Combat Squad Resupply",
+                "Squad members gain 1 additional Equipment, except Melta Bomb."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "designated_target",
+                "Designated Target",
+                "Enemies hit by the Servo-Gun take increased damage for 10 seconds."
+              ],
+              [
+                "inexorable_salvo",
+                "Inexorable Salvo",
+                "While Servo-Gun is active, Heavy Hits do not make you lose control and you cannot be knocked back."
+              ],
+              [
+                "synergistic_arsenal",
+                "Synergistic Arsenal",
+                "Servo-Gun recharge rate increases when near a Tarantula Sentry Gun."
+              ]
+            ],
+            [
+              [
+                "augmented_ammunition_feed",
+                "Augmented Ammunition Feed",
+                "Servo-Gun recharges faster."
+              ],
+              [
+                "augmented_tarantula",
+                "Augmented Tarantula",
+                "Tarantula Sentry Gun damage and ammunition increase."
+              ],
+              [
+                "replenishing_salvo",
+                "Replenishing Salvo",
+                "Servo-Gun kills can restore Equipment, with a cooldown."
+              ]
+            ],
+            [
+              [
+                "counteroffensive_protocols",
+                "Counteroffensive Protocols",
+                "After using the Servo-Gun, melee damage increases for 10 seconds."
+              ],
+              [
+                "fortifying_salvo",
+                "Fortifying Salvo",
+                "Servo-Gun kills restore 1 Armour Segment, with a cooldown."
+              ],
+              [
+                "strategic_gun_strike",
+                "Strategic Gun Strike",
+                "Servo-Gun targets Majoris-level or higher enemies and deals more damage beyond 20 metres."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "decapitating_stratagem",
+                "Decapitating Stratagem",
+                "Killing or incapacitating Majoris-level or higher enemies with the Servo-Gun regenerates its Ability Charge, with a cooldown."
+              ],
+              [
+                "lethal_perimeter",
+                "Lethal Perimeter",
+                "Servo-Gun marks a zone and automatically attacks enemies entering it using less energy per shot."
+              ],
+              [
+                "omnissiahs_fury",
+                "Omnissiah's Fury",
+                "Servo-Gun shots set enemies on fire."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "chained_headshots",
+          "Chained Headshots",
+          "Headshot damage increases with consecutive headshots."
+        ],
+        [
+          "indomitable",
+          "Indomitable",
+          "Become invulnerable while activating the Tarantula Sentry Gun."
+        ],
+        [
+          "stimm_boost",
+          "Stimm Boost",
+          "Medicae Stimms restore more Health."
+        ],
+        [
+          "volatile_sentry",
+          "Volatile Sentry",
+          "Tarantula Sentry Gun explosion damage and radius increase."
+        ],
+        [
+          "blast_radius",
+          "Blast Radius",
+          "Equipment Damage Radius increases."
+        ],
+        [
+          "defensive_stance",
+          "Defensive Stance",
+          "If surrounded by 5+ enemies, ranged damage taken is reduced."
+        ],
+        [
+          "furious_gun_strike",
+          "Furious Gun Strike",
+          "After Gun Strike, melee damage increases briefly."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [
+          "Plasma Incinerator",
+          "Auto Bolt Rifle",
+          "Bolt Rifle",
+          "Heavy Bolt Rifle",
+          "Occulus Bolt Carbine"
+        ],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Plasma Pistol",
+          "Inferno Pistol",
+          "Neo-Volkite Pistol"
+        ],
+        "melee": [
+          "Omnissian Axe",
+          "Combat Knife",
+          "Power Sword",
+          "Power Axe"
+        ]
+      },
+      "defaultLoadout": {
+        "primary": {
+          "weapon": "Plasma Incinerator",
+          "variant": "standard_issue"
+        },
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        },
+        "melee": {
+          "weapon": "Omnissian Axe",
+          "variant": "standard_issue"
+        }
+      }
+    },
+    "Heavy": {
+      "startingPerk": [
+        "heavy_iron_halo",
+        "Iron Halo",
+        "When Iron Halo is active, all Squad Members within 50 metres take 10% less Damage from Ranged Attacks."
+      ],
+      "categories": [
+        {
+          "name": "Core",
+          "rows": [
+            [
+              [
+                "heavy_restoration",
+                "Restoration",
+                "Killing 10 enemies within 5 seconds restores 1 Armour Segment. Cooldown is 15 seconds."
+              ],
+              [
+                "heavy_multi_kill",
+                "Multi-Kill",
+                "Killing 5 or more enemies with one shot from a Multi-Melta restores Ammo by 1."
+              ],
+              [
+                "heavy_auxiliary_ammunition",
+                "Auxiliary Ammunition",
+                "When your Primary Weapon is out of Ammo, killing 7 enemies within 6 seconds restores Ammo Reserve by 20%. Cooldown is 30 seconds."
+              ]
+            ],
+            [
+              [
+                "heavy_thermal_boost",
+                "Thermal Boost",
+                "When a Ranged Weapon is 50% Overheated or has 50% ammo remaining in its Magazine, Ranged Damage increases by 15%."
+              ],
+              [
+                "heavy_fortitude",
+                "Fortitude",
+                "Health increases by 30%."
+              ],
+              [
+                "heavy_strategic_stand",
+                "Strategic Stand",
+                "While in Heavy Stance, dealing Damage restores 15% more Contested Health; you do not lose control upon taking Heavy Hits and cannot be knocked back, but you cannot move."
+              ]
+            ],
+            [
+              [
+                "heavy_enhanced_force",
+                "Enhanced Force",
+                "Melee Damage increases by 30%."
+              ],
+              [
+                "heavy_overwhelming_power",
+                "Overwhelming Power",
+                "When Iron Halo is active, all Squad Members within 10 metres deal 10% more Ranged Damage."
+              ],
+              [
+                "heavy_versatility",
+                "Versatility",
+                "After switching Weapons, your Secondary Weapon deals 20% more Damage. The effect lasts until reloading or switching back to your Primary Weapon."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "heavy_encompassing_aegis",
+                "Encompassing Aegis",
+                "All Squad Members take 25% less Damage from Ranged Attacks."
+              ],
+              [
+                "heavy_additional_supplies",
+                "Additional Supplies",
+                "Ammo Capacity for all Squad Members' Weapons increases by 25%."
+              ],
+              [
+                "heavy_bonds_of_brotherhood",
+                "Bonds of Brotherhood",
+                "Reviving a Squad Member restores them to full Health."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "heavy_adamant_will",
+                "Adamant Will",
+                "After Iron Halo deactivates, you take 20% less Health Damage for 10 seconds."
+              ],
+              [
+                "heavy_consecutive_execution",
+                "Consecutive Execution",
+                "Killing 7 enemies within 5 seconds restores Equipment Charge. Cooldown is 90 seconds."
+              ],
+              [
+                "heavy_emperors_protection",
+                "Emperor's Protection",
+                "When Iron Halo expends all its energy, 1 Armour Segment is restored for all Squad Members."
+              ]
+            ],
+            [
+              [
+                "heavy_obdurate_bastion",
+                "Obdurate Bastion",
+                "Iron Halo's Durability increases by 20%."
+              ],
+              [
+                "heavy_field_adjustment",
+                "Field Adjustment",
+                "Iron Halo recharges 20% faster, but its Durability is reduced by 25%."
+              ],
+              [
+                "heavy_power_regulator",
+                "Power Regulator",
+                "Iron Halo loses energy 20% more slowly."
+              ]
+            ],
+            [
+              [
+                "heavy_saving_grace",
+                "Saving Grace",
+                "Reviving a Squad Member fully restores Iron Halo's Charge and all Armour Segments."
+              ],
+              [
+                "heavy_brute_force",
+                "Brute Force",
+                "When Iron Halo is in cooldown, Ranged Damage increases by 15%."
+              ],
+              [
+                "heavy_wrath_of_the_imperium",
+                "Wrath of the Imperium",
+                "When Iron Halo expends all its energy, enemies in a 10-metre radius take significant Damage that scales with difficulty."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "heavy_offensive_capability",
+                "Offensive Capability",
+                "When active, Iron Halo deals Damage over time that scales with difficulty to all enemies within 5 metres."
+              ],
+              [
+                "heavy_coolant_reserve",
+                "Coolant Reserve",
+                "If both Squad Members are Incapacitated or grabbed, your Primary Weapon will not Overheat and you deal 15% more Damage."
+              ],
+              [
+                "heavy_conversion_field",
+                "Conversion Field",
+                "When Iron Halo is active, all Squad Members within 20 metres regenerate Ability Charge 50% faster."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "heavy_reverberating_impact",
+          "Reverberating Impact",
+          "Stomp area-of-effect radius increases by 50%."
+        ],
+        [
+          "heavy_auxiliary_reload",
+          "Auxiliary Reload",
+          "Melee kills of Extremis-level or higher enemies restore your Primary Weapon's Ammo by 1 Magazine."
+        ],
+        [
+          "heavy_conviction",
+          "Conviction",
+          "When your Armour is fully depleted, you take 25% less Health Damage for 10 seconds."
+        ],
+        [
+          "heavy_exponential_force",
+          "Exponential Force",
+          "Melee Damage increases by 100%."
+        ],
+        [
+          "heavy_indomitable_spirit",
+          "Indomitable Spirit",
+          "While performing a Gun Strike, you do not lose control upon taking Heavy Hits and cannot be knocked back."
+        ],
+        [
+          "heavy_honed_precision",
+          "Honed Precision",
+          "Equipped Weapon's Maximum Spread decreases by 25% when firing without aiming."
+        ],
+        [
+          "heavy_duellist",
+          "Duellist",
+          "Perfect Parry and Perfect Block windows increase by 25%."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [
+          "Heavy Bolter",
+          "Heavy Plasma Incinerator",
+          "Multi-Melta",
+          "Pyrecannon",
+          "Heavy Bolt Rifle"
+        ],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Plasma Pistol",
+          "Inferno Pistol"
+        ],
+        "melee": []
+      },
+      "defaultLoadout": {
+        "primary": {
+          "weapon": "Heavy Bolter",
+          "variant": "standard_issue"
+        },
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        }
+      }
+    },
+    "Sniper": {
+      "startingPerk": [
+        "sniper_camo_cloak",
+        "Camo Cloak",
+        "Headshot Damage increases by 10%."
+      ],
+      "categories": [
+        {
+          "name": "Core",
+          "rows": [
+            [
+              [
+                "sniper_block_break",
+                "Block Break",
+                "Shots penetrate enemy Block Stances, dealing 50% of the usual Damage."
+              ],
+              [
+                "sniper_melee_mastery",
+                "Melee Mastery",
+                "Melee Damage increases by 20% against Majoris-level and higher enemies."
+              ],
+              [
+                "sniper_medicae_adept",
+                "Medicae Adept",
+                "You revive Squad Members 30% faster."
+              ]
+            ],
+            [
+              [
+                "sniper_high_capacity",
+                "High Capacity",
+                "The maximum amount of Ammo you can carry increases by 10%."
+              ],
+              [
+                "sniper_vantage_point",
+                "Vantage Point",
+                "Remaining stationary for 2 seconds increases your Ranged Weapons' Damage by 20%."
+              ],
+              [
+                "sniper_adaptability",
+                "Adaptability",
+                "Reloading while having Low Ammo or manually activating Camo Cloak increases Melee Damage by 25% for 10 seconds."
+              ]
+            ],
+            [
+              [
+                "sniper_iron_grip",
+                "Iron Grip",
+                "Weapon Spread and Recoil are reduced by 20%, and Ranged Damage against Terminus-level enemies is increased by 15% for Bolt Sniper Rifles and Stalker Bolt Rifles."
+              ],
+              [
+                "sniper_dexterous_hands",
+                "Dexterous Hands",
+                "Bolt Carbines reload 20% faster, and their Weapon Spread and Recoil are reduced by 15%."
+              ],
+              [
+                "sniper_lethal_efficiency",
+                "Lethal Efficiency",
+                "Killing more than 1 enemy with one shot from a Las Fusil restores its charge by 1."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "sniper_marksmanship",
+                "Marksmanship",
+                "Headshot Damage increases by 10% for all Squad Members."
+              ],
+              [
+                "sniper_precision_targeting",
+                "Precision Targeting",
+                "Weapon Spread is reduced by 25%, and Ranged Damage against Extremis- and Terminus-level enemies is increased by 15% for all Squad Members."
+              ],
+              [
+                "sniper_squad_renewal",
+                "Squad Renewal",
+                "A Headshot kill restores Ability Charge by 10% for any Squad Member."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "sniper_purification",
+                "Purification",
+                "Manually activating Camo Cloak removes negative Status Effects and restores all Contested Health."
+              ],
+              [
+                "sniper_efficient_readiness",
+                "Efficient Readiness",
+                "Camo Cloak increases movement speed by 20%, and manually activating Camo Cloak automatically reloads Ranged Weapons. This effect lasts 5 seconds after deactivation."
+              ],
+              [
+                "sniper_renewal",
+                "Renewal",
+                "A Headshot kill restores Camo Cloak's Charge by 5%."
+              ]
+            ],
+            [
+              [
+                "sniper_guardian_protocol",
+                "Guardian Protocol",
+                "When you are reviving a Squad Member, Camo Cloak hides you and the Squad Member for 5 seconds without spending Charge."
+              ],
+              [
+                "sniper_targeted_shot",
+                "Targeted Shot",
+                "The first Ranged Attack that breaks Camo Cloak deals 75% more Damage."
+              ],
+              [
+                "sniper_tactical_ambush",
+                "Tactical Ambush",
+                "The first Melee Attack that breaks Camo Cloak deals 150% more Damage."
+              ]
+            ],
+            [
+              [
+                "sniper_persistence",
+                "Persistence",
+                "When Camo Cloak deactivates, you take 20% less Health Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back for 10 seconds."
+              ],
+              [
+                "sniper_lingering_concealment",
+                "Lingering Concealment",
+                "After performing an attack that breaks Camo Cloak, you remain hidden for 2 seconds."
+              ],
+              [
+                "sniper_ambush",
+                "Ambush",
+                "When Camo Cloak deactivates, it startles and slows nearby enemies for 10 seconds. They temporarily lose control or are knocked back. Cooldown is 15 seconds."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "sniper_evasion",
+                "Evasion",
+                "After a perfectly timed Dodge, Camo Cloak automatically activates without spending Charge for 5 seconds. Cooldown is 30 seconds."
+              ],
+              [
+                "sniper_emergency_override",
+                "Emergency Override",
+                "When you receive Lethal Damage, Camo Cloak automatically activates without spending Charge and you become Invulnerable for 5 seconds. Cooldown is 180 seconds."
+              ],
+              [
+                "sniper_pattern_of_excellence",
+                "Pattern of Excellence",
+                "Performing 3 consecutive Headshots restores Equipment Charge by 1. Cooldown is 30 seconds."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "sniper_emperors_grace",
+          "Emperor's Grace",
+          "When Camo Cloak activates, you become Invulnerable to Damage for 2 seconds."
+        ],
+        [
+          "sniper_versatile_precision",
+          "Versatile Precision",
+          "Performing a kill with your Secondary Weapon restores 15% of your Primary Weapon's Ammo. Cooldown is 15 seconds."
+        ],
+        [
+          "sniper_material_upgrade",
+          "Material Upgrade",
+          "Equipment Damage radius increases by 15%."
+        ],
+        [
+          "sniper_versatility",
+          "Versatility",
+          "After switching Weapons, your Secondary Weapon deals 20% more Damage. The effect lasts until reloading or switching back to your Primary Weapon."
+        ],
+        [
+          "sniper_indomitable_spirit",
+          "Indomitable Spirit",
+          "While performing a Gun Strike, you do not lose control upon taking Heavy Hits and cannot be knocked back."
+        ],
+        [
+          "sniper_conviction",
+          "Conviction",
+          "When your Armour is fully depleted, you take 25% less Health Damage for 15 seconds."
+        ],
+        [
+          "sniper_exacting_focus",
+          "Exacting Focus",
+          "After a Gun Strike, you deal 20% more Ranged Damage for 10 seconds."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [
+          "Stalker Bolt Rifle",
+          "Instigator Bolt Carbine",
+          "Bolt Sniper Rifle",
+          "Bolt Carbine",
+          "Las Fusil"
+        ],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Inferno Pistol"
+        ],
+        "melee": [
+          "Combat Knife"
+        ]
+      },
+      "defaultLoadout": {
+        "primary": {
+          "weapon": "Stalker Bolt Rifle",
+          "variant": "standard_issue"
+        },
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        },
+        "melee": {
+          "weapon": "Combat Knife",
+          "variant": "standard_issue"
+        }
+      }
+    },
+    "Bulwark": {
+      "startingPerk": [
+        "bulwark_chapter_banner",
+        "Chapter Banner",
+        "Health increases by 30%."
+      ],
+      "categories": [
+        {
+          "name": "Core",
+          "rows": [
+            [
+              [
+                "bulwark_conviction",
+                "Conviction",
+                "When your Armour is fully depleted, you take 25% less Health Damage for 10 seconds."
+              ],
+              [
+                "bulwark_intimidating_aura",
+                "Intimidating Aura",
+                "A perfectly timed Parry deals area-of-effect Damage that scales with difficulty within a 5-metre radius."
+              ],
+              [
+                "bulwark_forward_momentum",
+                "Forward Momentum",
+                "After a Shield Bash or Thunder Hammer Pommel Smash, Melee Damage increases by 30% for 10 seconds."
+              ]
+            ],
+            [
+              [
+                "bulwark_armour_of_contempt",
+                "Armour of Contempt",
+                "When you Block a Ranged Attack, enemies within a 10-metre radius take the Damage instead."
+              ],
+              [
+                "bulwark_shock_and_awe",
+                "Shock and Awe",
+                "Enemies in a Shock area take 25% more Damage."
+              ],
+              [
+                "bulwark_scrambled_targeting",
+                "Scrambled Targeting",
+                "If you are surrounded by 5 or more enemies, you take 25% less Damage from Ranged Attacks."
+              ]
+            ],
+            [
+              [
+                "bulwark_defensive_advantage",
+                "Defensive Advantage",
+                "A perfectly timed Parry or Block creates a Shock area for 5 seconds. Cooldown is 30 seconds."
+              ],
+              [
+                "bulwark_steel_within",
+                "Steel Within",
+                "When your Health is less than 50%, you take 30% less Health Damage."
+              ],
+              [
+                "bulwark_armour_reinforcement",
+                "Armour Reinforcement",
+                "Non-Finisher Gun Strikes restore 1 Armour Segment."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "bulwark_focused_restoration",
+                "Focused Restoration",
+                "Every 30 seconds, all Squad Members automatically restore 1 Armour Segment."
+              ],
+              [
+                "bulwark_advanced_conditioning",
+                "Advanced Conditioning",
+                "Contested Health fades 50% more slowly for all Squad Members."
+              ],
+              [
+                "bulwark_effective_formation",
+                "Effective Formation",
+                "All Squad Members take 20% less Health Damage from Extremis- and Terminus-level enemies."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "bulwark_purity_of_purpose",
+                "Purity of Purpose",
+                "The banner deals Damage that scales with difficulty over time to enemies within its area of effect."
+              ],
+              [
+                "bulwark_rapid_regeneration",
+                "Rapid Regeneration",
+                "The banner restores Armour 300% faster, but its Duration is reduced to 10 seconds."
+              ],
+              [
+                "bulwark_focused_strength",
+                "Focused Strength",
+                "Shield Bash knocks enemies back and makes them lose control for a longer period of time."
+              ]
+            ],
+            [
+              [
+                "bulwark_concussive_force",
+                "Concussive Force",
+                "Shield Bash deals 200% more Damage. Thunder Hammer Pommel Smash deals 100% more Damage and deals area-of-effect Damage within a 7-metre radius. Cooldown is 5 seconds."
+              ],
+              [
+                "bulwark_glorys_shield",
+                "Glory's Shield",
+                "All Squad Members within the banner's area of effect take 20% less Damage, and the banner lasts 20% longer."
+              ],
+              [
+                "bulwark_invigorating_icon",
+                "Invigorating Icon",
+                "When the banner is activated, all Squad Members regain maximum Contested Health, but Chapter Banner recharges 50% slower."
+              ]
+            ],
+            [
+              [
+                "bulwark_rejuvenating_effect",
+                "Rejuvenating Effect",
+                "When the banner is activated, it revives Incapacitated Squad Members within its area of effect."
+              ],
+              [
+                "bulwark_merciless_resolve",
+                "Merciless Resolve",
+                "After a Shield Bash or Thunder Hammer Pommel Smash, Melee Damage increases by 15%, you do not lose control upon taking Heavy Hits and you cannot be knocked back for 10 seconds."
+              ],
+              [
+                "bulwark_inspiration",
+                "Inspiration",
+                "All Squad Members within the banner's area of effect deal 20% more Damage."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "bulwark_emergency_countermeasure",
+                "Emergency Countermeasure",
+                "When your Armour is depleted, a reserve Shock Grenade automatically detonates at your position. Cooldown is 45 seconds."
+              ],
+              [
+                "bulwark_defensive_mastery",
+                "Defensive Mastery",
+                "A perfectly timed Parry instantly Incapacitates a Majoris- or Extremis-level enemy. Cooldown is 90 seconds."
+              ],
+              [
+                "bulwark_armoured_advance",
+                "Armoured Advance",
+                "If you have Armour remaining, you do not lose control upon taking Heavy Hits and you cannot be knocked back."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "bulwark_auxiliary_reload",
+          "Auxiliary Reload",
+          "Melee kills of Extremis-level or higher enemies restore your Primary Weapon's Ammo by 1 Magazine."
+        ],
+        [
+          "bulwark_resilience",
+          "Resilience",
+          "Medicae Stimms restore 40% more Health."
+        ],
+        [
+          "bulwark_overcharge",
+          "Overcharge",
+          "Charged Attack Damage increases by 20%."
+        ],
+        [
+          "bulwark_powerful_shot",
+          "Powerful Shot",
+          "Ranged Damage increases by 20%."
+        ],
+        [
+          "bulwark_masterful_defence",
+          "Masterful Defence",
+          "Ability Charge is restored by 1% for every blocked Ranged Attack."
+        ],
+        [
+          "bulwark_standard_bearer",
+          "Standard Bearer",
+          "When Chapter Banner activates, you become Invulnerable to Damage for 2 seconds."
+        ],
+        [
+          "bulwark_emboldened_stand",
+          "Emboldened Stand",
+          "When the Chapter Banner is active, all Squad Members do not lose control upon taking Heavy Hits and cannot be knocked back within its zone."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Plasma Pistol",
+          "Neo-Volkite Pistol",
+          "Bolt Carbine One-Handed"
+        ],
+        "melee": [
+          "Thunder Hammer",
+          "Chainsword",
+          "Power Fist",
+          "Power Sword",
+          "Power Axe"
+        ]
+      },
+      "defaultLoadout": {
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        },
+        "melee": {
+          "weapon": "Chainsword",
+          "variant": "standard_issue"
+        }
+      }
+    },
+    "Assault": {
+      "startingPerk": [
+        "assault_jump_pack",
+        "Jump Pack",
+        "Perfect Dodge timing increases by 50%."
+      ],
+      "categories": [
+        {
+          "name": "Core",
+          "rows": [
+            [
+              [
+                "assault_winged_fury",
+                "Winged Fury",
+                "Damage from Melee Attacks executed while sprinting or dashing increases by 100%. Deals area-of-effect Damage within a 7-metre radius. Cooldown is 5 seconds."
+              ],
+              [
+                "assault_overcharge",
+                "Overcharge",
+                "Damage of Charged Attacks increases by 25%."
+              ],
+              [
+                "assault_armour_reinforcement",
+                "Armour Reinforcement",
+                "Non-Finisher Gun Strikes also restore 1 Armour Segment."
+              ]
+            ],
+            [
+              [
+                "assault_auxiliary_arsenal",
+                "Auxiliary Arsenal",
+                "Secondary Weapon's Damage increases by 20%."
+              ],
+              [
+                "assault_defense_mechanism",
+                "Defense Mechanism",
+                "Contested Health fades 50% more slowly."
+              ],
+              [
+                "assault_consecutive_execution",
+                "Consecutive Execution",
+                "Killing 7 enemies within 6 seconds restores Equipment Charge by 1. Cooldown is 90 seconds."
+              ]
+            ],
+            [
+              [
+                "assault_perseverance",
+                "Perseverance",
+                "While performing Charged Attacks, you take 25% less Health Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back."
+              ],
+              [
+                "assault_knowledge_of_the_enemy",
+                "Knowledge of the Enemy",
+                "Melee Damage increases by 15% against Majoris- or Extremis-level enemies."
+              ],
+              [
+                "assault_act_of_attrition",
+                "Act of Attrition",
+                "Enemies hit by Damage from Melee Attacks executed while sprinting or dashing take 25% more Damage for 5 seconds."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "assault_squad_cohesion",
+                "Squad Cohesion",
+                "All Squad Members' Abilities recharge 15% faster."
+              ],
+              [
+                "assault_strategic_strikes",
+                "Strategic Strikes",
+                "All Squad Members deal 20% more Melee Damage against Extremis- and Terminus-level enemies."
+              ],
+              [
+                "assault_proven_efficiency",
+                "Proven Efficiency",
+                "All Squad Members deal 30% more Gun Strike Damage."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "assault_smiting_angel",
+                "Smiting Angel",
+                "Ground Pound's Damage increases by 25%."
+              ],
+              [
+                "assault_strong_strikes",
+                "Strong Strikes",
+                "Hitting an enemy with an attack after a Jump Pack Dash restores Jump Pack Ability Charge by 1. Cooldown is 10 seconds."
+              ],
+              [
+                "assault_precision_strike",
+                "Precision Strike",
+                "Ground Pound deals 100% more Damage, but its radius is reduced by 50%."
+              ]
+            ],
+            [
+              [
+                "assault_wings_of_flame",
+                "Wings of Flame",
+                "Jump Pack Dash deals Damage that scales with difficulty to enemies along its trajectory and always works as a Perfect Dodge when dodging an attack."
+              ],
+              [
+                "assault_manoeuvrability",
+                "Manoeuvrability",
+                "Jump Pack recharges 20% faster."
+              ],
+              [
+                "assault_zealous_blow",
+                "Zealous Blow",
+                "A Ground Pound kill restores Jump Pack's Charge by 10%."
+              ]
+            ],
+            [
+              [
+                "assault_pride_in_duty",
+                "Pride in Duty",
+                "After a Finisher, Ground Pound deals 25% more Damage for 10 seconds."
+              ],
+              [
+                "assault_diligence",
+                "Diligence",
+                "A fully prepared Ground Pound deals 20% more Damage, but preparation time increases by 25%."
+              ],
+              [
+                "assault_aerial_grace",
+                "Aerial Grace",
+                "After a perfectly timed Dodge using a Jump Pack Dash, you deal 30% more Damage for 10 seconds."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "assault_ample_ammunition",
+                "Ample Ammunition",
+                "Any use of Jump Pack reloads the equipped Ranged Weapon and increases Ranged Damage by 50% for 10 seconds."
+              ],
+              [
+                "assault_ascension",
+                "Ascension",
+                "Jump Pack Leap deals Damage to enemies near the takeoff area. Damage is strongest within 1 metre, drops off to zero at 5 metres, and can hit up to 20 enemies."
+              ],
+              [
+                "assault_commitment",
+                "Commitment",
+                "A perfectly timed Dodge using a Jump Pack Dash restores Jump Pack's Ability Charge."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "assault_unyielding_oath",
+          "Unyielding Oath",
+          "When charging a Ground Pound, you become Invulnerable for 3 seconds."
+        ],
+        [
+          "assault_adrenaline_boost",
+          "Adrenaline Boost",
+          "After a perfectly timed Parry, Block, or Dodge, you do not lose control upon taking Heavy Hits and cannot be knocked back for 10 seconds."
+        ],
+        [
+          "assault_duellist",
+          "Duellist",
+          "Perfect Parry and Perfect Block windows increase by 25%."
+        ],
+        [
+          "assault_fortitude",
+          "Fortitude",
+          "Health increases by 15%."
+        ],
+        [
+          "assault_scrambled_targeting",
+          "Scrambled Targeting",
+          "If you are surrounded by 5 or more enemies, you take 20% less Damage from Ranged Attacks."
+        ],
+        [
+          "assault_practiced_aim",
+          "Practiced Aim",
+          "Ranged Damage increases by 15%."
+        ],
+        [
+          "assault_hammer_of_wrath",
+          "Hammer of Wrath",
+          "After using Jump Pack, you take 30% less Ranged Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back for 15 seconds."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Plasma Pistol",
+          "Inferno Pistol",
+          "Neo-Volkite Pistol",
+          "Bolt Carbine One-Handed"
+        ],
+        "melee": [
+          "Chainsword",
+          "Thunder Hammer",
+          "Power Fist",
+          "Power Sword",
+          "Power Axe"
+        ]
+      },
+      "defaultLoadout": {
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        },
+        "melee": {
+          "weapon": "Chainsword",
+          "variant": "standard_issue"
+        }
+      }
+    },
+    "Vanguard": {
+      "startingPerk": [
+        "vanguard_grapnel_launcher",
+        "Grapnel Launcher",
+        "Melee Attacks restore 50% more Contested Health."
+      ],
+      "categories": [
+        {
+          "name": "Core",
+          "rows": [
+            [
+              [
+                "vanguard_moving_target",
+                "Moving Target",
+                "Killing an enemy at a range of more than 30 metres restores Ability Charge by 10%."
+              ],
+              [
+                "vanguard_melee_mastery",
+                "Melee Mastery",
+                "Melee Damage increases by 10% against Majoris-level and higher enemies."
+              ],
+              [
+                "vanguard_upper_hand",
+                "Upper Hand",
+                "After a perfectly timed Parry, Block, or Dodge, you do not lose control upon taking Heavy Hits and you cannot be knocked back for 10 seconds."
+              ]
+            ],
+            [
+              [
+                "vanguard_duellist",
+                "Duellist",
+                "Perfect Parry and Perfect Block windows increase by 50%."
+              ],
+              [
+                "vanguard_close_combat_focus",
+                "Close-Combat Focus",
+                "You take 20% less Ranged Damage."
+              ],
+              [
+                "vanguard_conviction",
+                "Conviction",
+                "When your Armour is fully depleted, you take 25% less Health Damage for 10 seconds."
+              ]
+            ],
+            [
+              [
+                "vanguard_retribution",
+                "Retribution",
+                "When your Ranged Weapon's magazine is empty, Melee Damage increases by 30%."
+              ],
+              [
+                "vanguard_consecutive_execution",
+                "Consecutive Execution",
+                "Killing 7 enemies within 5 seconds restores Equipment Charge by 1. Cooldown is 90 seconds."
+              ],
+              [
+                "vanguard_honed_reactions",
+                "Honed Reactions",
+                "When your Health is less than 50%, your Perfect Dodge window is doubled."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "vanguard_melee_champion",
+                "Melee Champion",
+                "All Squad Members deal 15% more Melee Damage."
+              ],
+              [
+                "vanguard_unmatched_zeal",
+                "Unmatched Zeal",
+                "Melee Finishers of Extremis- or Terminus-level enemies additionally restore Health by 30% for any Squad Member."
+              ],
+              [
+                "vanguard_inner_fire",
+                "Inner Fire",
+                "All Squad Members can restore Ability Charge by 15% by performing Finishers on Majoris-level or higher enemies."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "vanguard_restless_fortitude",
+                "Restless Fortitude",
+                "After a Diving Kick, you take 40% less Ranged Damage for 10 seconds."
+              ],
+              [
+                "vanguard_shock_wave",
+                "Shock Wave",
+                "Diving Kick additionally deals 50% of its main Damage in a 5-metre radius."
+              ],
+              [
+                "vanguard_collateral_damage",
+                "Collateral Damage",
+                "Diving Kick deals 50% more Damage and additionally deals Damage that scales with difficulty to enemies on the way to the Grapnel Launcher's target."
+              ]
+            ],
+            [
+              [
+                "vanguard_zone_of_impact",
+                "Zone of Impact",
+                "Performing a Finisher with the Grapnel Launcher deals Damage that scales with difficulty to enemies within 10 metres."
+              ],
+              [
+                "vanguard_tenacity",
+                "Tenacity",
+                "After a Ranged kill of a Majoris-level or higher enemy, Diving Kick's Damage increases by 130%. Cooldown is 15 seconds."
+              ],
+              [
+                "vanguard_tip_of_the_spear",
+                "Tip of the Spear",
+                "Enemies hit by Diving Kick take 15% more Ranged Damage for 10 seconds."
+              ]
+            ],
+            [
+              [
+                "vanguard_thrill_of_the_fight",
+                "Thrill of the Fight",
+                "After a perfectly timed Parry, Block, or Dodge, you take 20% less Health Damage for 5 seconds."
+              ],
+              [
+                "vanguard_grim_determination",
+                "Grim Determination",
+                "When Grapnel Launcher is in cooldown, Weapon Damage increases by 15%."
+              ],
+              [
+                "vanguard_combat_readiness",
+                "Combat Readiness",
+                "Grapnel Launcher recharges 20% faster."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "vanguard_tactical_prowess",
+                "Tactical Prowess",
+                "Grapnel Launcher can activate a Finisher on Incapacitated enemies and on non-Terminus enemies below 33% Health. Performing a Finisher with the Grapnel Launcher fully restores its Ability Charge."
+              ],
+              [
+                "vanguard_emperors_blessing",
+                "Emperor's Blessing",
+                "Taking Lethal Damage restores all Armour instead of Incapacitating you. Cooldown is 120 seconds."
+              ],
+              [
+                "vanguard_adrenaline_rush",
+                "Adrenaline Rush",
+                "Melee kills of Majoris-level or higher enemies restore Health by 5%."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "vanguard_battlefield_awareness",
+          "Battlefield Awareness",
+          "If a target is within 8 metres, you deal 10% more Ranged Damage."
+        ],
+        [
+          "vanguard_exigency_charge",
+          "Exigency Charge",
+          "When your Health is less than 25%, Ability Charge regenerates 15% faster."
+        ],
+        [
+          "vanguard_indomitable_spirit",
+          "Indomitable Spirit",
+          "While performing a Gun Strike, you do not lose control upon taking Heavy Hits and you cannot be knocked back."
+        ],
+        [
+          "vanguard_fortitude",
+          "Fortitude",
+          "Health increases by 15%."
+        ],
+        [
+          "vanguard_launch_restoration",
+          "Launch Restoration",
+          "Using the Grapnel Launcher restores 1 Armour Segment."
+        ],
+        [
+          "vanguard_restoration",
+          "Restoration",
+          "Killing 7 enemies in rapid succession restores 1 Armour Segment. Cooldown is 15 seconds."
+        ],
+        [
+          "vanguard_well_equipped",
+          "Well Equipped",
+          "Equipment Damage increases by 20%."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [
+          "Instigator Bolt Carbine",
+          "Bolt Carbine",
+          "Occulus Bolt Carbine",
+          "Melta Rifle"
+        ],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Inferno Pistol",
+          "Neo-Volkite Pistol"
+        ],
+        "melee": [
+          "Combat Knife",
+          "Chainsword",
+          "Power Axe"
+        ]
+      },
+      "defaultLoadout": {
+        "primary": {
+          "weapon": "Instigator Bolt Carbine",
+          "variant": "standard_issue"
+        },
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        },
+        "melee": {
+          "weapon": "Combat Knife",
+          "variant": "standard_issue"
+        }
+      }
+    },
+    "Tactical": {
+      "startingPerk": [
+        "tactical_auspex_scan",
+        "Auspex Scan",
+        "Any unequipped Ranged Weapon reloads automatically after 10 seconds."
+      ],
+      "categories": [
+        {
+          "name": "Core",
+          "rows": [
+            [
+              [
+                "tactical_balanced_distribution",
+                "Balanced Distribution",
+                "Your Primary Weapon deals 15% more Damage, but your Secondary Weapon deals 15% less Damage."
+              ],
+              [
+                "tactical_plasma_boost",
+                "Plasma Boost",
+                "When the Plasma Incinerator is 30% Overheated, its Damage increases by 40% and Charged Shots use 1 less energy."
+              ],
+              [
+                "tactical_kraken_penetrator_rounds",
+                "Kraken Penetrator Rounds",
+                "Bolter rounds penetrate 1 more enemy, and body shots with bolter weapons deal 50% more Damage."
+              ]
+            ],
+            [
+              [
+                "tactical_heightened_vigour",
+                "Heightened Vigour",
+                "After a perfectly timed Parry or Dodge, you deal 10% more Melee and Gun Strike Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back for 10 seconds."
+              ],
+              [
+                "tactical_relentless_pursuit",
+                "Relentless Pursuit",
+                "After a Gun Strike, Ranged Damage increases by 25% for 5 seconds."
+              ],
+              [
+                "tactical_versatility",
+                "Versatility",
+                "After switching Weapons, your Secondary Weapon deals 25% more Damage. The effect lasts until reloading or switching back to your Primary Weapon."
+              ]
+            ],
+            [
+              [
+                "tactical_emperors_judgement",
+                "Emperor's Judgement",
+                "After a Finisher, the equipped Ranged Weapon reloads automatically, and your Primary Weapon deals 20% more Damage for 10 seconds."
+              ],
+              [
+                "tactical_steady_aim",
+                "Steady Aim",
+                "Weapon Spread and Recoil are reduced by 20%, and Ranged Damage against Terminus-level enemies increases by 20%."
+              ],
+              [
+                "tactical_emperors_vengeance",
+                "Emperor's Vengeance",
+                "Killing a Majoris-level or higher enemy restores your Primary Weapon's Ammo by 1 magazine. For Primary Weapons that do not reload, 20% of maximum Ammo capacity is restored instead. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Team",
+          "rows": [
+            [
+              [
+                "tactical_secure_stockpile",
+                "Secure Stockpile",
+                "Equipment Charge is restored by 1 for all Squad Members. Cooldown is 60 seconds."
+              ],
+              [
+                "tactical_aligned_aim",
+                "Aligned Aim",
+                "Ranged Damage increases by 15% for all Squad Members."
+              ],
+              [
+                "tactical_transhuman_physiology",
+                "Transhuman Physiology",
+                "All Squad Members restore 30% more Contested Health from Ranged Damage."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Gear",
+          "rows": [
+            [
+              [
+                "tactical_vital_data",
+                "Vital Data",
+                "Scanning an Extremis- or Terminus-level enemy restores Auspex Scan's Charge by 50%."
+              ],
+              [
+                "tactical_priority_targeting",
+                "Priority Targeting",
+                "The mark from Auspex Scan lasts 8 seconds longer (base: 8), but Auspex Scan ignores Minoris-level enemies."
+              ],
+              [
+                "tactical_target_lock",
+                "Target Lock",
+                "Enemies marked by Auspex Scan take 75% more Equipment Damage."
+              ]
+            ],
+            [
+              [
+                "tactical_battle_focus",
+                "Battle Focus",
+                "A perfectly timed Parry or Block gives the parried enemy a mark from Auspex Scan."
+              ],
+              [
+                "tactical_improved_efficiency",
+                "Improved Efficiency",
+                "Scanning any 10 enemies or 3 Majoris-level or higher enemies with one Auspex Scan restores Equipment Charge by 1."
+              ],
+              [
+                "tactical_precise_calibration",
+                "Precise Calibration",
+                "Enemies marked by Auspex Scan take an additional 75% Damage, but Auspex Scan's radius is reduced by 25%."
+              ]
+            ],
+            [
+              [
+                "tactical_close_targeting",
+                "Close Targeting",
+                "When Auspex Scan is in cooldown, Melee Damage increases by 25%."
+              ],
+              [
+                "tactical_expert_timing",
+                "Expert Timing",
+                "Enemies marked by Auspex Scan take an additional 75% Damage, but the mark's Duration is reduced by 4 seconds (base: 8)."
+              ],
+              [
+                "tactical_concentrated_fire",
+                "Concentrated Fire",
+                "Auspex Scan's zone lasts 60% longer, and enemies marked by Auspex Scan take an additional 120% Damage, but they lose the mark when they leave the scanned area."
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "Signature — Ability",
+          "rows": [
+            [
+              [
+                "tactical_signal_jammer",
+                "Signal Jammer",
+                "Enemies marked by Auspex Scan cannot call for reinforcements and automatically explode upon attempting to do so."
+              ],
+              [
+                "tactical_radiating_impact",
+                "Radiating Impact",
+                "A Melee Finisher additionally deals area-of-effect Damage that scales with difficulty in a 10-metre radius. Cooldown is 90 seconds."
+              ],
+              [
+                "tactical_marked_for_death",
+                "Marked for Death",
+                "A Headshot will instantly kill a Majoris- or Extremis-level enemy marked by Auspex Scan. Cooldown is 120 seconds."
+              ]
+            ]
+          ]
+        }
+      ],
+      "prestige": [
+        [
+          "tactical_acuity",
+          "Acuity",
+          "Each consecutive Headshot increases Headshot Damage by 3%, up to 15%. The bonus lasts 5 seconds without a Headshot."
+        ],
+        [
+          "tactical_skilled_supplier",
+          "Skilled Supplier",
+          "Ammo Reserve increases by 15%."
+        ],
+        [
+          "tactical_second_look",
+          "Second Look",
+          "If no enemy has been scanned by the time the Auspex Scan zone disappears, Auspex Scan's Charge is restored."
+        ],
+        [
+          "tactical_spare_power",
+          "Spare Power",
+          "Collecting an Ammo box restores Ability Charge by 25%."
+        ],
+        [
+          "tactical_resilience",
+          "Resilience",
+          "Medicae Stimms restore 40% more Health."
+        ],
+        [
+          "tactical_fortitude",
+          "Fortitude",
+          "Health increases by 15%."
+        ],
+        [
+          "tactical_exigency_charge",
+          "Exigency Charge",
+          "When your Health is less than 25%, Ability Charge regenerates 15% faster."
+        ]
+      ],
+      "weaponOptions": {
+        "primary": [
+          "Auto Bolt Rifle",
+          "Bolt Rifle",
+          "Heavy Bolt Rifle",
+          "Stalker Bolt Rifle",
+          "Bolt Carbine",
+          "Plasma Incinerator",
+          "Melta Rifle",
+          "Pyreblaster"
+        ],
+        "secondary": [
+          "Bolt Pistol",
+          "Heavy Bolt Pistol",
+          "Plasma Pistol"
+        ],
+        "melee": [
+          "Combat Knife",
+          "Chainsword"
+        ]
+      },
+      "defaultLoadout": {
+        "primary": {
+          "weapon": "Auto Bolt Rifle",
+          "variant": "standard_issue"
+        },
+        "secondary": {
+          "weapon": "Bolt Pistol",
+          "variant": "standard_issue"
+        },
+        "melee": {
+          "weapon": "Chainsword",
+          "variant": "standard_issue"
+        }
+      }
+    }
+  }
+}
