@@ -1,5 +1,9 @@
 const { Plugin, Notice, PluginSettingTab, Setting, Modal } = require("obsidian");
 
+const BUILD_STORAGE_FOLDER = "SM2 Build Planner";
+const BUILD_STORAGE_FILE = `${BUILD_STORAGE_FOLDER}/builds.json`;
+const BUILD_STORAGE_SCHEMA_VERSION = 1;
+
 function perkId(perk){ return Array.isArray(perk) ? perk[0] : null; }
 function perkName(perk){ return Array.isArray(perk) ? (perk[1] || "Unnamed Perk") : "Unnamed Perk"; }
 function perkDesc(perk){ return Array.isArray(perk) ? (perk[2] || "") : ""; }
@@ -388,6 +392,146 @@ CLASS_DATA.Assault={
   }
 };
 
+
+CLASS_DATA.Vanguard={
+  startingPerk:["vanguard_grapnel_launcher","Grapnel Launcher","Melee Attacks restore 50% more Contested Health."],
+  categories:[
+    {name:"Core",rows:[
+      [
+        ["vanguard_moving_target","Moving Target","Killing an enemy at a range of more than 30 metres restores Ability Charge by 10%."],
+        ["vanguard_melee_mastery","Melee Mastery","Melee Damage increases by 10% against Majoris-level and higher enemies."],
+        ["vanguard_upper_hand","Upper Hand","After a perfectly timed Parry, Block, or Dodge, you do not lose control upon taking Heavy Hits and you cannot be knocked back for 10 seconds."]
+      ],
+      [
+        ["vanguard_duellist","Duellist","Perfect Parry and Perfect Block windows increase by 50%."],
+        ["vanguard_close_combat_focus","Close-Combat Focus","You take 20% less Ranged Damage."],
+        ["vanguard_conviction","Conviction","When your Armour is fully depleted, you take 25% less Health Damage for 10 seconds."]
+      ],
+      [
+        ["vanguard_retribution","Retribution","When your Ranged Weapon's magazine is empty, Melee Damage increases by 30%."],
+        ["vanguard_consecutive_execution","Consecutive Execution","Killing 7 enemies within 5 seconds restores Equipment Charge by 1. Cooldown is 90 seconds."],
+        ["vanguard_honed_reactions","Honed Reactions","When your Health is less than 50%, your Perfect Dodge window is doubled."]
+      ]
+    ]},
+    {name:"Team",rows:[[
+      ["vanguard_melee_champion","Melee Champion","All Squad Members deal 15% more Melee Damage."],
+      ["vanguard_unmatched_zeal","Unmatched Zeal","Melee Finishers of Extremis- or Terminus-level enemies additionally restore Health by 30% for any Squad Member."],
+      ["vanguard_inner_fire","Inner Fire","All Squad Members can restore Ability Charge by 15% by performing Finishers on Majoris-level or higher enemies."]
+    ]]},
+    {name:"Gear",rows:[
+      [
+        ["vanguard_restless_fortitude","Restless Fortitude","After a Diving Kick, you take 40% less Ranged Damage for 10 seconds."],
+        ["vanguard_shock_wave","Shock Wave","Diving Kick additionally deals 50% of its main Damage in a 5-metre radius."],
+        ["vanguard_collateral_damage","Collateral Damage","Diving Kick deals 50% more Damage and additionally deals Damage that scales with difficulty to enemies on the way to the Grapnel Launcher's target."]
+      ],
+      [
+        ["vanguard_zone_of_impact","Zone of Impact","Performing a Finisher with the Grapnel Launcher deals Damage that scales with difficulty to enemies within 10 metres."],
+        ["vanguard_tenacity","Tenacity","After a Ranged kill of a Majoris-level or higher enemy, Diving Kick's Damage increases by 130%. Cooldown is 15 seconds."],
+        ["vanguard_tip_of_the_spear","Tip of the Spear","Enemies hit by Diving Kick take 15% more Ranged Damage for 10 seconds."]
+      ],
+      [
+        ["vanguard_thrill_of_the_fight","Thrill of the Fight","After a perfectly timed Parry, Block, or Dodge, you take 20% less Health Damage for 5 seconds."],
+        ["vanguard_grim_determination","Grim Determination","When Grapnel Launcher is in cooldown, Weapon Damage increases by 15%."],
+        ["vanguard_combat_readiness","Combat Readiness","Grapnel Launcher recharges 20% faster."]
+      ]
+    ]},
+    {name:"Signature — Ability",rows:[[
+      ["vanguard_tactical_prowess","Tactical Prowess","Grapnel Launcher can activate a Finisher on Incapacitated enemies and on non-Terminus enemies below 33% Health. Performing a Finisher with the Grapnel Launcher fully restores its Ability Charge."],
+      ["vanguard_emperors_blessing","Emperor's Blessing","Taking Lethal Damage restores all Armour instead of Incapacitating you. Cooldown is 120 seconds."],
+      ["vanguard_adrenaline_rush","Adrenaline Rush","Melee kills of Majoris-level or higher enemies restore Health by 5%."]
+    ]]}
+  ],
+  prestige:[
+    ["vanguard_battlefield_awareness","Battlefield Awareness","If a target is within 8 metres, you deal 10% more Ranged Damage."],
+    ["vanguard_exigency_charge","Exigency Charge","When your Health is less than 25%, Ability Charge regenerates 15% faster."],
+    ["vanguard_indomitable_spirit","Indomitable Spirit","While performing a Gun Strike, you do not lose control upon taking Heavy Hits and you cannot be knocked back."],
+    ["vanguard_fortitude","Fortitude","Health increases by 15%."],
+    ["vanguard_launch_restoration","Launch Restoration","Using the Grapnel Launcher restores 1 Armour Segment."],
+    ["vanguard_restoration","Restoration","Killing 7 enemies in rapid succession restores 1 Armour Segment. Cooldown is 15 seconds."],
+    ["vanguard_well_equipped","Well Equipped","Equipment Damage increases by 20%."]
+  ],
+  weaponOptions:{
+    primary:["Instigator Bolt Carbine","Bolt Carbine","Occulus Bolt Carbine","Melta Rifle"],
+    secondary:["Bolt Pistol","Heavy Bolt Pistol","Inferno Pistol","Neo-Volkite Pistol"],
+    melee:["Combat Knife","Chainsword","Power Axe"]
+  },
+  defaultLoadout:{
+    primary:{weapon:"Instigator Bolt Carbine",variant:"standard_issue"},
+    secondary:{weapon:"Bolt Pistol",variant:"standard_issue"},
+    melee:{weapon:"Combat Knife",variant:"standard_issue"}
+  }
+};
+
+
+CLASS_DATA.Tactical={
+  startingPerk:["tactical_auspex_scan","Auspex Scan","Any unequipped Ranged Weapon reloads automatically after 10 seconds."],
+  categories:[
+    {name:"Core",rows:[
+      [
+        ["tactical_balanced_distribution","Balanced Distribution","Your Primary Weapon deals 15% more Damage, but your Secondary Weapon deals 15% less Damage."],
+        ["tactical_plasma_boost","Plasma Boost","When the Plasma Incinerator is 30% Overheated, its Damage increases by 40% and Charged Shots use 1 less energy."],
+        ["tactical_kraken_penetrator_rounds","Kraken Penetrator Rounds","Bolter rounds penetrate 1 more enemy, and body shots with bolter weapons deal 50% more Damage."]
+      ],
+      [
+        ["tactical_heightened_vigour","Heightened Vigour","After a perfectly timed Parry or Dodge, you deal 10% more Melee and Gun Strike Damage, do not lose control upon taking Heavy Hits, and cannot be knocked back for 10 seconds."],
+        ["tactical_relentless_pursuit","Relentless Pursuit","After a Gun Strike, Ranged Damage increases by 25% for 5 seconds."],
+        ["tactical_versatility","Versatility","After switching Weapons, your Secondary Weapon deals 25% more Damage. The effect lasts until reloading or switching back to your Primary Weapon."]
+      ],
+      [
+        ["tactical_emperors_judgement","Emperor's Judgement","After a Finisher, the equipped Ranged Weapon reloads automatically, and your Primary Weapon deals 20% more Damage for 10 seconds."],
+        ["tactical_steady_aim","Steady Aim","Weapon Spread and Recoil are reduced by 20%, and Ranged Damage against Terminus-level enemies increases by 20%."],
+        ["tactical_emperors_vengeance","Emperor's Vengeance","Killing a Majoris-level or higher enemy restores your Primary Weapon's Ammo by 1 magazine. For Primary Weapons that do not reload, 20% of maximum Ammo capacity is restored instead. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds."]
+      ]
+    ]},
+    {name:"Team",rows:[[
+      ["tactical_secure_stockpile","Secure Stockpile","Equipment Charge is restored by 1 for all Squad Members. Cooldown is 60 seconds."],
+      ["tactical_aligned_aim","Aligned Aim","Ranged Damage increases by 15% for all Squad Members."],
+      ["tactical_transhuman_physiology","Transhuman Physiology","All Squad Members restore 30% more Contested Health from Ranged Damage."]
+    ]]},
+    {name:"Gear",rows:[
+      [
+        ["tactical_vital_data","Vital Data","Scanning an Extremis- or Terminus-level enemy restores Auspex Scan's Charge by 50%."],
+        ["tactical_priority_targeting","Priority Targeting","The mark from Auspex Scan lasts 8 seconds longer (base: 8), but Auspex Scan ignores Minoris-level enemies."],
+        ["tactical_target_lock","Target Lock","Enemies marked by Auspex Scan take 75% more Equipment Damage."]
+      ],
+      [
+        ["tactical_battle_focus","Battle Focus","A perfectly timed Parry or Block gives the parried enemy a mark from Auspex Scan."],
+        ["tactical_improved_efficiency","Improved Efficiency","Scanning any 10 enemies or 3 Majoris-level or higher enemies with one Auspex Scan restores Equipment Charge by 1."],
+        ["tactical_precise_calibration","Precise Calibration","Enemies marked by Auspex Scan take an additional 75% Damage, but Auspex Scan's radius is reduced by 25%."]
+      ],
+      [
+        ["tactical_close_targeting","Close Targeting","When Auspex Scan is in cooldown, Melee Damage increases by 25%."],
+        ["tactical_expert_timing","Expert Timing","Enemies marked by Auspex Scan take an additional 75% Damage, but the mark's Duration is reduced by 4 seconds (base: 8)."],
+        ["tactical_concentrated_fire","Concentrated Fire","Auspex Scan's zone lasts 60% longer, and enemies marked by Auspex Scan take an additional 120% Damage, but they lose the mark when they leave the scanned area."]
+      ]
+    ]},
+    {name:"Signature — Ability",rows:[[
+      ["tactical_signal_jammer","Signal Jammer","Enemies marked by Auspex Scan cannot call for reinforcements and automatically explode upon attempting to do so."],
+      ["tactical_radiating_impact","Radiating Impact","A Melee Finisher additionally deals area-of-effect Damage that scales with difficulty in a 10-metre radius. Cooldown is 90 seconds."],
+      ["tactical_marked_for_death","Marked for Death","A Headshot will instantly kill a Majoris- or Extremis-level enemy marked by Auspex Scan. Cooldown is 120 seconds."]
+    ]]}
+  ],
+  prestige:[
+    ["tactical_acuity","Acuity","Each consecutive Headshot increases Headshot Damage by 3%, up to 15%. The bonus lasts 5 seconds without a Headshot."],
+    ["tactical_skilled_supplier","Skilled Supplier","Ammo Reserve increases by 15%."],
+    ["tactical_second_look","Second Look","If no enemy has been scanned by the time the Auspex Scan zone disappears, Auspex Scan's Charge is restored."],
+    ["tactical_spare_power","Spare Power","Collecting an Ammo box restores Ability Charge by 25%."],
+    ["tactical_resilience","Resilience","Medicae Stimms restore 40% more Health."],
+    ["tactical_fortitude","Fortitude","Health increases by 15%."],
+    ["tactical_exigency_charge","Exigency Charge","When your Health is less than 25%, Ability Charge regenerates 15% faster."]
+  ],
+  weaponOptions:{
+    primary:["Auto Bolt Rifle","Bolt Rifle","Heavy Bolt Rifle","Stalker Bolt Rifle","Bolt Carbine","Plasma Incinerator","Melta Rifle","Pyreblaster"],
+    secondary:["Bolt Pistol","Heavy Bolt Pistol","Plasma Pistol"],
+    melee:["Combat Knife","Chainsword"]
+  },
+  defaultLoadout:{
+    primary:{weapon:"Auto Bolt Rifle",variant:"standard_issue"},
+    secondary:{weapon:"Bolt Pistol",variant:"standard_issue"},
+    melee:{weapon:"Chainsword",variant:"standard_issue"}
+  }
+};
+
 const WEAPONS = {
   primary: {
     label:"Primary",
@@ -459,7 +603,7 @@ const WEAPONS = {
             ["sbr_relic_remote_threat","Remote Threat","Enemies at a distance of more than 25 metres take 20% more Damage.",{column:7,row:1}]
           ]},
           {name:"Heroic",perks:[
-            ["sbr_heroic_auspex_shot","Auspex Shot","Landing 3 body shots in short succession creates a 10-metre Auspex Scan area.",{column:8,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["sbr_heroic_auspex_shot","Auspex Shot","Landing 3 body shots in short succession creates a 10-metre Auspex Scan area.",{column:8,row:0,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -539,7 +683,7 @@ const WEAPONS = {
             ["ibc_relic_death_strike","Death Strike","After killing a Majoris-level or higher enemy with a Melee Weapon, you deal 25% more Damage for 10 seconds.",{column:8,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["ibc_heroic_higher_rate_burst","Higher-Rate Burst","Fire rounds in higher-rate bursts.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["ibc_heroic_higher_rate_burst","Higher-Rate Burst","Fire rounds in higher-rate bursts.",{column:9,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -615,7 +759,7 @@ const WEAPONS = {
             ["bsr_relic_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:7,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["bsr_heroic_replenishing_hit","Replenishing Hit","After performing a Headshot, one round is automatically reloaded into the Weapon.",{column:8,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["bsr_heroic_replenishing_hit","Replenishing Hit","After performing a Headshot, one round is automatically reloaded into the Weapon.",{column:8,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -701,7 +845,7 @@ const WEAPONS = {
             ["bc_relic_reloading_immunity","Reloading Immunity","While reloading, you do not lose control from Heavy Hits.",{column:7,row:3}]
           ]},
           {name:"Heroic",perks:[
-            ["bc_heroic_combi_flamer","Combi-Flamer","Augmented Vision switches the weapon to an under-barrel Pyreblaster firing mode.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["bc_heroic_combi_flamer","Combi-Flamer","Augmented Vision switches the weapon to an under-barrel Pyreblaster firing mode.",{column:9,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -858,7 +1002,7 @@ const WEAPONS = {
             ["hb_relic_divine_might","Divine Might","Damage increases by 10%.",{column:7,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["hb_heroic_reinforced_guncasing","Reinforced Guncasing","Perfect Parry window increases by 50%. After a Gun Strike, the Weapon is completely cooled.",{column:8,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["hb_heroic_reinforced_guncasing","Reinforced Guncasing","Perfect Parry window increases by 50%. After a Gun Strike, the Weapon is completely cooled.",{column:8,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -939,7 +1083,7 @@ const WEAPONS = {
             ["hpi_relic_plasma_collection","Plasma Collection","Energy reserve of Plasma Weapons increases by 20%.",{column:9,row:1}]
           ]},
           {name:"Heroic",perks:[
-            ["hpi_heroic_plasma_hail","Plasma Hail","In Heavy Stance, get an increase in Fire Rate instead of Charged Shots.",{column:10,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["hpi_heroic_plasma_hail","Plasma Hail","In Heavy Stance, get an increase in Fire Rate instead of Charged Shots.",{column:10,row:0,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1302,7 +1446,7 @@ const WEAPONS = {
             ["br_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:7,row:3}]
           ]},
           {name:"Heroic",perks:[
-            ["br_heroic_combi_weapon","Combi-Weapon","You can use an alternative Melta firing mode, accessed through Augmented Vision scope mode.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["br_heroic_combi_weapon","Combi-Weapon","You can use an alternative Melta firing mode, accessed through Augmented Vision scope mode.",{column:9,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1388,7 +1532,7 @@ const WEAPONS = {
             ["hbr_relic_honed_precision","Honed Precision","Equipped Weapon's Maximum Spread decreases by 50% when firing without aiming.",{column:7,row:3}]
           ]},
           {name:"Heroic",perks:[
-            ["hbr_heroic_deathwatch","Deathwatch","Toggle to Augmented Vision mode to activate auxiliary grenade launcher.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["hbr_heroic_deathwatch","Deathwatch","Toggle to Augmented Vision mode to activate auxiliary grenade launcher.",{column:9,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1540,7 +1684,7 @@ const WEAPONS = {
             ["bp_relic_divine_might","Divine Might","Damage increases by 10%.",{column:7,row:1}]
           ]},
           {name:"Heroic",perks:[
-            ["bp_heroic_burst_fire","Burst Fire","You can fire shots in 3-round bursts.",{column:8,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["bp_heroic_burst_fire","Burst Fire","You can fire shots in 3-round bursts.",{column:8,row:0,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1621,7 +1765,7 @@ const WEAPONS = {
             ["hbp_relic_divine_might","Divine Might","Damage increases by 10%.",{column:9,row:1}]
           ]},
           {name:"Heroic",perks:[
-            ["hbp_heroic_no_help_is_coming","No Help Is Coming","Shooting an enemy with the status of Elite Scream stops it from calling for reinforcements.",{column:10,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["hbp_heroic_no_help_is_coming","No Help Is Coming","Shooting an enemy with the status of Elite Scream stops it from calling for reinforcements.",{column:10,row:0,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1692,7 +1836,7 @@ const WEAPONS = {
             ["pp_relic_divine_might","Divine Might","Damage increases by 10%.",{column:7,row:1}]
           ]},
           {name:"Heroic",perks:[
-            ["pp_heroic_overcharged_plasma_coils","Overcharged Plasma Coils","Only fires Charged Shots with increased damage, but charge time is longer.",{column:8,row:0,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["pp_heroic_overcharged_plasma_coils","Overcharged Plasma Coils","Only fires Charged Shots with increased damage, but charge time is longer.",{column:8,row:0,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1895,7 +2039,7 @@ const WEAPONS = {
             ["axe_relic_mighty_blast","Mighty Blast","Power Discharge can hit twice. Keep holding to release a second shockwave.",{column:8,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["axe_heroic_word_of_the_omnissiah","Word Of The Omnissiah","The attack after Omnissian Rush deals increased damage based on the duration of the rush.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["axe_heroic_word_of_the_omnissiah","Word Of The Omnissiah","The attack after Omnissian Rush deals increased damage based on the duration of the rush.",{column:9,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       },
@@ -1932,9 +2076,9 @@ const WEAPONS = {
           ["knife_mc_perpetual_strength_bottom","knife_art_heavy_onslaught"],
           ["knife_art_combined_onslaught","knife_art_tide_of_battle"],
           ["knife_art_heavy_onslaught","knife_art_reeling_blow"],
-          ["knife_art_shadow_stab","knife_art_tide_of_battle"],
+          ["knife_art_shoulder_bash","knife_art_tide_of_battle"],
           ["knife_art_tide_of_battle","knife_art_reeling_blow"],
-          ["knife_art_reeling_blow","knife_art_shoulder_bash"],
+          ["knife_art_reeling_blow","knife_art_shadow_stab"],
           ["knife_art_tide_of_battle","knife_relic_terminus_slayer"],
           ["knife_art_reeling_blow","knife_relic_extremis_slayer"],
           ["knife_relic_terminus_slayer","knife_relic_kill_streak"],
@@ -1954,10 +2098,10 @@ const WEAPONS = {
           {name:"Artificer",perks:[
             ["knife_art_combined_onslaught","Combined Onslaught","Light Combo attacks with this weapon deal 10% more Melee Damage.",{column:3,row:1}],
             ["knife_art_heavy_onslaught","Heavy Onslaught","Heavy Attacks with this weapon deal 15% more Melee Damage.",{column:3,row:2}],
-            ["knife_art_shadow_stab","Shadow Stab","Replace Heavy Swing with Shadow Stab. Hold the Attack button to charge it. Damage increases by 100% per 1 second of charging.",{column:4,row:0}],
+            ["knife_art_shadow_stab","Shadow Stab","Replace Heavy Swing with Shadow Stab. Hold the Attack button to charge it. Damage increases by 100% per 1 second of charging.",{column:4,row:3}],
             ["knife_art_tide_of_battle","Tide Of Battle","Power Wave forward distance increases from 4 to 8 metres for Whirlwind Slash.",{column:4,row:1}],
             ["knife_art_reeling_blow","Reeling Blow","Enemies hit by Whirlwind Slash deal 30% less Damage for 4 seconds. Cooldown is 10 seconds.",{column:4,row:2}],
-            ["knife_art_shoulder_bash","Shoulder Bash","Replace Distant Stab with Shoulder Bash. While evading or sprinting, tap the Attack button to quickly perform an area-of-effect forward attack.",{column:4,row:3}]
+            ["knife_art_shoulder_bash","Shoulder Bash","Replace Distant Stab with Shoulder Bash. While evading or sprinting, tap the Attack button to quickly perform an area-of-effect forward attack.",{column:4,row:0}]
           ]},
           {name:"Relic",perks:[
             ["knife_relic_terminus_slayer","Terminus Slayer","Melee Damage against Terminus-level enemies increases by 20%.",{column:5,row:1}],
@@ -1966,8 +2110,8 @@ const WEAPONS = {
             ["knife_relic_hard_target","Hard Target","While performing a Light Combo, you take 15% less Ranged Damage.",{column:6,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["knife_heroic_agile_strike","Agile Strike","After a Perfect Dodge, the next melee strike deals 120% more Damage. Can be stacked up to 3 times.",{column:7,row:1,alwaysAvailable:true}],
-            ["knife_heroic_knuckles","Knuckles","Riposte window is shorter, but each riposte deals damage to the attacker.",{column:7,row:2,alwaysAvailable:true}]
+            ["knife_heroic_agile_strike","Agile Strike","After a Perfect Dodge, the next melee strike deals 120% more Damage. Can be stacked up to 3 times.",{column:7,row:1}],
+            ["knife_heroic_knuckles","Knuckles","Riposte window is shorter, but each riposte deals damage to the attacker.",{column:7,row:2}]
           ]}
         ]
       },
@@ -2054,8 +2198,8 @@ const WEAPONS = {
             ["ps_relic_power_restoration","Power Restoration","Power Style attacks restore 100% more Contested Health.",{column:8,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["ps_heroic_ancient_technology","Ancient Technology","Power Rake waves are wider and deal 20% more Damage.",{column:9,row:1,alwaysAvailable:true}],
-            ["ps_heroic_nocturnes_retort","Nocturne's Retort","Perfect Parries grant Power stacks that empower the next Speed Style Light Attack; stacks can build up to 6 and the parry window is shorter.",{column:9,row:2,alwaysAvailable:true}]
+            ["ps_heroic_ancient_technology","Ancient Technology","Power Rake waves are wider and deal 20% more Damage.",{column:9,row:1}],
+            ["ps_heroic_nocturnes_retort","Nocturne's Retort","Perfect Parries grant Power stacks that empower the next Speed Style Light Attack; stacks can build up to 6 and the parry window is shorter.",{column:9,row:2}]
           ]}
         ]
       },
@@ -2133,12 +2277,150 @@ const WEAPONS = {
             ["paxe_relic_discharge","Discharge","Overhead Strike deals Damage around the target. Cooldown is 15 seconds.",{column:8,row:2}]
           ]},
           {name:"Heroic",perks:[
-            ["paxe_heroic_sanguine_edge","Sanguine Edge","Power Backstep can still be performed with the next Heavy Attack, even if you move out of Power Stance.",{column:9,row:1,rowSpan:2,verticalCenter:true,alwaysAvailable:true}]
+            ["paxe_heroic_sanguine_edge","Sanguine Edge","Power Backstep can still be performed with the next Heavy Attack, even if you move out of Power Stance.",{column:9,row:1,rowSpan:2,verticalCenter:true}]
           ]}
         ]
       }
     }
   }
+};
+
+
+// Melta Rifle — topology transcribed from the supplied v0.6.2 perk-tree
+// screenshot. Explicit horizontal and vertical links mirror the in-game tree.
+WEAPONS.primary.weapons["Melta Rifle"]={
+  treeMode:"connectionGraph",
+  variants:[
+    {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+    {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+    {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+    {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+    {id:"drogos_reclamation_alpha",tier:"Artificer",name:"Drogos Reclamation - Alpha"},
+    {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+    {id:"ophelian_liberation_alpha",tier:"Relic",name:"Ophelian Liberation - Alpha"},
+    {id:"ophelian_liberation_beta",tier:"Relic",name:"Ophelian Liberation - Beta"},
+    {id:"salamanders_melta_rifle",tier:"Heroic",name:"Salamanders Melta Rifle"}
+  ],
+  layout:{columnCount:9,rowCount:2,tierHeadings:[
+    {name:"Standard",start:1,span:1},
+    {name:"Master-Crafted",start:2,span:2},
+    {name:"Artificer",start:4,span:3},
+    {name:"Relic",start:7,span:2},
+    {name:"Heroic",start:9,span:1}
+  ]},
+  roots:["mr_std_extended_magazine","mr_std_decisive_reload"],
+  exclusiveGroups:[["mr_std_extended_magazine","mr_std_decisive_reload"]],
+  connections:[
+    ["mr_std_extended_magazine","mr_mc_magazine_restoration"],
+    ["mr_std_decisive_reload","mr_mc_rapid_health"],
+    ["mr_mc_magazine_restoration","mr_mc_great_might"],
+    ["mr_mc_rapid_health","mr_mc_trick_shot"],
+    ["mr_mc_great_might","mr_mc_trick_shot"],
+    ["mr_mc_great_might","mr_art_divine_might"],
+    ["mr_mc_trick_shot","mr_art_fast_reload_a"],
+    ["mr_art_divine_might","mr_art_extended_magazine"],
+    ["mr_art_fast_reload_a","mr_art_fast_reload_b"],
+    ["mr_art_extended_magazine","mr_art_fast_reload_b"],
+    ["mr_art_extended_magazine","mr_art_first_shot"],
+    ["mr_art_fast_reload_b","mr_art_reloading_immunity"],
+    ["mr_art_first_shot","mr_relic_retaliation"],
+    ["mr_art_reloading_immunity","mr_relic_elusive_fire"],
+    ["mr_relic_retaliation","mr_relic_perpetual_fire"],
+    ["mr_relic_elusive_fire","mr_relic_perpetual_range"]
+  ],
+  tiers:[
+    {name:"Standard",perks:[
+      ["mr_std_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:0,row:0}],
+      ["mr_std_decisive_reload","Decisive Reload","Performing a Finisher on a Majoris-level or higher enemy restores Melta ammo by 1.",{column:0,row:1}]
+    ]},
+    {name:"Master-Crafted",perks:[
+      ["mr_mc_magazine_restoration","Magazine Restoration","When your Health drops below 30%, your Ammo Reserve is restored by a full Magazine. Cannot exceed maximum Ammo capacity. Cooldown is 30 seconds.",{column:1,row:0}],
+      ["mr_mc_rapid_health","Rapid Health","When your Health is below 30%, killing 7 enemies in rapid succession restores Health by 10%. Cooldown is 0 seconds.",{column:1,row:1}],
+      ["mr_mc_great_might","Great Might","Damage increases by 10% against Terminus-level enemies.",{column:2,row:0}],
+      ["mr_mc_trick_shot","Trick Shot","Killing 5 enemies with one shot restores 1 Armour Segment. Cooldown is 30 seconds.",{column:2,row:1}]
+    ]},
+    {name:"Artificer",perks:[
+      ["mr_art_divine_might","Divine Might","Damage increases by 10%.",{column:3,row:0}],
+      ["mr_art_fast_reload_a","Fast Reload","Reload all Weapons 10% faster.",{column:3,row:1}],
+      ["mr_art_extended_magazine","Extended Magazine","Magazine size increases by 15% of the maximum.",{column:4,row:0}],
+      ["mr_art_fast_reload_b","Fast Reload","Reload all Weapons 10% faster.",{column:4,row:1}],
+      ["mr_art_first_shot","First Shot","The first shot after a Reload deals 10% more Damage.",{column:5,row:0}],
+      ["mr_art_reloading_immunity","Reloading Immunity","While reloading, you do not lose control from Heavy Hits.",{column:5,row:1}]
+    ]},
+    {name:"Relic",perks:[
+      ["mr_relic_retaliation","Retaliation","After a perfectly timed Dodge, you deal 25% more Damage for 10 seconds.",{column:6,row:0}],
+      ["mr_relic_elusive_fire","Elusive Fire","After a perfectly timed Dodge, Fire Rate increases by 25% for 10 seconds.",{column:6,row:1}],
+      ["mr_relic_perpetual_fire","Perpetual Fire","Fire Rate increases by 10%.",{column:7,row:0}],
+      ["mr_relic_perpetual_range","Perpetual Range","Effective Range increases by 1 metre.",{column:7,row:1}]
+    ]},
+    {name:"Heroic",perks:[
+      ["mr_heroic_focused_fusion_beam","Focused Fusion Beam","Shots have increased range and a narrow spread, but must charge before firing.",{column:8,row:0,rowSpan:2,verticalCenter:true}]
+    ]}
+  ]
+};
+
+
+// Pyreblaster — topology transcribed from the supplied v0.6.4 perk-tree
+// screenshot. Only explicit horizontal and vertical links are represented.
+WEAPONS.primary.weapons["Pyreblaster"]={
+  treeMode:"connectionGraph",
+  variants:[
+    {id:"standard_issue",tier:"Standard",name:"Standard-Issue"},
+    {id:"master_crafted_alpha",tier:"Master-Crafted",name:"Master-Crafted - Alpha"},
+    {id:"master_crafted_beta",tier:"Master-Crafted",name:"Master-Crafted - Beta"},
+    {id:"salvation_of_bakka",tier:"Artificer",name:"Salvation of Bakka"},
+    {id:"drogos_reclamation",tier:"Artificer",name:"Drogos Reclamation"},
+    {id:"gathalamor_crusade",tier:"Relic",name:"Gathalamor Crusade"},
+    {id:"ophelian_liberation",tier:"Relic",name:"Ophelian Liberation"}
+  ],
+  layout:{columnCount:7,rowCount:2,tierHeadings:[
+    {name:"Standard",start:1,span:1},
+    {name:"Master-Crafted",start:2,span:2},
+    {name:"Artificer",start:4,span:2},
+    {name:"Relic",start:6,span:2}
+  ]},
+  roots:["pyreb_std_improved_fast_venting","pyreb_std_perpetual_cooling"],
+  exclusiveGroups:[["pyreb_std_improved_fast_venting","pyreb_std_perpetual_cooling"]],
+  connections:[
+    ["pyreb_std_improved_fast_venting","pyreb_mc_eternal_flame"],
+    ["pyreb_std_perpetual_cooling","pyreb_mc_divine_might"],
+    ["pyreb_mc_eternal_flame","pyreb_mc_potent_flame"],
+    ["pyreb_mc_divine_might","pyreb_mc_contingency_plan"],
+    ["pyreb_mc_potent_flame","pyreb_mc_contingency_plan"],
+    ["pyreb_mc_potent_flame","pyreb_art_flame_of_ascension"],
+    ["pyreb_mc_contingency_plan","pyreb_art_rapid_health"],
+    ["pyreb_art_flame_of_ascension","pyreb_art_potent_flame"],
+    ["pyreb_art_rapid_health","pyreb_art_flash_burn"],
+    ["pyreb_art_potent_flame","pyreb_art_flash_burn"],
+    ["pyreb_art_potent_flame","pyreb_relic_resilient_flame"],
+    ["pyreb_art_flash_burn","pyreb_relic_increased_capacity"],
+    ["pyreb_relic_resilient_flame","pyreb_relic_pure_flame"],
+    ["pyreb_relic_increased_capacity","pyreb_relic_flame_of_purification"]
+  ],
+  tiers:[
+    {name:"Standard",perks:[
+      ["pyreb_std_improved_fast_venting","Improved Fast Venting","Weapon cools 20% faster.",{column:0,row:0}],
+      ["pyreb_std_perpetual_cooling","Perpetual Cooling","Weapon Heating decreases by 20%.",{column:0,row:1}]
+    ]},
+    {name:"Master-Crafted",perks:[
+      ["pyreb_mc_eternal_flame","Eternal Flame","Burning time increases by 20%.",{column:1,row:0}],
+      ["pyreb_mc_divine_might","Divine Might","Damage increases by 10%.",{column:1,row:1}],
+      ["pyreb_mc_potent_flame","Potent Flame","Burning Damage increases by 15%.",{column:2,row:0}],
+      ["pyreb_mc_contingency_plan","Contingency Plan","When your Ammo Reserve is less than 25% of your Ammo capacity, Melee Damage increases by 20%.",{column:2,row:1}]
+    ]},
+    {name:"Artificer",perks:[
+      ["pyreb_art_flame_of_ascension","Flame of Ascension","Burning 5 enemies restores 1 Armour Segment. Cooldown is 30 seconds.",{column:3,row:0}],
+      ["pyreb_art_rapid_health","Rapid Health","When your Health is below 30%, killing 7 enemies in rapid succession restores Health by 10%. Cooldown is 0 seconds.",{column:3,row:1}],
+      ["pyreb_art_potent_flame","Potent Flame","Burning Damage increases by 15%.",{column:4,row:0}],
+      ["pyreb_art_flash_burn","Flash Burn","Enemies at a distance of less than 10 metres take 20% more Damage.",{column:4,row:1}]
+    ]},
+    {name:"Relic",perks:[
+      ["pyreb_relic_resilient_flame","Resilient Flame","Charging time decreases by 75%.",{column:5,row:0}],
+      ["pyreb_relic_increased_capacity","Increased Capacity","The maximum Ammo Reserve of this Weapon increases by 20%.",{column:5,row:1}],
+      ["pyreb_relic_pure_flame","Pure Flame","Burning Damage increases by 15%. Direct Damage decreases by 50%.",{column:6,row:0}],
+      ["pyreb_relic_flame_of_purification","Flame of Purification","Burning enemies take 20% more Melee Damage.",{column:6,row:1}]
+    ]}
+  ]
 };
 
 
@@ -2289,8 +2571,8 @@ WEAPONS.melee.weapons["Thunder Hammer"]={
       ["th_relic_dead_end","Dead End","Pommel Smash deals 50% more Damage.",{column:9,row:2}]
     ]},
     {name:"Heroic",perks:[
-      ["th_heroic_electrified_thunderclap","Electrified Thunderclap","Fully Charged Attacks leave behind a Shock Grenade effect.",{column:10,row:1,alwaysAvailable:true}],
-      ["th_heroic_whirling_strike","Whirling Strike","Replaces Aftershock with a spinning attack. Hitting at least 5 enemies in one attack grants 1 Adrenaline Surge stack.",{column:10,row:2,alwaysAvailable:true}]
+      ["th_heroic_electrified_thunderclap","Electrified Thunderclap","Fully Charged Attacks leave behind a Shock Grenade effect.",{column:10,row:1}],
+      ["th_heroic_whirling_strike","Whirling Strike","Replaces Aftershock with a spinning attack. Hitting at least 5 enemies in one attack grants 1 Adrenaline Surge stack.",{column:10,row:2}]
     ]}
   ]
 };
@@ -2368,8 +2650,8 @@ WEAPONS.melee.weapons["Chainsword"]={
       ["cs_relic_momentum_gain","Momentum Gain","Each consecutive Light Attack increases Light Attack Melee Damage by 3% (up to 30%) for 3 seconds.",{column:7,row:2}]
     ]},
     {name:"Heroic",perks:[
-      ["cs_heroic_fistfight","Fistfight","You can perform an additional Heavy Attack after a Quick Punch. Front Kick is replaced with Quick Punch, and all Heavy Attacks deal 15% more Damage.",{column:8,row:1,alwaysAvailable:true}],
-      ["cs_heroic_fury_of_chogoris","Fury of Chogoris","Adrenaline Surge stacks are increased to 3. The third stack has a higher Damage bonus, while the bonus for the second stack is reduced.",{column:8,row:2,alwaysAvailable:true}]
+      ["cs_heroic_fistfight","Fistfight","You can perform an additional Heavy Attack after a Quick Punch. Front Kick is replaced with Quick Punch, and all Heavy Attacks deal 15% more Damage.",{column:8,row:1}],
+      ["cs_heroic_fury_of_chogoris","Fury of Chogoris","Adrenaline Surge stacks are increased to 3. The third stack has a higher Damage bonus, while the bonus for the second stack is reduced.",{column:8,row:2}]
     ]}
   ]
 };
@@ -2447,11 +2729,63 @@ WEAPONS.melee.weapons["Power Fist"]={
       ["pf_relic_reeling_blow","Reeling Blow","Enemies hit by Cannon Punch deal 30% less Damage for 4 seconds. Cooldown is 10 seconds.",{column:7,row:2}]
     ]},
     {name:"Heroic",perks:[
-      ["pf_heroic_follow_up_shot","Follow-Up Shot","Performing a Finisher marks a nearby Majoris-level or higher enemy for a Gun Strike. Light Attack Damage increases by 200%, but Charged Attack Damage decreases by 50%.",{column:8,row:1,alwaysAvailable:true}],
-      ["pf_heroic_burning_impact","Burning Impact","After a Light Attack, pause to enter a stance, then follow with another Light Attack to fire a Melta Blast that inflicts Burn. A Melta Blast can also be fired after a single charge in hold stance.",{column:8,row:2,alwaysAvailable:true}]
+      ["pf_heroic_follow_up_shot","Follow-Up Shot","Performing a Finisher marks a nearby Majoris-level or higher enemy for a Gun Strike. Light Attack Damage increases by 200%, but Charged Attack Damage decreases by 50%.",{column:8,row:1}],
+      ["pf_heroic_burning_impact","Burning Impact","After a Light Attack, pause to enter a stance, then follow with another Light Attack to fire a Melta Blast that inflicts Burn. A Melta Blast can also be fired after a single charge in hold stance.",{column:8,row:2}]
     ]}
   ]
 };
+
+const CLASS_DROPDOWN_ORDER = ["Tactical","Vanguard","Assault","Bulwark","Sniper","Heavy","Techmarine"];
+
+// Heroic perks are properties of specific Heroic weapon variants, not nodes in
+// the selectable prerequisite graph. Keep that relationship explicit and
+// separate from the perk-tree connections so a Heroic perk can never block a
+// Standard starting path.
+const HEROIC_VARIANT_PERKS = {
+  primary:{
+    "Stalker Bolt Rifle":{deathwatch:"sbr_heroic_auspex_shot"},
+    "Instigator Bolt Carbine":{wrapped:"ibc_heroic_higher_rate_burst"},
+    "Bolt Sniper Rifle":{wrapped:"bsr_heroic_replenishing_hit"},
+    "Bolt Carbine":{combi_flamer:"bc_heroic_combi_flamer"},
+    "Heavy Bolter":{chains_of_duty:"hb_heroic_reinforced_guncasing"},
+    "Heavy Plasma Incinerator":{relic_battle_worn:"hpi_heroic_plasma_hail"},
+    "Bolt Rifle":{combi_melta:"br_heroic_combi_weapon"},
+    "Heavy Bolt Rifle":{deathwatch:"hbr_heroic_deathwatch"},
+    "Melta Rifle":{salamanders_melta_rifle:"mr_heroic_focused_fusion_beam"}
+  },
+  secondary:{
+    "Bolt Pistol":{honourific_relic:"bp_heroic_burst_fire"},
+    "Heavy Bolt Pistol":{retributions_bequest:"hbp_heroic_no_help_is_coming"},
+    "Plasma Pistol":{relic_battle_worn:"pp_heroic_overcharged_plasma_coils"}
+  },
+  melee:{
+    "Omnissian Axe":{ultima_ratio:"axe_heroic_word_of_the_omnissiah"},
+    "Combat Knife":{power_gladius:"knife_heroic_agile_strike",argent_edge:"knife_heroic_knuckles"},
+    "Power Sword":{xenophase_blade:"ps_heroic_ancient_technology",salamanders_power_sword:"ps_heroic_nocturnes_retort"},
+    "Power Axe":{encarmine_axe:"paxe_heroic_sanguine_edge"},
+    "Thunder Hammer":{storms_dominion:"th_heroic_electrified_thunderclap",lord_executioners_axe:"th_heroic_whirling_strike"},
+    "Chainsword":{double_edged_relic:"cs_heroic_fistfight",white_scars:"cs_heroic_fury_of_chogoris"},
+    "Power Fist":{deaths_grasp:"pf_heroic_follow_up_shot",deathwatch_power_fist:"pf_heroic_burning_impact"}
+  }
+};
+
+function getHeroicVariantMap(slot,weaponName){
+  return HEROIC_VARIANT_PERKS[slot]?.[weaponName] || {};
+}
+function getHeroicPerkIds(slot,weaponName){
+  return Object.values(getHeroicVariantMap(slot,weaponName));
+}
+function getHeroicPerkForVariant(slot,weaponName,variantId){
+  return getHeroicVariantMap(slot,weaponName)[variantId] || null;
+}
+function syncHeroicVariantPerk(slot,state){
+  if(!state) return;
+  const heroicIds=new Set(getHeroicPerkIds(slot,state.weapon));
+  const active=Array.isArray(state.active) ? state.active.filter(id=>!heroicIds.has(id)) : [];
+  const heroicId=getHeroicPerkForVariant(slot,state.weapon,state.variant);
+  if(heroicId) active.push(heroicId);
+  state.active=active;
+}
 
 function getClassData(className){
   return CLASS_DATA[className] || CLASS_DATA.Techmarine;
@@ -2462,7 +2796,9 @@ function getClassWeaponSlots(className){
 }
 function getAllowedClassWeapons(className,slot){
   const options=getClassData(className)?.weaponOptions?.[slot];
-  return Array.isArray(options) ? options.filter(name=>WEAPONS[slot]?.weapons?.[name]) : [];
+  return Array.isArray(options)
+    ? options.filter(name=>WEAPONS[slot]?.weapons?.[name]).slice().sort((a,b)=>String(a).localeCompare(String(b),undefined,{sensitivity:"base",numeric:true}))
+    : [];
 }
 function getDefaultWeaponState(className,slot){
   const allowed=getAllowedClassWeapons(className,slot);
@@ -2472,7 +2808,9 @@ function getDefaultWeaponState(className,slot){
   const variant=variants.length
     ? (variants.some(v=>v.id===requested.variant) ? requested.variant : variants[0].id)
     : null;
-  return {weapon,variant,active:[]};
+  const state={weapon,variant,active:[]};
+  syncHeroicVariantPerk(slot,state);
+  return state;
 }
 const DEFAULT_BUILD = (className="Techmarine") => {
   const resolved=CLASS_DATA[className] ? className : "Techmarine";
@@ -2527,7 +2865,8 @@ class SM2View extends require("obsidian").ItemView {
     const title=header.createEl("h1",{text:"⚙ Space Marine 2 Build Planner"});
     const classWrap=header.createDiv({cls:"sm2-class-wrap"});
     classWrap.createSpan({text:"Class:"});
-    this.makeSelect(classWrap,Object.keys(CLASS_DATA).map(name=>({value:name,label:name})),build.className,name=>{
+    const classNames=CLASS_DROPDOWN_ORDER.filter(name=>CLASS_DATA[name]);
+    this.makeSelect(classWrap,classNames.map(name=>({value:name,label:name})),build.className,name=>{
       this.plugin.setClass(name).then(changed=>{
         if(!changed) return;
         this.weaponGraphScroll.clear();
@@ -2596,10 +2935,11 @@ class SM2View extends require("obsidian").ItemView {
       starting.createDiv({cls:"sm2-small",text:data.startingPerk[2]});
     }
     const legend=main.createDiv({cls:"sm2-legend"});
-    [["on","Selected"],["off","Available"]].forEach(x=>{const s=legend.createSpan();s.innerHTML=`<i class="sm2-dot ${x[0]}"></i>${x[1]}`;});
+    [["blue","Core / Gear / Prestige"],["yellow","Team / Signature"],["off","Available"]].forEach(x=>{const s=legend.createSpan();s.innerHTML=`<i class="sm2-dot ${x[0]}"></i>${x[1]}`;});
     data.categories.forEach(cat=>{
       const verticalChoices = cat.name.startsWith("Core") || cat.name === "Gear";
-      const sec=main.createDiv({cls:"sm2-category"+(verticalChoices?" sm2-vertical-choice-groups":"")});
+      const selectionTone = verticalChoices ? " sm2-selection-blue" : ((cat.name === "Team" || cat.name.startsWith("Signature")) ? " sm2-selection-yellow" : "");
+      const sec=main.createDiv({cls:"sm2-category"+(verticalChoices?" sm2-vertical-choice-groups":"")+selectionTone});
       sec.createEl("h2",{text:cat.name});
       const tree=sec.createDiv({cls:"sm2-tree"});
       (cat.rows || []).forEach(row=>{
@@ -2620,7 +2960,7 @@ class SM2View extends require("obsidian").ItemView {
         });
       });
     });
-    const sec=main.createDiv({cls:"sm2-category"});
+    const sec=main.createDiv({cls:"sm2-category sm2-selection-blue"});
     sec.createEl("h2",{text:"Prestige — select up to 4"});
     const grid=sec.createDiv({cls:"sm2-freegrid"});
     data.prestige.forEach(p=>grid.appendChild(this.perkCard(p,this.plugin.currentBuild.prestige.includes(p[0]),()=>{
@@ -2635,10 +2975,12 @@ class SM2View extends require("obsidian").ItemView {
       const id=el.dataset.perkId;
       const isActive=state.active.includes(id);
       const perkState=this.plugin.getWeaponPerkState(slot,id);
+      const variantControlled=this.plugin.isHeroicWeaponPerk(slot,id);
       const disabled=!isActive && !perkState.available;
       el.classList.toggle("active",isActive);
       el.classList.toggle("disabled",disabled);
-      if(disabled && perkState.reason) el.setAttribute("title",perkState.reason);
+      el.classList.toggle("variant-controlled",variantControlled);
+      if((disabled || variantControlled) && perkState.reason) el.setAttribute("title",perkState.reason);
       else el.removeAttribute("title");
     });
   }
@@ -2653,7 +2995,7 @@ class SM2View extends require("obsidian").ItemView {
   }
 
   renderWeapons(main){
-    main.createEl("div",{cls:"sm2-section-note",text:"Select a weapon and version, then choose perks along the connected tree. Locked perks show the prerequisite or branch that prevents selection. Changes are saved automatically."});
+    main.createEl("div",{cls:"sm2-section-note",text:"Select a weapon and version, then choose perks along the connected tree. Heroic perks are controlled automatically by their matching Heroic weapon variants and cannot be clicked directly. Changes are saved automatically."});
     this.plugin.getClassWeaponSlots().forEach((slot)=>{
       const group=main.createDiv({cls:"sm2-weapon-slot"});
       const top=group.createDiv({cls:"sm2-weapon-heading"});
@@ -2708,9 +3050,10 @@ class SM2View extends require("obsidian").ItemView {
           const meta=perkMeta(p);
           const isActive=active.includes(id);
           const perkState=this.plugin.getWeaponPerkState(slot,id);
+          const variantControlled=this.plugin.isHeroicWeaponPerk(slot,id);
           const disabled=!isActive && !perkState.available;
-          const reason=disabled ? perkState.reason : "";
-          const el=graph.createDiv({cls:"sm2-weapon-perk sm2-graph-perk"+(isActive?" active":"")+(disabled?" disabled":"")});
+          const reason=perkState.reason || "";
+          const el=graph.createDiv({cls:"sm2-weapon-perk sm2-graph-perk"+(isActive?" active":"")+(disabled?" disabled":"")+(variantControlled?" variant-controlled":"")});
           el.dataset.perkId=id;
           el.style.gridColumn=String(perkColumn(p)+1);
           const rowStart=perkRow(p)+2;
@@ -2718,10 +3061,11 @@ class SM2View extends require("obsidian").ItemView {
           if(meta.verticalCenter) el.style.alignSelf="center";
           el.createEl("strong",{text:perkName(p)});
           el.createDiv({cls:"sm2-small",text:perkDesc(p)});
-          if(disabled) el.setAttr("title",reason);
+          if((disabled || variantControlled) && reason) el.setAttr("title",reason);
           el.onclick=()=>{
             const liveActive=this.plugin.currentBuild.weapons[slot].active.includes(id);
             const liveState=this.plugin.getWeaponPerkState(slot,id);
+            if(this.plugin.isHeroicWeaponPerk(slot,id)){new Notice(liveState.reason || "Heroic perks are controlled by the selected Heroic weapon variant.");return;}
             if(!liveActive && !liveState.available){new Notice(liveState.reason);return;}
             this.weaponGraphScroll.set(scrollKey,scroll.scrollLeft);
             this.plugin.toggleWeaponPerk(slot,id);
@@ -2747,13 +3091,15 @@ class SM2View extends require("obsidian").ItemView {
             const id=perkId(p);
             const isActive=active.includes(id);
             const perkState=this.plugin.getWeaponPerkState(slot,id);
+            const variantControlled=this.plugin.isHeroicWeaponPerk(slot,id);
             const disabled=!isActive && !perkState.available;
-            const reason=disabled ? perkState.reason : "";
-            const el=col.createDiv({cls:"sm2-weapon-perk"+(isActive?" active":"")+(disabled?" disabled":"")});
+            const reason=perkState.reason || "";
+            const el=col.createDiv({cls:"sm2-weapon-perk"+(isActive?" active":"")+(disabled?" disabled":"")+(variantControlled?" variant-controlled":"")});
             el.createEl("strong",{text:perkName(p)});
             el.createDiv({cls:"sm2-small",text:perkDesc(p)});
-            if(disabled) el.setAttr("title",reason);
+            if((disabled || variantControlled) && reason) el.setAttr("title",reason);
             el.onclick=()=>{
+              if(variantControlled){new Notice(reason || "Heroic perks are controlled by the selected Heroic weapon variant.");return;}
               if(disabled){new Notice(reason);return;}
               this.plugin.toggleWeaponPerk(slot,id);
               this.renderPreservingPageScroll();
@@ -2790,7 +3136,7 @@ class SM2View extends require("obsidian").ItemView {
       const del=row.createEl("button",{text:"×",attr:{ariaLabel:"Delete build"}});del.onclick=()=>this.plugin.deleteBuild(x.id);
     });
     side.createEl("h3",{text:"Status"});
-    side.createDiv({cls:"sm2-small",text:"Current changes are auto-saved locally. Build files will be moved into the Obsidian vault in a later storage milestone."});
+    side.createDiv({cls:"sm2-small",text:`Current changes are auto-saved to ${BUILD_STORAGE_FILE} in this Obsidian vault.`});
     const clear=side.createEl("button",{text:"Clear current selections",cls:"mod-warning"});
     clear.onclick=()=>{this.plugin.clearCurrent();this.render();};
   }
@@ -2800,6 +3146,8 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
   async onload(){
     this.builds = {};
     this.currentBuild = DEFAULT_BUILD();
+    this._vaultWriteQueue = Promise.resolve();
+    this._storageErrorNotified = false;
     await this.loadStoredState();
     this.registerView("sm2-build-planner-view",leaf=>new SM2View(leaf,this));
     this.addCommand({id:"open-planner",name:"Open Space Marine 2 Build Planner",callback:()=>this.activateView()});
@@ -2821,6 +3169,10 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
   }
   getClassWeaponSlots(className=this.currentBuild?.className || "Techmarine"){return getClassWeaponSlots(className);}
   getAllowedWeapons(slot,className=this.currentBuild?.className || "Techmarine"){return getAllowedClassWeapons(className,slot);}
+  isHeroicWeaponPerk(slot,id,build=this.currentBuild){
+    const state=build?.weapons?.[slot];
+    return !!state && getHeroicPerkIds(slot,state.weapon).includes(id);
+  }
 
   repairClassSelections(classActive,className=this.currentBuild?.className || "Techmarine"){
     const data=getClassData(className);
@@ -2847,8 +3199,9 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     if(!state) return;
     const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
     const tiers=weapon?.tiers || [];
-    const selectedOrder=Array.isArray(state.active) ? state.active.slice() : [];
     const knownIds=new Set(allWeaponPerks(tiers).map(perkId));
+    const heroicIds=new Set(getHeroicPerkIds(slot,state.weapon));
+    const selectedOrder=(Array.isArray(state.active) ? state.active.slice() : []).filter(id=>!heroicIds.has(id));
     let selected=new Set(selectedOrder.filter(id=>knownIds.has(id)));
 
     if(weapon?.treeMode === "connectionGraph"){
@@ -2863,7 +3216,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
         if(!selected.has(id)) continue;
         const perk=perkMap.get(id);
         const meta=perkMeta(perk);
-        if((weapon.roots || []).includes(id) || meta.alwaysAvailable) starters.push(id);
+        if((weapon.roots || []).includes(id)) starters.push(id);
       }
       const reachable=new Set(starters);
       const queue=starters.slice();
@@ -2911,6 +3264,8 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
       }
     }
     state.active=selectedOrder.filter(id=>selected.has(id));
+    const heroicId=getHeroicPerkForVariant(slot,state.weapon,state.variant);
+    if(heroicId && knownIds.has(heroicId)) state.active.push(heroicId);
   }
 
   getWeaponPerkState(slot,id){
@@ -2922,33 +3277,42 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     const perk=perks.find(p=>perkId(p)===id);
     if(!perk) return {available:false,reason:"Weapon perk data could not be found."};
 
+    const heroicIds=new Set(getHeroicPerkIds(slot,state.weapon));
+    if(heroicIds.has(id)){
+      const mapped=getHeroicPerkForVariant(slot,state.weapon,state.variant);
+      const variant=(weapon?.variants || []).find(v=>v.id===state.variant);
+      return mapped===id
+        ? {available:false,variantControlled:true,reason:`Selected automatically by ${variant?.name || "the equipped Heroic variant"}.`}
+        : {available:false,variantControlled:true,reason:"Heroic perks are selected automatically by equipping their matching Heroic weapon variant."};
+    }
+
     if(weapon?.treeMode === "connectionGraph"){
       const meta=perkMeta(perk);
-      if(state.active.includes(id)) return {available:true,reason:""};
-      if(meta.alwaysAvailable) return {available:true,reason:""};
+      const relationalActive=state.active.filter(activeId=>!heroicIds.has(activeId));
+      if(relationalActive.includes(id)) return {available:true,reason:""};
       const perkMap=weaponPerkMap(weapon);
       const adj=weaponAdjacency(weapon);
       for(const group of (weapon.exclusiveGroups || [])){
         if(!group.includes(id)) continue;
-        const conflict=group.find(other=>other!==id && state.active.includes(other));
+        const conflict=group.find(other=>other!==id && relationalActive.includes(other));
         if(conflict){
           const other=perkMap.get(conflict);
           return {available:false,reason:`Unavailable: ${other?perkName(other):conflict} is selected on the alternate starting path.`};
         }
       }
-      if(!state.active.length){
+      if(!relationalActive.length){
         return (weapon.roots || []).includes(id)
           ? {available:true,reason:""}
           : {available:false,reason:"Unavailable: select a Standard starting perk first."};
       }
       const candidateCol=perkColumn(perk);
       const validNeighbor=Array.from(adj.get(id) || []).find(other=>{
-        if(!state.active.includes(other)) return false;
+        if(!relationalActive.includes(other)) return false;
         const otherPerk=perkMap.get(other);
         return perkColumn(otherPerk) <= candidateCol;
       });
       if(validNeighbor) return {available:true,reason:""};
-      const connectedSelected=Array.from(adj.get(id) || []).filter(other=>state.active.includes(other));
+      const connectedSelected=Array.from(adj.get(id) || []).filter(other=>relationalActive.includes(other));
       if(connectedSelected.length){
         return {available:false,reason:"Unavailable: this connection would move backwards through the perk tree."};
       }
@@ -3032,10 +3396,66 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     return b;
   }
 
-  async loadStoredState(){
-    const st=await this.loadData();
+  async ensureVaultStorage(){
+    const adapter=this.app.vault.adapter;
+    if(!(await adapter.exists(BUILD_STORAGE_FOLDER))) await adapter.mkdir(BUILD_STORAGE_FOLDER);
+  }
+
+  async readVaultState(){
+    const adapter=this.app.vault.adapter;
+    if(!(await adapter.exists(BUILD_STORAGE_FILE))) return null;
+    const raw=await adapter.read(BUILD_STORAGE_FILE);
+    if(!String(raw || "").trim()) return null;
+    const parsed=JSON.parse(raw);
+    if(!parsed || typeof parsed!=="object" || !parsed.builds || typeof parsed.builds!=="object"){
+      throw new Error(`Invalid build storage format in ${BUILD_STORAGE_FILE}.`);
+    }
+    return parsed;
+  }
+
+  makeVaultState(){
+    return {
+      schemaVersion:BUILD_STORAGE_SCHEMA_VERSION,
+      currentId:this.currentBuild?.id || null,
+      builds:JSON.parse(JSON.stringify(this.builds))
+    };
+  }
+
+  async writeVaultStateNow(){
+    await this.ensureVaultStorage();
+    const payload=JSON.stringify(this.makeVaultState(),null,2)+"\n";
+    await this.app.vault.adapter.write(BUILD_STORAGE_FILE,payload);
+    this._storageErrorNotified=false;
+  }
+
+  queueVaultWrite(){
+    const task=this._vaultWriteQueue.then(()=>this.writeVaultStateNow());
+    this._vaultWriteQueue=task.catch(err=>{
+      console.error("SM2 Build Planner: failed to write vault build storage",err);
+      if(!this._storageErrorNotified){
+        this._storageErrorNotified=true;
+        new Notice(`SM2 Build Planner could not save ${BUILD_STORAGE_FILE}. Check the console for details.`);
+      }
+    });
+    return task;
+  }
+
+  async archiveUnreadableVaultFile(){
+    const adapter=this.app.vault.adapter;
+    if(!(await adapter.exists(BUILD_STORAGE_FILE))) return null;
+    const stamp=new Date().toISOString().replace(/[:.]/g,"-");
+    const backup=`${BUILD_STORAGE_FOLDER}/builds.unreadable-${stamp}.json`;
+    await adapter.rename(BUILD_STORAGE_FILE,backup);
+    return backup;
+  }
+
+  loadBuildCollection(st){
+    this.builds={};
     if(st?.builds && typeof st.builds==="object"){
-      for(const [id,raw] of Object.entries(st.builds)){
+      const entries=Array.isArray(st.builds)
+        ? st.builds.filter(x=>x && typeof x==="object" && x.id).map(x=>[x.id,x])
+        : Object.entries(st.builds);
+      for(const [id,raw] of entries){
         const b=this.normalizeBuild(raw);
         b.id=id;
         this.builds[id]=b;
@@ -3050,12 +3470,56 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
       this.currentBuild=b;
       this.builds[b.id]=this.normalizeBuild(b);
     }
-    await this.saveData({builds:this.builds,currentId:this.currentBuild.id});
   }
+
+  async loadStoredState(){
+    let st=null;
+    let migratedLegacy=false;
+    let vaultReadFailed=false;
+    try{
+      st=await this.readVaultState();
+    }catch(err){
+      vaultReadFailed=true;
+      console.error("SM2 Build Planner: could not read vault build storage",err);
+      try{
+        const backup=await this.archiveUnreadableVaultFile();
+        if(backup) new Notice(`SM2 Build Planner archived an unreadable build file as ${backup}.`);
+      }catch(archiveErr){
+        console.error("SM2 Build Planner: could not archive unreadable vault build storage",archiveErr);
+      }
+    }
+
+    if(!st){
+      const legacy=await this.loadData();
+      if(legacy?.builds && typeof legacy.builds==="object"){
+        st=legacy;
+        migratedLegacy=true;
+      }
+    }
+
+    this.loadBuildCollection(st);
+    await this.writeVaultStateNow();
+
+    // Plugin data is retained only as a migration marker. The vault JSON file
+    // is the source of truth from v0.8.0 onward.
+    await this.saveData({
+      storage:"vault",
+      schemaVersion:BUILD_STORAGE_SCHEMA_VERSION,
+      path:BUILD_STORAGE_FILE,
+      migratedAt:migratedLegacy ? new Date().toISOString() : undefined
+    });
+
+    if(migratedLegacy){
+      new Notice(`SM2 Build Planner moved your saved builds to ${BUILD_STORAGE_FILE}.`);
+    }else if(vaultReadFailed){
+      new Notice(`SM2 Build Planner created a fresh ${BUILD_STORAGE_FILE} after archiving the unreadable file.`);
+    }
+  }
+
   async persist(){
     this.currentBuild.updatedAt=new Date().toISOString();
     this.builds[this.currentBuild.id]=JSON.parse(JSON.stringify(this.currentBuild));
-    await this.saveData({builds:this.builds,currentId:this.currentBuild.id});
+    await this.queueVaultWrite();
   }
   async autoSave(){await this.persist();}
   startNewBuild(){this.currentBuild=DEFAULT_BUILD(this.currentBuild?.className || "Techmarine");new Notice("New unsaved build created.");}
@@ -3106,7 +3570,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     const fresh=DEFAULT_BUILD(name);
     this.currentBuild=fresh;
     this.builds[fresh.id]=JSON.parse(JSON.stringify(fresh));
-    await this.saveData({builds:this.builds,currentId:fresh.id});
+    await this.persist();
     new Notice(`Created new ${name} build.`);
     return true;
   }
@@ -3124,12 +3588,18 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
     const variants=WEAPONS[slot]?.weapons?.[state.weapon]?.variants || [];
     if(!variants.some(v=>v.id===id)) return;
     state.variant=id;
+    this.repairWeaponSelections(slot);
     this.autoSave();
   }
   toggleWeaponPerk(slot,id){
     const state=this.currentBuild.weapons[slot];
     const weapon=WEAPONS[slot]?.weapons?.[state.weapon];
     const tiers=weapon?.tiers || [];
+    if(this.isHeroicWeaponPerk(slot,id)){
+      const info=this.getWeaponPerkState(slot,id);
+      new Notice(info.reason || "Heroic perks are controlled by the selected Heroic weapon variant.");
+      return;
+    }
     const a=state.active;
     const i=a.indexOf(id);
     if(i>=0){
@@ -3169,6 +3639,7 @@ module.exports = class SM2BuildPlannerPlugin extends Plugin {
   clearCurrent(){
     this.currentBuild.classActive=[];this.currentBuild.prestige=[];
     Object.values(this.currentBuild.weapons).forEach(w=>w.active=[]);
+    for(const slot of this.getClassWeaponSlots()) this.repairWeaponSelections(slot);
     this.autoSave();new Notice("Current selections cleared.");
   }
   onunload(){this.app.workspace.detachLeavesOfType("sm2-build-planner-view");}

@@ -1,4 +1,88 @@
-# Space Marine 2 Build Planner v0.5.6
+# Space Marine 2 Build Planner v0.8.0
+
+
+## v0.8.0 — Obsidian vault build storage
+
+- Moved saved-build persistence out of Obsidian's plugin `data.json` and into **`SM2 Build Planner/builds.json`** at the root of the active vault.
+- The vault JSON file is now the **source of truth** for saved builds and the currently selected build.
+- Existing v0.7.x builds are migrated automatically the first time v0.8.0 loads. Migration occurs only when no vault build file already exists, so an existing vault file is never replaced by stale plugin data.
+- After a successful migration, plugin `data.json` retains only a small storage/migration marker; it no longer contains the builds themselves.
+- Auto-save, manual Save, build switching, deletion, class switching, weapon/version selection, and perk selection now write through to the vault JSON file.
+- The vault file uses indented JSON so it can be inspected or backed up independently of the plugin.
+- If the vault build file cannot be parsed, the plugin archives it as `builds.unreadable-<timestamp>.json` before recovering, rather than silently overwriting it.
+- No build schema, class/weapon data, perk relationships, or selected-state UI behavior changed in this release.
+
+## v0.7.1 — Combat Knife correction + selected-state colors
+
+- Corrected the **Combat Knife** Artificer layout after in-game verification: **Shoulder Bash** now occupies the upper Artificer branch and **Shadow Stab** the lower branch. Their branch connections were switched with them so selection prerequisites follow the corrected tree.
+- Selected **Core**, **Gear**, and **Prestige** class perks are now highlighted **blue**.
+- Selected **Team** and **Signature** class perks are now highlighted **yellow**.
+- Automatically active **Heroic weapon perks** are now highlighted **red**. They remain unclickable and continue to be controlled by the selected Heroic weapon variant.
+- Normal Standard-through-Relic weapon perk selections remain **green**.
+- Updated the class-perk legend to reflect the new class selection colors.
+- No save-schema, loadout, class-data, or Heroic variant-mapping changes were introduced.
+
+
+## v0.7.0 — selector ordering + Heroic variant/perk behavior
+
+- Fixed the class selector order to: **Tactical, Vanguard, Assault, Bulwark, Sniper, Heavy, Techmarine**.
+- Weapon-name selectors are now sorted alphabetically for every class and slot.
+- Verified the existing saved-build selector already sorts build names alphabetically; that behavior is retained.
+- Separated Heroic weapon perks from normal weapon-tree prerequisite relationships. Heroic perks are no longer roots, prerequisites, or manually selectable tree nodes.
+- Heroic perk cards remain visible in the Heroic column, but are now variant-controlled: selecting the matching Heroic weapon version automatically activates its associated Heroic perk.
+- Switching away from a Heroic weapon version automatically removes that Heroic perk while preserving the normal Standard-through-Relic perk path.
+- Weapons with two Heroic versions now map each version to its own perk (Combat Knife, Power Sword, Thunder Hammer, Chainsword, and Power Fist).
+- Existing saved builds are normalized on load: manually selected Heroic perks are replaced by the perk dictated by the saved weapon variant, preventing Heroic selections from locking Standard starting perks.
+- Clearing perk selections keeps the Heroic perk active when a Heroic weapon version is still equipped, because that perk belongs to the version rather than the selectable tree.
+- No save-schema migration was introduced; the existing build structure remains compatible ahead of the planned vault-storage migration.
+
+
+
+## v0.6.4 — Pyreblaster perk tree
+
+- Populated the **Pyreblaster** perk tree from the supplied in-game screenshot.
+- Added all 14 Standard, Master-Crafted, Artificer, and Relic perk nodes in their visible two-row layout.
+- Transcribed the two horizontal paths plus the visible vertical cross-links at **Potent Flame ↔ Contingency Plan** and **Potent Flame ↔ Flash Burn**.
+- Preserved the two mutually exclusive Standard starting paths: **Improved Fast Venting** and **Perpetual Cooling**.
+- Added the current perk descriptions, including **Flame of Purification** (burning enemies take 20% more Melee Damage).
+- Pyreblaster now uses the same `connectionGraph` prerequisite, branch-switching, and selection-repair behavior as the other completed weapon trees.
+- No class data, weapon versions, persistence format, desktop/iOS layout, or other weapon trees were changed.
+
+
+## v0.6.3 — Tactical class
+
+- Added **Tactical** as a selectable class with its current pre-Patch-15 Starting, Core, Team, Gear, Signature, and seven Prestige perks.
+- Correctly grouped Tactical's Core and Gear perks by in-game choice column so the existing vertical GUI layout and row-based mutual exclusivity match the live tree.
+- Includes Patch 12's current **Balanced Distribution** 15% / -15% values and the updated **Kraken Penetrator Rounds** bolter body-shot bonus.
+- Added Tactical's current weapon availability: Auto Bolt Rifle, Bolt Rifle, Heavy Bolt Rifle, Stalker Bolt Rifle, Bolt Carbine, Plasma Incinerator, Melta Rifle, Pyreblaster, Bolt Pistol, Heavy Bolt Pistol, Plasma Pistol, Combat Knife, and Chainsword.
+- Tactical defaults to **Auto Bolt Rifle + Bolt Pistol + Chainsword**.
+- Added **Pyreblaster** as a canonical Primary weapon with its Standard-through-Relic version list. Its **perk tree was intentionally blank in v0.6.3** pending source data; it is populated as of v0.6.4.
+- Every other Tactical weapon reuses an already-populated canonical perk tree. No existing weapon tree, persistence format, or desktop/iOS layout behavior was changed.
+
+
+## v0.6.2 — Melta Rifle perk tree
+
+- Populated the Melta Rifle weapon perk tree from the supplied in-game screenshot.
+- Added the two Standard starting paths, all Master-Crafted / Artificer / Relic perks, and the visible cross-path vertical links.
+- Added the Patch 14 Heroic node **Focused Fusion Beam** for the Salamanders Melta Rifle as an independently available Heroic perk.
+- The Melta Rifle now uses the same `connectionGraph` prerequisite and path-repair behavior as the other completed weapon trees.
+
+## v0.6.1 — Vanguard class perk grouping fix
+- Corrected Vanguard's **Core** perk choice columns so the GUI and mutual-exclusivity relationships match the in-game tree: **Moving Target / Melee Mastery / Upper Hand**, **Duellist / Close-Combat Focus / Conviction**, and **Retribution / Consecutive Execution / Honed Reactions**.
+- Corrected Vanguard's **Gear** perk choice columns in the same way: **Restless Fortitude / Shock Wave / Collateral Damage**, **Zone of Impact / Tenacity / Tip of the Spear**, and **Thrill of the Fight / Grim Determination / Combat Readiness**.
+- Because class choice groups are represented by rows in the data model and rendered vertically by the shared Core/Gear layout, these corrections fix both visual top-to-bottom ordering and selection locking without changing shared UI logic.
+- Existing saved Vanguard builds are repaired through the current normalization path if they contain selections that are mutually exclusive under the corrected groups.
+- No perk descriptions, weapon data, persistence format, or desktop/iOS layout code changed.
+
+
+## v0.6.0 — Vanguard class
+- Added **Vanguard** as a selectable class with its current Starting, Core, Team, Gear, Signature, and seven Prestige perks.
+- Uses the current post-Patch-12.2 Vanguard perk values, including **Moving Target** restoring 10% Ability Charge and **Retribution** granting 30% Melee Damage while the ranged magazine is empty.
+- Added Vanguard's current weapon availability: Instigator Bolt Carbine, Bolt Carbine, Occulus Bolt Carbine, Melta Rifle, Bolt Pistol, Heavy Bolt Pistol, Inferno Pistol, Neo-Volkite Pistol, Combat Knife, Chainsword, and Power Axe.
+- Vanguard defaults to **Instigator Bolt Carbine + Bolt Pistol + Combat Knife**.
+- Added **Melta Rifle** as a canonical Primary weapon entry because it was absent from the v0.5.6 baseline, including its Standard-through-Relic versions and the Patch 14 **Salamanders Melta Rifle** Heroic version.
+- At v0.6.0 the **Melta Rifle perk tree was intentionally blank** pending authoritative perk-tree source data; it is populated as of v0.6.2. Every other Vanguard weapon reuses an already-populated canonical perk tree.
+- Existing weapon definitions are reused; no weapon perk tree, desktop/iOS layout, persistence, build sorting, or other class behavior was altered.
 
 
 ## v0.5.6 — Assault class
@@ -70,7 +154,7 @@
 - The Heroic perk **Burst Fire** is included as a standalone selectable perk card because the current simplified version system does not yet make perk behavior depend on the selected weapon version.
 
 ## Current storage
-Saved builds are still stored in Obsidian's plugin data for now.
+Saved builds are stored in `SM2 Build Planner/builds.json` inside the vault. This JSON file is the persistent source of truth from v0.8.0 onward.
 
 ## Install
 Copy the `sm2-build-planner` folder into:
