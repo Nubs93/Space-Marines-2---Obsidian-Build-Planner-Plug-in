@@ -1,5 +1,21 @@
-# Space Marine 2 Build Planner v0.9.0
+# Space Marine 2 Build Planner v0.9.2
 
+
+
+## v0.9.2 — remaining weapon data corrections
+
+- Bolt Rifle Artificer perk **Head Hunter** is now **Tactical Precision**: Headshots deal 20% more Damage; Non-Headshot Damage decreases by 10%.
+- Heavy Plasma Incinerator Relic tree corrected so **Brutal Rampage** occupies Elusive Fire's former position, while Brutal Rampage's former position now contains **Supercharged Shot**.
+- Heavy Plasma Incinerator **Supercharged Shot** description: Damage from a Charged Shot Increases by 10%.
+- Internal perk IDs/slots remain unchanged for saved-build compatibility.
+
+
+## v0.9.1 — weapon data corrections
+
+- Class dropdown order is now Tactical, Assault, Vanguard, Bulwark, Sniper, Heavy, Techmarine.
+- Corrected selected weapon perk names/descriptions for Bolt Carbine, Heavy Bolt Rifle, Stalker Bolt Rifle, Heavy Bolt Pistol, Inferno Pistol, Combat Knife, and Power Fist.
+- Existing perk IDs remain unchanged for save compatibility.
+- Bolt Rifle and Heavy Plasma Incinerator corrections were intentionally left unchanged pending clarification.
 
 ## v0.9.0 — source/data separation
 

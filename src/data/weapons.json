@@ -333,8 +333,8 @@
               "perks": [
                 [
                   "sbr_heroic_auspex_shot",
-                  "Auspex Shot",
-                  "Landing 3 body shots in short succession creates a 10-metre Auspex Scan area.",
+                  "Reconnaissance by Fire",
+                  "Landing 4 successful body shots in short succession creates a small Auspex Scan area. Cooldown is 8 seconds.",
                   {
                     "column": 8,
                     "row": 0,
@@ -1543,8 +1543,8 @@
               "perks": [
                 [
                   "bc_heroic_combi_flamer",
-                  "Combi-Flamer",
-                  "Augmented Vision switches the weapon to an under-barrel Pyreblaster firing mode.",
+                  "Combi-Weapon",
+                  "You can use an alternative Pyreblaster firing mode, accessed through Augmented Vision scope mode.",
                   {
                     "column": 9,
                     "row": 1,
@@ -2682,8 +2682,8 @@
                 ],
                 [
                   "hpi_relic_elusive_fire",
-                  "Elusive Fire",
-                  "After a perfectly timed Dodge, Fire Rate increases by 25% for 10 seconds.",
+                  "Brutal Rampage",
+                  "After killing 3 enemies or more with one shot, you deal 25% more Damage for 5 seconds.",
                   {
                     "column": 7,
                     "row": 1
@@ -2709,8 +2709,8 @@
                 ],
                 [
                   "hpi_relic_brutal_rampage",
-                  "Brutal Rampage",
-                  "After killing 3 enemies or more with one shot, you deal 25% more Damage for 5 seconds.",
+                  "Supercharged Shot",
+                  "Damage from a Charged Shot Increases by 10%.",
                   {
                     "column": 9,
                     "row": 0
@@ -4367,8 +4367,8 @@
               "perks": [
                 [
                   "br_art_head_hunter",
-                  "Head Hunter",
-                  "Headshots deal 10% more Damage.",
+                  "Tactical Precision",
+                  "Headshots deal 20% more Damage. Non-Headshot Damage decreases by 10%.",
                   {
                     "column": 4,
                     "row": 0
@@ -4830,8 +4830,8 @@
                 ],
                 [
                   "hbr_art_adamantine_grip",
-                  "Adamantine Grip",
-                  "Recoil is reduced by 25%.",
+                  "Recoupment",
+                  "Killing a Majoris-level or higher enemy with a Headshot with this Weapon restores 1 Armour Segment. Cooldown is 15 seconds.",
                   {
                     "column": 5,
                     "row": 1
@@ -6651,8 +6651,8 @@
               "perks": [
                 [
                   "hbp_relic_adamant_hunter",
-                  "Adamant Hunter",
-                  "When your Health is below 30%, Headshots deal 25% more Damage.",
+                  "Head Hunter",
+                  "Headshots deal 10% more Damage.",
                   {
                     "column": 7,
                     "row": 0
@@ -7278,7 +7278,7 @@
                 ],
                 [
                   "ip_art_motivated_melee",
-                  "Motivated Melee",
+                  "Know No Fear",
                   "If your Armour is fully depleted, Reload Speed increases by 20%.",
                   {
                     "column": 4,
@@ -8649,7 +8649,7 @@
                 ],
                 [
                   "knife_heroic_knuckles",
-                  "Knuckles",
+                  "Scathing Retort",
                   "Riposte window is shorter, but each riposte deals damage to the attacker.",
                   {
                     "column": 7,
@@ -10709,8 +10709,8 @@
                 ],
                 [
                   "pf_heroic_burning_impact",
-                  "Burning Impact",
-                  "After a Light Attack, pause to enter a stance, then follow with another Light Attack to fire a Melta Blast that inflicts Burn. A Melta Blast can also be fired after a single charge in hold stance.",
+                  "Combi-Weapon",
+                  "Pause after any Light Attack to enter a stance, then Light Attack again to fire a Melta blast that inflicts the Burn status.",
                   {
                     "column": 8,
                     "row": 2
